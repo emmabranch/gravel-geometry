@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-6a4920667ce7704aacfae6d3c26a4b33.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-8c85834a18bdb554c0a7cca7df887b40.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-6a4920667ce7704aacfae6d3c26a4b33.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e565371ffc01bfd6650a7638ddfee4f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f48947bc58e4b9f5b3511a96ff6142b3.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-e565371ffc01bfd6650a7638ddfee4f2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -180,6 +180,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="./rider.html"> 
 <span class="menu-text">Rider</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./design.html"> 
+<span class="menu-text">Design</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./methods.html" aria-current="page"> 
@@ -382,6 +386,16 @@ window.Quarto = {
 </ul>
 <p>Re-fitting the thresholds with each bike left out and testing on that bike, the rule flagged 7.4% of recommended sizes, caught 86% of too-small and 82% of too-large sizes, and never flagged in the wrong direction. Torso and shoulder angles were tried and dropped: they change little between sizes because the arms and torso adapt.</p>
 </section>
+</section>
+<section id="the-design-page" class="level2">
+<h2 class="anchored" data-anchor-id="the-design-page">The Design page</h2>
+<p>The Design page turns any set of numbers into a full geometry using the same formulas as the rest of the site, so a custom design and a production bike are drawn and measured identically.</p>
+<ul>
+<li><strong>Head tube length</strong> isn’t an input: it follows from stack, BB drop, head angle, fork length, and fork offset. On modern frames the head tube wraps down past the top of the fork crown. Across the 10 bikes that publish both fork length and head tube length (excluding the Diverge, whose suspension sits in the head tube), it does so by a median of 14 mm (range 11 to 19). With that value, the formula reproduces published head tube lengths to within a few millimetres; for the Norco Search size 3 it gives exactly the published 135 mm.</li>
+<li><strong>Fork length</strong>, where a chart doesn’t publish it, is worked back from stack and head tube length the same way, or set to 395 mm.</li>
+<li><strong>Closest production bikes</strong> are found on eight measures (stack, reach, head angle, seat angle, chainstay, BB drop, trail, and wheelbase). Each difference is divided by that measure’s standard deviation across the 135 production sizes, and the distance is the root mean square of those scaled differences.</li>
+<li><strong>Checks</strong> flag combinations that can’t be built (negative trail, a head tube shorter than zero, a front tyre that overlaps the pedal circle) and ones that are unusual or risky compared with the production bikes here (trail under 45 or over 100 mm, chainstays under 405 mm, a bottom bracket under 260 mm off the ground, toe clearance under 70 mm, and angles well outside the production range).</li>
+</ul>
 </section>
 <section id="references" class="level2">
 <h2 class="anchored" data-anchor-id="references">References</h2>

@@ -1,0 +1,288 @@
+---
+title: "Design a bike"
+description: "Set your own gravel bike geometry, or start from any bike in the dataset, and see it drawn with a rider, checked for problems, and matched to the closest production bikes."
+---
+
+Start from any bike, then change the numbers. The drawing, the handling numbers, the rider, and the checks all update as you go. Nothing you do here is saved, so experiment freely.
+
+```{ojs}
+//| output: false
+import {designRow, designChecks, bikePoints} from "./js/geometry.js"
+import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS} from "./js/rider.js"
+import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
+
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+bikes = raw.map(d => ({
+  ...d,
+  is_default_config: d.is_default_config === true || d.is_default_config === "TRUE",
+  size_label: String(d.size_label),
+  label: `${d.brand} ${d.model}`
+}))
+production = bikes.filter(d => d.is_default_config)
+bikeList = Array.from(new Set(production.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+sizesOf = bike => production.filter(d => d.label === bike).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label)
+rowOf = (bike, size) => production.find(d => d.label === bike && d.size_label === size)
+
+// Fork length where a chart doesn't publish it: worked back from stack and
+// head tube length (the reverse of designRow), or 395 mm as a typical 700c fork
+forkLengthOf = r => {
+  if (r.fork_axle_crown != null) return r.fork_axle_crown;
+  if (r.head_tube_length == null) return 395;
+  const a = r.head_tube_angle * Math.PI / 180;
+  const along = (r.stack - r.bb_drop) / Math.sin(a) - r.head_tube_length + 14;
+  return Math.round(Math.hypot(along, r.fork_offset_used));
+}
+```
+
+::: {.design-layout .column-page}
+
+::: {.design-controls}
+
+::: {.design-card}
+[Start from]{.card-heading}
+
+```{ojs}
+viewof baseBike = Inputs.select(bikeList, {label: "Bike", value: "Norco Search C Gen 3"})
+```
+
+```{ojs}
+viewof baseSize = {
+  const sizes = sizesOf(baseBike);
+  return Inputs.select(sizes, {label: "Size", value: sizes[Math.floor(sizes.length / 2)]});
+}
+```
+
+```{ojs}
+//| output: false
+base = rowOf(baseBike, baseSize)
+```
+
+[Changing these resets the numbers below to that bike.]{.data-note}
+:::
+
+::: {.design-card}
+[Frame]{.card-heading}
+
+```{ojs}
+viewof stack = Inputs.range([470, 690], {label: "Stack (mm)", step: 1, value: base.stack})
+```
+
+```{ojs}
+viewof reach = Inputs.range([330, 480], {label: "Reach (mm)", step: 1, value: base.reach})
+```
+
+```{ojs}
+viewof hta = Inputs.range([64, 76], {label: "Head tube angle (°)", step: 0.1, value: base.head_tube_angle})
+```
+
+```{ojs}
+viewof sta = Inputs.range([70, 78], {label: "Seat tube angle (°)", step: 0.1, value: base.seat_tube_angle})
+```
+
+```{ojs}
+viewof bbDrop = Inputs.range([50, 100], {label: "BB drop (mm)", step: 1, value: base.bb_drop})
+```
+
+```{ojs}
+viewof chainstay = Inputs.range([395, 480], {label: "Chainstay (mm)", step: 1, value: base.chainstay})
+```
+
+```{ojs}
+viewof seatTube = Inputs.range([350, 620], {label: "Seat tube (mm)", step: 5, value: base.seat_tube_length ?? Math.round(0.86 * base.stack / 5) * 5})
+```
+:::
+
+::: {.design-card}
+[Fork and wheels]{.card-heading}
+
+```{ojs}
+viewof offset = Inputs.range([30, 75], {label: "Fork offset (mm)", step: 1, value: base.fork_offset_used})
+```
+
+```{ojs}
+viewof forkAC = Inputs.range([360, 520], {label: "Fork axle-to-crown (mm)", step: 1, value: forkLengthOf(base)})
+```
+
+```{ojs}
+viewof wheelSize = Inputs.radio(["700c", "650b", "29er"], {label: "Wheel size", value: base.wheel_size === "29er" ? "29er" : "700c"})
+```
+
+```{ojs}
+viewof tyre = Inputs.range([30, 70], {label: "Tyre width (mm)", step: 1, value: base.wheel_size === "29er" ? 57 : 45})
+```
+:::
+
+::: {.design-card}
+[Rider and cockpit]{.card-heading}
+
+```{ojs}
+viewof heightCm = Inputs.range([140, 205], {label: "Rider height (cm)", step: 1, value: 176})
+```
+
+```{ojs}
+viewof stemMm = Inputs.range([40, 130], {label: "Stem length (mm)", step: 10, value: defaultStem(heightCm * 10)})
+```
+
+```{ojs}
+viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: DEFAULTS.stemAngle})
+```
+
+```{ojs}
+viewof spacersMm = Inputs.range([0, 50], {label: "Spacers (mm)", step: 5, value: DEFAULTS.spacers})
+```
+
+```{ojs}
+viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: defaultCrank(heightCm * 10)})
+```
+:::
+
+:::
+
+::: {.design-output}
+
+```{ojs}
+//| output: false
+custom = designRow({
+  stack, reach, head_tube_angle: hta, seat_tube_angle: sta, bb_drop: bbDrop, chainstay,
+  fork_offset: offset, fork_axle_crown: forkAC, wheel_size: wheelSize, tyre_width: tyre,
+  seat_tube_length: seatTube
+})
+riderIn = ({height: heightCm * 10})
+setup = ({stemLength: stemMm, stemAngle, spacers: spacersMm, crank: crankMm})
+customRider = riderOnBike(custom, riderIn, setup)
+customFit = fitFlags(customRider)
+checks = designChecks(custom, {crank: crankMm})
+
+// Closest production bikes: distance on standardised key measures
+keyMeasures = [
+  {key: "stack", label: "stack", unit: "mm"},
+  {key: "reach", label: "reach", unit: "mm"},
+  {key: "head_tube_angle", label: "head angle", unit: "°"},
+  {key: "seat_tube_angle", label: "seat angle", unit: "°"},
+  {key: "chainstay", label: "chainstay", unit: "mm"},
+  {key: "bb_drop", label: "BB drop", unit: "mm"},
+  {key: "trail_calc", label: "trail", unit: "mm"},
+  {key: "wheelbase", label: "wheelbase", unit: "mm"}
+]
+spread = Object.fromEntries(keyMeasures.map(m => {
+  const v = production.map(d => d[m.key]).filter(x => x != null);
+  const mean = v.reduce((a, b) => a + b, 0) / v.length;
+  const sd = Math.sqrt(v.reduce((a, b) => a + (b - mean) ** 2, 0) / (v.length - 1));
+  return [m.key, sd];
+}))
+nearest = production
+  .map(d => {
+    const parts = keyMeasures.map(m => ({...m, diff: custom[m.key] - d[m.key], z: (custom[m.key] - d[m.key]) / spread[m.key]}));
+    return {row: d, dist: Math.sqrt(parts.reduce((a, p) => a + p.z ** 2, 0) / parts.length), parts};
+  })
+  .sort((a, b) => a.dist - b.dist)
+  .slice(0, 3)
+```
+
+```{ojs}
+statusStrip = {
+  const errors = checks.filter(c => c.level === "error").length, warns = checks.filter(c => c.level === "warn").length;
+  const vcls = {"fits": "v-fits", "on the small side": "v-lean", "on the large side": "v-lean", "too small": "v-bad", "too large": "v-bad", "mixed signals": "v-lean"}[customFit.verdict];
+  return html`<div class="status-strip">
+    <div class="stat-chip"><span>Trail</span><strong>${custom.trail_calc.toFixed(0)} mm</strong></div>
+    <div class="stat-chip"><span>Wheelbase</span><strong>${custom.wheelbase.toFixed(0)} mm</strong></div>
+    <div class="stat-chip"><span>Stack/reach</span><strong>${custom.stack_reach_ratio.toFixed(2)}</strong></div>
+    <div class="stat-chip"><span>Head tube</span><strong>${custom.head_tube_length.toFixed(0)} mm</strong></div>
+    <div class="stat-chip ${vcls}"><span>${heightCm} cm rider</span><strong class="verdict">${customFit.verdict}</strong></div>
+    <div class="stat-chip ${errors ? "chip-error" : warns ? "chip-warn" : "chip-ok"}"><span>Checks</span><strong>${errors ? `${errors} problem${errors > 1 ? "s" : ""}` : warns ? `${warns} warning${warns > 1 ? "s" : ""}` : "all clear"}</strong></div>
+  </div>`;
+}
+```
+
+::: {.overlay-pick}
+```{ojs}
+viewof compareWith = {
+  // Options don't depend on the design, so moving a slider never resets this.
+  const options = [["(none)", null], ...production.map(d => [`${d.label}, size ${d.size_label}`, d])];
+  return Inputs.select(new Map(options), {label: "Overlay a production bike", value: base});
+}
+```
+:::
+
+```{ojs}
+designDrawing = {
+  const items = [{row: custom, rider: customRider, colour: "#7a5c43", name: "Your design"}];
+  if (compareWith) items.push({row: compareWith, rider: riderOnBike(compareWith, riderIn, setup), colour: "#d2691e", name: `${compareWith.label}, size ${compareWith.size_label}`});
+  const vb = sharedViewBox(items.map(i => ({row: i.row, rider: i.rider})));
+  // production bike first, faint, so the design sits on top
+  let svg = "";
+  for (const it of [...items].reverse()) {
+    const {markup} = bikeRiderMarkup(it.row, it.rider, {colour: it.colour, riderColour: it === items[0] ? "#0b2233" : "#d2691e"});
+    svg += `<g opacity="${it === items[0] ? 1 : 0.45}">${markup}</g>`;
+  }
+  const legend = items.map(i => `<span><i style="background:${i.colour}"></i>${i.name}</span>`).join("");
+  const el = document.createElement("div");
+  el.className = "draw-panel design-drawing";
+  el.innerHTML = `<div class="gg-legend legend-lines">${legend}</div><svg viewBox="${vb.vb}" role="img" aria-label="Your design drawn to scale with a ${heightCm} cm rider${compareWith ? `, over ${compareWith.label} size ${compareWith.size_label}` : ""}">${svg}</svg>`;
+  return el;
+}
+```
+
+```{ojs}
+checkList = {
+  if (!checks.length) return html`<div class="check ok">No problems found: this combination is within the range of production gravel bikes.</div>`;
+  const icon = {error: "✕", warn: "!", note: "i"};
+  return html`<div class="check-list">${checks.map(c => html`<div class="check ${c.level}"><span class="check-icon" aria-hidden="true">${icon[c.level]}</span><span><strong>${c.level === "error" ? "Problem" : c.level === "warn" ? "Warning" : "Note"}:</strong> ${c.text}</span></div>`)}</div>`;
+}
+```
+
+:::
+
+:::
+
+## The numbers
+
+```{ojs}
+numbersTable = {
+  const cmp = compareWith;
+  const cmpRider = cmp ? riderOnBike(cmp, riderIn, setup) : null;
+  const toe = r => Math.hypot(r.front_centre_calc, r.bb_drop) - (r.wheel_radius ?? bikePoints(r).wheelRadius) - crankMm;
+  const rows = [
+    ["Stack", r => r.stack, 0, "mm"], ["Reach", r => r.reach, 0, "mm"], ["Stack/reach", r => r.stack / r.reach, 2, ""],
+    ["Head angle", r => r.head_tube_angle, 1, "°"], ["Seat angle", r => r.seat_tube_angle, 1, "°"],
+    ["Fork offset", r => r.fork_offset_used ?? r.fork_offset, 0, "mm"],
+    ["Trail (with these tyres)", r => r === custom ? r.trail_calc : r.trail_calc, 0, "mm"],
+    ["Mechanical trail", r => r.mechanical_trail, 0, "mm"], ["Wheel flop", r => r.wheel_flop, 1, "mm"],
+    ["Wheelbase", r => r.wheelbase, 0, "mm"], ["Front centre", r => r.front_centre_calc, 0, "mm"],
+    ["Chainstay", r => r.chainstay, 0, "mm"], ["BB drop", r => r.bb_drop, 0, "mm"],
+    ["Head tube", r => r.head_tube_length, 0, "mm"], ["Effective top tube", r => r.top_tube_effective, 0, "mm"],
+    ["Toe clearance", toe, 0, "mm"]
+  ];
+  const fmt = (v, dp, u) => v == null || Number.isNaN(v) ? "–" : `${v.toFixed(dp)}${u ? `<span class="unit">${u}</span>` : ""}`;
+  const head = `<tr><th>Measure</th><th class="num">Your design</th>${cmp ? `<th class="num">${cmp.label} ${cmp.size_label}</th><th class="num">Difference</th>` : ""}</tr>`;
+  const body = rows.map(([label, f, dp, u]) => {
+    const a = f(custom), b = cmp ? f(cmp) : null;
+    const diff = cmp && a != null && b != null ? `${a - b > 0 ? "+" : ""}${(a - b).toFixed(dp)}` : "";
+    return `<tr><th scope="row">${label}</th><td class="num">${fmt(a, dp, u)}</td>${cmp ? `<td class="num">${fmt(b, dp, u)}</td><td class="num diffcol">${diff}</td>` : ""}</tr>`;
+  }).join("");
+  const riderRows = [
+    ["Rider: size check", r => fitFlags(r).verdict], ["Rider: knee at bottom", r => `${r.kneeAngle.toFixed(0)}°`],
+    ["Rider: torso angle", r => `${r.torsoAngle.toFixed(0)}°`], ["Rider: hoods below saddle", r => `${r.hoodDrop.toFixed(0)} mm`]
+  ].map(([label, f]) => `<tr><th scope="row">${label}</th><td class="num">${f(customRider)}</td>${cmp ? `<td class="num">${f(cmpRider)}</td><td></td>` : ""}</tr>`).join("");
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table">${head}${body}<tr class="group-row"><th colspan="${cmp ? 4 : 2}">With a ${heightCm} cm rider</th></tr>${riderRows}</table>`;
+  return el;
+}
+```
+
+[The production bike's trail uses a 700 × 45 mm tyre (as on the rest of the site), while your design's uses the tyre you chose. Head tube length is worked out from stack, fork length, and head angle, assuming the head tube wraps 14 mm below the fork crown, the median across bikes that publish both.]{.data-note}
+
+## Closest production bikes
+
+```{ojs}
+nearestList = {
+  const say = p => `${p.diff > 0 ? "+" : ""}${p.diff.toFixed(p.unit === "°" ? 1 : 0)}${p.unit === "°" ? "°" : " mm"} ${p.label}`;
+  return html`<ol class="nearest">${nearest.map(n => {
+    const big = [...n.parts].sort((a, b) => Math.abs(b.z) - Math.abs(a.z)).filter(p => Math.abs(p.z) > 0.25).slice(0, 3);
+    return html`<li><strong>${n.row.label}, size ${n.row.size_label}</strong> <span class="nearest-dist">distance ${n.dist.toFixed(2)}</span><br><span class="nearest-why">${big.length ? `Your design has ${big.map(say).join(", ")}.` : "Practically identical on every key measure."}</span></li>`;
+  })}</ol>`;
+}
+```
+
+[Closeness is measured on eight numbers: stack, reach, head angle, seat angle, chainstay, BB drop, trail, and wheelbase. Each difference is divided by how much that measure varies across all 135 production sizes, so a degree of head angle and a few millimetres of stack count about equally. A distance of 0 is identical; below about 0.3 is very close.]{.data-note}

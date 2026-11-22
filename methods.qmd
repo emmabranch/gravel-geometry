@@ -114,6 +114,15 @@ The flags were calibrated against the rider height ranges that six manufacturers
 
 Re-fitting the thresholds with each bike left out and testing on that bike, the rule flagged 7.4% of recommended sizes, caught 86% of too-small and 82% of too-large sizes, and never flagged in the wrong direction. Torso and shoulder angles were tried and dropped: they change little between sizes because the arms and torso adapt.
 
+## The Design page
+
+The Design page turns any set of numbers into a full geometry using the same formulas as the rest of the site, so a custom design and a production bike are drawn and measured identically.
+
+- **Head tube length** isn't an input: it follows from stack, BB drop, head angle, fork length, and fork offset. On modern frames the head tube wraps down past the top of the fork crown. Across the 10 bikes that publish both fork length and head tube length (excluding the Diverge, whose suspension sits in the head tube), it does so by a median of 14 mm (range 11 to 19). With that value, the formula reproduces published head tube lengths to within a few millimetres; for the Norco Search size 3 it gives exactly the published 135 mm.
+- **Fork length**, where a chart doesn't publish it, is worked back from stack and head tube length the same way, or set to 395 mm.
+- **Closest production bikes** are found on eight measures (stack, reach, head angle, seat angle, chainstay, BB drop, trail, and wheelbase). Each difference is divided by that measure's standard deviation across the 135 production sizes, and the distance is the root mean square of those scaled differences.
+- **Checks** flag combinations that can't be built (negative trail, a head tube shorter than zero, a front tyre that overlaps the pedal circle) and ones that are unusual or risky compared with the production bikes here (trail under 45 or over 100 mm, chainstays under 405 mm, a bottom bracket under 260 mm off the ground, toe clearance under 70 mm, and angles well outside the production range).
+
 ## References
 
 - Drillis R, Contini R. *Body Segment Parameters.* Technical Report 1166-03. New York University School of Engineering and Science; 1966. Tabulated in Winter DA. *Biomechanics and Motor Control of Human Movement.* Wiley.
