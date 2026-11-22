@@ -1,0 +1,10 @@
+SOURCE: https://web.archive.org/web/20190821111023/https://www.trekbikes.com/us/en_US/bikes/road-bikes/gravel-bikes/checkpoint/checkpoint-sl-5/p/24387/
+CAPTURED (Wayback): 2019-08-21. Checkpoint SL 5, first generation (values in cm). Same frame numbers as the Checkpoint ALR page captured 2019-08-19, except standover.
+Size | Seat tube | STA | Head tube | HTA | ETT | BB drop | Chainstay | Offset | Trail | Wheelbase | Standover | Reach | Stack
+49 | 49 | 75.0 | 9 | 71.4 | 51.5 | 7.8 | 42.5 | 4.9 | 6.6 | 99.5 | 72.3 | 37.3 | 53.2
+52 | 52 | 74.0 | 10.7 | 71.6 | 53.6 | 7.8 | 42.5 | 4.9 | 6.5 | 100.5 | 74.9 | 37.9 | 54.9
+54 | 54 | 73.5 | 12.6 | 71.8 | 55.1 | 7.6 | 42.5 | 4.9 | 6.4 | 101.4 | 77.5 | 38.3 | 56.7
+56 | 56 | 73.0 | 14.5 | 72.2 | 56.6 | 7.6 | 42.5 | 4.9 | 6.1 | 102 | 79.5 | 38.7 | 58.6
+58 | 58 | 73.0 | 17.1 | 72.3 | 57.7 | 7.4 | 42.5 | 4.9 | 6.1 | 103.2 | 81.7 | 39.1 | 60.9
+61 | 61 | 73.0 | 20 | 72.6 | 59.2 | 7.4 | 42.5 | 4.9 | 5.9 | 104.4 | 84.6 | 39.7 | 63.8
+Chainstay 42.5 is the shortest position (sliding dropout, 42.5 to 44.5).

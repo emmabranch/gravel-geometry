@@ -21,6 +21,10 @@ project:
     - data/epi_clusters.csv
     - data/epi_clusters_summary.csv
     - data/epi_pca_loadings.csv
+    - data/epi_over_time.csv
+    - data/epi_over_time_sizes.csv
+    - data/epi_over_time_change.csv
+    - data/gravel_geometry_history.csv
     - js/geometry.js
     - js/rider.js
     - js/draw.js

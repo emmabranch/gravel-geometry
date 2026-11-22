@@ -1,0 +1,7 @@
+SOURCE: https://web.archive.org/web/20210121070005/https://www.specialized.com/us/en/diverge-comp-carbon/p/175285
+CAPTURED (Wayback): 2021-01-21. Diverge Comp Carbon, 2021 generation.
+Size 49 52 54 56 58 61
+Reach 365 374 383 392 401 410 | HTT 529 542 558 573 589 605 | Stack 571 577 592 610 634 659 | Wheelbase 1019 1026 1032 1042 1059 1076
+Chainstay 425 | Front centre 607 614 620 630 647 664 | BB drop 80 | BB height 270 | STA 74 73.75 73.5 73.5 73.5 73.5
+HTA 70 70.5 71.25 71.75 71.75 71.75 | Seat tube 390 430 470 500 530 560 | Head tube 99 104 116 133 159 185
+Standover 700 725 754 779 805 832 | Fork rake 55 | Fork length 389 | Trail 69 66 61 57 57 57

@@ -1,0 +1,7 @@
+SOURCE: https://web.archive.org/web/20190918181059/https://www.giant-bicycles.com/us/revolt-advanced-0-2020
+CAPTURED (Wayback): 2019-09-18. Revolt Advanced 0, model year 2020 (second generation, no flip chip). The 2021-10-26 capture of revolt-advanced-pro-0 shows the same numbers (trail given there as 74.1 and 70.7).
+Size XS S M ML L XL
+Seat tube 430 450 470 490 510 530 | STA 74.0 73.5 73.5 73.0 73.0 73.0 | Top tube 530 540 550 565 575 590
+Head tube 125 135 150 165 180 195 | HTA 70.5 70.5 70.5 71.0 71.0 71.0 | Fork rake 50 | Trail 74 74 74 71 71 71
+Wheelbase 1014 1020 1031 1036 1046 1062 | Chainstay 425 | BB drop 70 | Stack 548 558 572 588 602 616
+Reach 373 375 381 385 391 402 | Standover 719 734 752 768 786 803

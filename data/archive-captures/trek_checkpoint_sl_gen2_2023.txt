@@ -1,0 +1,10 @@
+SOURCE: https://web.archive.org/web/20230519113852/https://www.trekbikes.com/us/en_US/bikes/road-bikes/gravel-bikes/checkpoint/checkpoint-sl/checkpoint-sl-5/p/35169/
+CAPTURED (Wayback): 2023-05-19. Checkpoint SL 5, second generation (values in cm; stem in mm).
+Size | Wheel | Seat tube | STA | Head tube | HTA | ETT | BB drop | Chainstay | Offset | Trail | Wheelbase | Standover | Reach | Stack | Stem
+49 | 700c | 49.0 | 74.1 | 9.0 | 71.2 | 54.1 | 7.8 | 43.5 | 4.5 | 7.4 | 102.5 | 73.5 | 39.3 | 53.8 | 70
+52 | 700c | 52.0 | 73.7 | 10.5 | 71.6 | 55.5 | 7.8 | 43.5 | 4.5 | 7.1 | 103.3 | 76.5 | 39.9 | 55.3 | 80
+54 | 700c | 54.0 | 73.2 | 12.5 | 71.8 | 57.0 | 7.6 | 43.5 | 4.5 | 7.0 | 104.1 | 78.9 | 40.3 | 57.1 | 80
+56 | 700c | 56.0 | 72.8 | 14.5 | 72.2 | 58.4 | 7.6 | 43.5 | 4.5 | 6.7 | 104.8 | 80.9 | 40.7 | 59.2 | 90
+58 | 700c | 58.0 | 72.5 | 16.5 | 72.3 | 59.7 | 7.4 | 43.5 | 4.5 | 6.6 | 105.8 | 82.9 | 41.1 | 60.9 | 90
+61 | 700c | 61.0 | 72.1 | 19.5 | 72.6 | 61.7 | 7.4 | 43.5 | 4.5 | 6.5 | 107.0 | 85.9 | 41.7 | 63.9 | 100
+Chainstay 43.5 is the shortest position (sliding dropout).

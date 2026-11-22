@@ -1,0 +1,8 @@
+SOURCE: https://web.archive.org/web/20190723144122/https://www.specialized.com/us/en/diverge-comp-carbon/p/93091
+CAPTURED (Wayback): 2019-07-23. Diverge Comp Carbon, 2018 generation.
+Size 49 52 54 56 58 61 64
+Reach 378 378 380 387 391 398 409 | Stack 525 544 564 589 621 642 657 | Wheelbase 989 995 1000 1011 1028 1039 1054
+Seat tube 418 447 466 485 530 555 590 | Head tube 100 120 140 165 200 220 235 | HTT 518 536 548 565 582 600 616
+Front centre 589 595 597 607 621 629 645 | HTA 71.25 71.25 72 72.5 72.5 73 73 | Standover 714 740 764 785 829 851 0
+Fork rake 51 | Trail 63 63 58 55 55 52 52 | Chainstay 412 412 415 415 418 420 420 | STA 75.5 74 73.5 73.25 73 72.5 72.5
+BB drop 77 77 75.5 75.5 74 74 74

@@ -5,16 +5,18 @@
 #   Study 1  Agreement: published versus recalculated values (Bland-Altman)
 #   Study 2  Growth charts: reference centiles of stack for reach
 #   Study 4  Marketing versus data: geometry clusters against category labels
+#   Study 5  Geometry over time: older generations against today's bikes
 #
 # (Study 3, on smaller riders, runs live on the page because it uses the rider
 # model in js/rider.js.)
 #
 # Run from the project folder:  source("R/epi_studies.R")
-# Needs: readr, dplyr, here, quantreg  (install.packages("quantreg") if needed)
+# Needs: readr, dplyr, tidyr, here, quantreg  (install.packages("quantreg") if needed)
 
 suppressPackageStartupMessages({
   library(readr)
   library(dplyr)
+  library(tidyr)
   library(quantreg)
 })
 
@@ -153,6 +155,89 @@ summary_out <- tibble(
 )
 write_csv(summary_out, here::here("data", "epi_clusters_summary.csv"))
 
+
+# ---------------------------------------------------------------------------
+# Study 5: Geometry over time
+# Older generations of seven current bikes, typed from archived copies of the
+# manufacturers' own pages (data/gravel_geometry_history.csv). Sizes don't
+# line up across generations, so each generation is standardised to the same
+# rider: every measure is read off at a frame stack of 580 mm, interpolating
+# linearly between the two sizes either side (700c sizes only). Wheelbase and
+# trail are recalculated from the frame numbers in the same way for every
+# chart, so a brand's rounding or tyre assumption doesn't count as a change.
+# ---------------------------------------------------------------------------
+target_stack <- 580
+wheel_r <- function(w) ifelse(w == "650b", 584, 622) / 2 + 45
+
+history <- read_csv(here::here("data", "gravel_geometry_history.csv"), show_col_types = FALSE)
+
+# Missing fork offset (Grail gen 1) is back-calculated from wheelbase, as for
+# the current bikes.
+history <- history |>
+  mutate(th = rad(head_tube_angle),
+         offset_from_wb = (wheelbase - sqrt(chainstay^2 - bb_drop^2) - reach - (stack - bb_drop) / tan(th)) * sin(th),
+         fork_offset_used = coalesce(fork_offset, round(offset_from_wb, 1)),
+         is_current = FALSE)
+
+lineage_map <- tribble(
+  ~lineage,                     ~brand,        ~model,
+  "Norco Search",               "Norco",       "Search C Gen 3",
+  "Trek Checkpoint",            "Trek",        "Checkpoint SL Gen 3",
+  "Specialized Diverge",        "Specialized", "Diverge 4",
+  "Specialized Crux",           "Specialized", "Crux 5",
+  "Canyon Grail",               "Canyon",      "Grail CF",
+  "Cannondale Topstone Carbon", "Cannondale",  "Topstone Carbon",
+  "Giant Revolt Advanced",      "Giant",       "Revolt Advanced"
+)
+current <- default |>
+  inner_join(lineage_map, by = c("brand", "model")) |>
+  transmute(lineage, brand, model, generation = "Current", chart_year = as.integer(substr(accessed, 1, 4)),
+            size_label = as.character(size_label), size_order, wheel_size, stack, reach, head_tube_angle,
+            chainstay, bb_drop, wheelbase, fork_offset_used, th = rad(head_tube_angle), is_current = TRUE)
+
+both <- bind_rows(
+  history |> mutate(size_label = as.character(size_label)) |>
+    select(lineage, brand, model, generation, chart_year, size_label, size_order, wheel_size, stack, reach,
+           head_tube_angle, chainstay, bb_drop, wheelbase, fork_offset_used, th, is_current),
+  current) |>
+  filter(wheel_size == "700c") |>
+  mutate(R = wheel_r(wheel_size),
+         trail = (R * cos(th) - fork_offset_used) / sin(th),
+         wheelbase_calc = reach + (stack - bb_drop) / tan(th) + fork_offset_used / sin(th) + sqrt(chainstay^2 - bb_drop^2),
+         wheelbase_gap = wheelbase_calc - wheelbase)
+
+at_stack <- function(d, var) {
+  d <- arrange(d, stack)
+  if (target_stack < min(d$stack) || target_stack > max(d$stack)) return(NA_real_)
+  approx(d$stack, d[[var]], xout = target_stack, ties = mean)$y
+}
+over_time <- both |>
+  group_by(lineage, brand, model, generation, chart_year, is_current) |>
+  group_modify(~ tibble(
+    n_sizes = nrow(.x),
+    reach = at_stack(.x, "reach"),
+    head_tube_angle = at_stack(.x, "head_tube_angle"),
+    wheelbase = at_stack(.x, "wheelbase_calc"),
+    trail = at_stack(.x, "trail"),
+    chainstay = at_stack(.x, "chainstay"),
+    bb_drop = at_stack(.x, "bb_drop"),
+    fork_offset = at_stack(.x, "fork_offset_used"))) |>
+  ungroup() |>
+  mutate(across(c(reach, wheelbase, trail, chainstay, bb_drop, fork_offset), ~ round(.x, 1)),
+         head_tube_angle = round(head_tube_angle, 2)) |>
+  arrange(lineage, chart_year)
+write_csv(over_time, here::here("data", "epi_over_time.csv"))
+write_csv(both |> select(lineage, generation, chart_year, is_current, size_label, size_order, stack, reach),
+          here::here("data", "epi_over_time_sizes.csv"))
+
+# Change from each bike's oldest chart to its current one
+over_time_change <- over_time |>
+  group_by(lineage) |>
+  summarise(from_year = min(chart_year), to_year = max(chart_year),
+            across(c(reach, head_tube_angle, wheelbase, trail, chainstay, bb_drop),
+                   ~ last(.x, order_by = chart_year) - first(.x, order_by = chart_year)), .groups = "drop")
+write_csv(over_time_change, here::here("data", "epi_over_time_change.csv"))
+
 # ---------------------------------------------------------------------------
 cat("\nStudy 1: agreement (calculated minus published)\n"); print(agree_summary)
 cat("\nTrail bias by bike (mm):\n"); print(trail_by_brand, n = Inf)
@@ -163,3 +248,7 @@ cat(sprintf("\nStudy 4: Cohen's kappa = %.2f; %d of %d bikes agree with their la
             kappa, sum(clusters_out$agrees), nrow(clusters_out)))
 print(table(label = mid$category, data = data_label))
 print(filter(clusters_out, !agrees) |> select(brand, model, category, data_label), n = Inf)
+cat("\nStudy 5: geometry at 580 mm stack, oldest chart to current\n")
+print(over_time_change, n = Inf, width = Inf)
+cat("Wheelbase check (recalculated minus published, mm) on archived charts:\n")
+print(summary(filter(both, !is_current)$wheelbase_gap))

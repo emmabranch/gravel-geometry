@@ -1,0 +1,17 @@
+lineage,brand,model,generation,chart_year,is_current,n_sizes,reach,head_tube_angle,wheelbase,trail,chainstay,bb_drop,fork_offset
+Cannondale Topstone Carbon,Cannondale,Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,5,385.3,71.2,1030.6,63.1,415,61,55
+Cannondale Topstone Carbon,Cannondale,Topstone Carbon,Current,2026,TRUE,6,378.3,70.7,1026.1,66.4,420,76,55
+Canyon Grail,Canyon,Grail CF SL,Gen 1 (2019 to 2023),2019,FALSE,5,437.6,72.7,1058.6,65.4,425,75,43.4
+Canyon Grail,Canyon,Grail CF,Current,2026,TRUE,7,414.5,71.5,1066.8,64.3,435,75,52
+Giant Revolt Advanced,Giant,Revolt Advanced,2019 to 2021,2020,FALSE,6,383,70.75,1033.2,71.4,425,70,50
+Giant Revolt Advanced,Giant,Revolt Advanced,Current,2026,TRUE,6,384.8,71.31,1024,67.6,425,80,50
+Norco Search,Norco,Search XR C,Search XR (2018 to 2022),2020,FALSE,5,390,71.75,1025.2,65.8,422.5,72.5,49
+Norco Search,Norco,Search C Gen 3,Current,2026,TRUE,5,410.4,69.5,1073.8,78.7,426.7,75,51
+Specialized Crux,Specialized,Crux,2018 to 2021,2019,FALSE,7,383.1,71.91,1020.9,64.7,425,69,49
+Specialized Crux,Specialized,Crux 5,Current,2026,TRUE,6,401.2,71.5,1040.7,65.3,425,78,51
+Specialized Diverge,Specialized,Diverge,2018 to 2020,2019,FALSE,7,384.5,72.32,1006.8,60,415,75.5,51
+Specialized Diverge,Specialized,Diverge,2021 to 2024,2021,FALSE,6,375.8,70.65,1027.1,66.7,425,80,55
+Specialized Diverge,Specialized,Diverge 4,Current,2026,TRUE,6,375.9,70.57,1030.3,67.2,430,85,55
+Trek Checkpoint,Trek,Checkpoint SL,Gen 1 (2019 to 2021),2019,FALSE,6,385.7,72.07,1018.4,63.7,425,76,49
+Trek Checkpoint,Trek,Checkpoint SL,Gen 2 (2022 to 2024),2023,FALSE,6,404.7,71.97,1044.3,68.5,435,76,45
+Trek Checkpoint,Trek,Checkpoint SL Gen 3,Current,2026,TRUE,6,391.3,71.62,1033.6,66.7,430,76,49

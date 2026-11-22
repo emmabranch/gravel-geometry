@@ -1,0 +1,7 @@
+SOURCE: https://web.archive.org/web/20190818200332/https://www.canyon.com/en-us/road-bikes/gravel-bikes/grail/grail-cf-sl-7.0/2198.html
+CAPTURED (Wayback): 2019-08-18. Grail CF SL 7.0, first generation (2019). Fork offset and trail not published.
+Size 2XS XS S M L XL 2XL | Wheel 27.5 27.5 28 28 28 28 28
+Seat tube 432 462 492 522 552 582 612 | Top tube 523 533 557 579 590 614 625 | Head tube 70 88 78 97 125 146 167
+HTA 70.25 71.25 71 72.5 72.5 72.75 72.75 | STA 73.5 | Chainstay 415 415 425 425 425 425 425
+Wheelbase 988 990 1020 1029 1040 1063 1073 | Stack 470 490 513 536 563 584 604 | Reach 384 388 405 421 423 441 446
+Standover 753 778 805 833 860 888 912 | BB drop ("Bottom Bracket Offset") 60 60 75 75 75 75 75 | Spacer 15

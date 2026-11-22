@@ -1,12 +1,12 @@
 ---
 title: "Geometry epidemiology"
-description: "Four small studies that borrow epidemiology's methods: measurement agreement, growth charts, equity, and misclassification, applied to gravel bike geometry."
+description: "Five small studies that borrow epidemiology's methods: measurement agreement, growth charts, equity, misclassification, and secular trends, applied to gravel bike geometry."
 ---
 
-Epidemiologists spend a lot of time asking whether two measurements agree, where someone sits against a reference population, whether a group is being served as well as everyone else, and whether a label matches what's really going on. The same questions work surprisingly well on bike geometry.
+Epidemiologists spend a lot of time asking whether two measurements agree, where someone sits against a reference population, whether a group is being served as well as everyone else, whether a label matches what's really going on, and how things have changed over time. The same questions work surprisingly well on bike geometry.
 
 ::: {.study-nav}
-[1. Do the charts agree with themselves?](#study-1) [2. Growth charts for bikes](#study-2) [3. Do smaller riders get the same bike?](#study-3) [4. Does the marketing match the data?](#study-4)
+[1. Do the charts agree with themselves?](#study-1) [2. Growth charts for bikes](#study-2) [3. Do smaller riders get the same bike?](#study-3) [4. Does the marketing match the data?](#study-4) [5. Are gravel bikes getting longer and slacker?](#study-5)
 :::
 
 ```{ojs}
@@ -326,6 +326,149 @@ With only 24 bikes and three groups chosen in advance, this is a description, no
 }
 ```
 
+## 5. Are gravel bikes getting longer and slacker? {#study-5}
+
+*Method: a secular trend comparison, like tracking average height across birth cohorts, with every generation standardised to the same rider.*
+
+Mountain bikes spent the 2010s getting longer, lower, and slacker. Has the same thing happened to gravel bikes? Seven of the bikes on this site have older generations whose geometry charts survive in the [Internet Archive](https://web.archive.org/)'s copies of the manufacturers' own pages. That gives 9 older charts to set against today's.
+
+Comparing size "M" with size "M" doesn't work, because brands move their sizes around between generations. So each generation is standardised to the same rider: every measure is read off at the size whose stack (the height of the front end) is 580 mm, which is about a medium. Wheelbase and trail are recalculated from the frame numbers the same way for every chart, so a brand's rounding or tyre assumption doesn't count as a change.
+
+```{ojs}
+//| output: false
+overTime = FileAttachment("data/epi_over_time.csv").csv({typed: true}).then(d => d.map(r => ({...r, is_current: r.is_current === true || r.is_current === "TRUE"})))
+overTimeSizes = FileAttachment("data/epi_over_time_sizes.csv").csv({typed: true}).then(d => d.map(r => ({...r, is_current: r.is_current === true || r.is_current === "TRUE", size_label: String(r.size_label)})))
+lineages = Array.from(new Set(overTime.map(d => d.lineage))).sort((a, b) => a.localeCompare(b))
+genLabel = d => d.is_current ? `Current (${d.model})` : `${d.chart_year} chart: ${d.generation}`
+genColour = (d, all) => {
+  if (d.is_current) return "#0b2233";
+  const older = all.filter(g => !g.is_current).sort((a, b) => a.chart_year - b.chart_year);
+  return older.length > 1 && older.indexOf(older.find(g => g.chart_year === d.chart_year)) === older.length - 1 ? "#7a5c43" : "#c19a6b";
+}
+```
+
+### One bike, generation by generation
+
+::: {.epi-control}
+```{ojs}
+viewof lineagePick = Inputs.select(lineages, {label: "Bike", value: "Norco Search"})
+```
+:::
+
+::: {.column-page}
+```{ojs}
+{
+  const gens = overTime.filter(d => d.lineage === lineagePick).sort((a, b) => a.chart_year - b.chart_year);
+  const sizes = overTimeSizes.filter(d => d.lineage === lineagePick);
+  const key = d => `${d.chart_year}-${d.is_current}`;
+  const colourOf = new Map(gens.map(g => [key(g), genColour(g, gens)]));
+  const labelOf = new Map(gens.map(g => [key(g), genLabel(g)]));
+  const W = Math.min(width, 1000);
+  const ends = gens.map(g => {
+    const ss = sizes.filter(s => key(s) === key(g)).sort((a, b) => b.stack - a.stack)[0];
+    return {...ss, _lab: labelOf.get(key(g)), _c: colourOf.get(key(g))};
+  });
+  const legend = gens.map(g => `<span class="gen-key"><i style="background:${colourOf.get(key(g))}"></i>${labelOf.get(key(g))}</span>`).join("");
+  const el = document.createElement("div");
+  el.innerHTML = `<div class="gen-legend">${legend}</div>`;
+  el.append(Plot.plot({
+    width: W, height: 420, marginLeft: 50, marginRight: 20, style: plotStyle,
+    x: {label: "Reach (mm) →", grid: true, nice: true},
+    y: {label: "↑ Stack (mm)", grid: true, nice: true},
+    marks: [
+      Plot.ruleY([580], {stroke: "#5b7083", strokeDasharray: "4,3"}),
+      Plot.text([580], {y: d => d, frameAnchor: "left", text: () => "580 mm stack: the same rider", dx: 6, dy: -8, textAnchor: "start", fontSize: 10.5, fill: "#5b7083"}),
+      Plot.line(sizes, {x: "reach", y: "stack", z: key, sort: "stack", stroke: d => colourOf.get(key(d)), strokeWidth: 2.5}),
+      Plot.dot(sizes, {x: "reach", y: "stack", fill: d => colourOf.get(key(d)), r: 4.5, stroke: "#fff", strokeWidth: 1}),
+      Plot.dot(gens, {x: "reach", y: () => 580, r: 6, fill: "#fff", stroke: d => colourOf.get(key(d)), strokeWidth: 2.5}),
+      Plot.tip(sizes, Plot.pointer({x: "reach", y: "stack", maxRadius: 10, lineWidth: 40,
+        title: d => `${labelOf.get(key(d))}\nSize ${d.size_label}: stack ${d.stack} mm, reach ${d.reach} mm`}))
+    ]
+  }));
+  return el;
+}
+```
+:::
+
+[Each line is one generation's run of sizes (700c sizes only). The open circles mark where each line crosses 580 mm of stack, which is the "same rider" point used for every comparison on this page. A line further right means a longer bike for the same handlebar height.]{.data-note}
+
+```{ojs}
+{
+  const gens = overTime.filter(d => d.lineage === lineagePick).sort((a, b) => a.chart_year - b.chart_year);
+  const rows = [["Reach", "reach", " mm", 0], ["Head angle", "head_tube_angle", "°", 2], ["Wheelbase", "wheelbase", " mm", 0], ["Trail", "trail", " mm", 0], ["Chainstay", "chainstay", " mm", 0], ["BB drop", "bb_drop", " mm", 0]];
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table"><thead><tr><th>At 580 mm stack</th>${gens.map(g => `<th class="num">${g.is_current ? "Current" : g.chart_year}</th>`).join("")}<th class="num">Change</th></tr></thead><tbody>${rows.map(([lab, k, u, dp]) => {
+    const ch = gens.at(-1)[k] - gens[0][k];
+    return `<tr><th scope="row">${lab}</th>${gens.map(g => `<td class="num">${g[k].toFixed(dp)}${u}</td>`).join("")}<td class="num">${ch > 0 ? "+" : ch < 0 ? "−" : ""}${Math.abs(ch).toFixed(dp)}${u}</td></tr>`;
+  }).join("")}</tbody></table>`;
+  return el;
+}
+```
+
+### All seven bikes, oldest chart against today's
+
+::: {.epi-control}
+```{ojs}
+viewof trendMeasure = Inputs.radio(new Map([["Head angle", "head_tube_angle"], ["Wheelbase", "wheelbase"], ["Reach", "reach"], ["BB drop", "bb_drop"], ["Chainstay", "chainstay"], ["Trail", "trail"]]), {label: "Compare", value: "head_tube_angle"})
+```
+:::
+
+::: {.column-page}
+```{ojs}
+{
+  const unit = trendMeasure === "head_tube_angle" ? "°" : " mm";
+  const dp = trendMeasure === "head_tube_angle" ? 2 : 1;
+  const byLine = lineages.map(l => {
+    const g = overTime.filter(d => d.lineage === l).sort((a, b) => a.chart_year - b.chart_year);
+    return {lineage: l, first: g[0], last: g.at(-1), middle: g.slice(1, -1)};
+  }).sort((a, b) => (a.last[trendMeasure] - a.first[trendMeasure]) - (b.last[trendMeasure] - b.first[trendMeasure]));
+  const middles = byLine.flatMap(b => b.middle.map(m => ({...m})));
+  const fmt = v => `${v.toFixed(dp)}${unit}`;
+  return Plot.plot({
+    width: Math.min(width, 1000), height: 34 * byLine.length + 60, marginLeft: width < 520 ? 118 : 200, style: plotStyle,
+    x: {label: `${{head_tube_angle: "Head angle", wheelbase: "Wheelbase", reach: "Reach", bb_drop: "BB drop", chainstay: "Chainstay", trail: "Trail (700 × 45)"}[trendMeasure]} at 580 mm stack (${unit.trim()}) →`, grid: true, nice: true},
+    y: {label: null, domain: byLine.map(d => d.lineage), tickFormat: l => width < 520 ? l.replace(/^(Norco|Trek|Specialized|Canyon|Cannondale|Giant) /, "") : l},
+    marks: [
+      Plot.link(byLine, {x1: d => d.first[trendMeasure], x2: d => d.last[trendMeasure], y1: "lineage", y2: "lineage", stroke: "#c9d6e0", strokeWidth: 2, markerEnd: "arrow"}),
+      Plot.dot(middles, {x: trendMeasure, y: "lineage", r: 4, fill: "#7a5c43"}),
+      Plot.dot(byLine, {x: d => d.first[trendMeasure], y: "lineage", r: 5.5, fill: "#c19a6b"}),
+      Plot.dot(byLine, {x: d => d.last[trendMeasure], y: "lineage", r: 5.5, fill: "#0b2233"}),
+      Plot.tip(byLine.flatMap(b => [b.first, ...b.middle, b.last]), Plot.pointer({x: trendMeasure, y: "lineage", maxRadius: 12, lineWidth: 40,
+        title: d => `${genLabel(d)}\n${fmt(d[trendMeasure])}`}))
+    ]
+  });
+}
+```
+:::
+
+[Light dot: oldest chart found. Dark dot: today's bike. Brown dot: a generation in between. Bikes are sorted by how much they changed. For head angle, a move left means slacker steering.]{.data-note}
+
+```{ojs}
+{
+  const ch = lineages.map(l => {
+    const g = overTime.filter(d => d.lineage === l).sort((a, b) => a.chart_year - b.chart_year);
+    const f = g[0], c = g.at(-1);
+    return {l, hta: c.head_tube_angle - f.head_tube_angle, wb: c.wheelbase - f.wheelbase, reach: c.reach - f.reach, drop: c.bb_drop - f.bb_drop, cs: c.chainstay - f.chainstay};
+  });
+  const n = ch.length;
+  const count = (k, test) => ch.filter(d => test(d[k])).length;
+  const med = k => median(ch.map(d => d[k]));
+  const norco = ch.find(d => d.l === "Norco Search");
+  return md`**What it shows.** Gravel bikes have got slacker, lower, and longer at the back, but not simply longer in reach.
+
+- **Slacker steering.** ${count("hta", v => v < -0.25)} of ${n} bikes now have a slacker head angle than their oldest chart (median change ${med("hta") < 0 ? "−" : "+"}${Math.abs(med("hta")).toFixed(1)}°). The Norco changed most, by ${Math.abs(norco.hta).toFixed(2)}°.
+- **Lower bottom brackets.** ${count("drop", v => v > 2)} of ${n} have more BB drop, which sits the rider lower between the wheels, and ${count("drop", v => v < -2) === 0 ? "none has less" : `${count("drop", v => v < -2)} have less`}.
+- **Longer at the back.** ${count("cs", v => v > 2)} of ${n} have longer chainstays (more tyre room), and ${count("cs", v => v < -2) === 0 ? "none is shorter" : `${count("cs", v => v < -2)} are shorter`}.
+- **Wheelbase mostly grew.** ${count("wb", v => v > 5)} of ${n} are more than 5 mm longer between the axles (median ${med("wb") > 0 ? "+" : ""}${med("wb").toFixed(0)} mm). The Norco grew most, by ${norco.wb.toFixed(0)} mm.
+- **Reach went both ways.** ${count("reach", v => v > 5)} bikes got more than 5 mm longer and ${count("reach", v => v < -5)} got more than 5 mm shorter, for the same handlebar height. Where reach shrank, the newer bike puts the rider more upright rather than more stretched out.
+
+Unlike mountain bikes, there's no single "longer" trend. The consistent change is lower and slacker, with longer chainstays for wider tyres.`;
+}
+```
+
+[Sources: archived copies of each manufacturer's product page, listed with capture dates in `data/gravel_geometry_history.csv` and on the [Data and methods](methods.qmd#older-geometry) page. Limits: these are 7 bikes that still exist today, not a sample of the market. The first Canyon Grail used a two-tier handlebar on most builds, so its frame stack understates where the hands sat and its "same rider" size reads long. The 2021 Specialized Crux isn't included because its archived page didn't save the geometry.]{.data-note}
+
 ## How these were done
 
-The analyses for studies 1, 2, and 4 are in [`R/epi_studies.R`](https://github.com/emmabranch/gravel-geometry/blob/main/R/epi_studies.R), which reads the derived geometry and writes the small result files these charts read. Study 3 runs in your browser on the same rider model as the [Rider page](rider.qmd). The data and every assumption are described on the [Data and methods](methods.qmd) page.
+The analyses for studies 1, 2, 4, and 5 are in [`R/epi_studies.R`](https://github.com/emmabranch/gravel-geometry/blob/main/R/epi_studies.R), which reads the derived geometry and writes the small result files these charts read. Study 3 runs in your browser on the same rider model as the [Rider page](rider.qmd). The data and every assumption are described on the [Data and methods](methods.qmd) page.

@@ -301,3 +301,8 @@ body:has(.hero-full) #title-block-header { display: none; }
 .epi-control { --label-width: 9rem; --input-width: 20rem; margin: 0.4rem 0; }
 .epi-control form > label { font-weight: 600; }
 @media (max-width: 600px) { .epi-control { --label-width: 100%; --input-width: 100%; } .epi-control form { display: block !important; } }
+
+/* Epi study 5: generation key */
+.gen-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.85rem; color: #1f2a33; margin: 0.2rem 0 0.4rem; }
+.gen-key { display: inline-flex; align-items: center; gap: 0.4rem; }
+.gen-key i { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }

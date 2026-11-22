@@ -1,0 +1,96 @@
+lineage,generation,chart_year,is_current,size_label,size_order,stack,reach
+Norco Search,Search XR (2018 to 2022),2020,FALSE,50.5,3,547,376
+Norco Search,Search XR (2018 to 2022),2020,FALSE,53,4,563,383
+Norco Search,Search XR (2018 to 2022),2020,FALSE,55.5,5,580,390
+Norco Search,Search XR (2018 to 2022),2020,FALSE,58,6,600,399
+Norco Search,Search XR (2018 to 2022),2020,FALSE,60.5,7,620,407
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,49,1,532,373
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,52,2,549,379
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,54,3,567,383
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,56,4,586,387
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,58,5,609,391
+Trek Checkpoint,Gen 1 (2019 to 2021),2019,FALSE,61,6,638,397
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,49,1,538,393
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,52,2,553,399
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,54,3,571,403
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,56,4,592,407
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,58,5,609,411
+Trek Checkpoint,Gen 2 (2022 to 2024),2023,FALSE,61,6,639,417
+Specialized Diverge,2018 to 2020,2019,FALSE,49,1,525,378
+Specialized Diverge,2018 to 2020,2019,FALSE,52,2,544,378
+Specialized Diverge,2018 to 2020,2019,FALSE,54,3,564,380
+Specialized Diverge,2018 to 2020,2019,FALSE,56,4,589,387
+Specialized Diverge,2018 to 2020,2019,FALSE,58,5,621,391
+Specialized Diverge,2018 to 2020,2019,FALSE,61,6,642,398
+Specialized Diverge,2018 to 2020,2019,FALSE,64,7,657,409
+Specialized Diverge,2021 to 2024,2021,FALSE,49,1,571,365
+Specialized Diverge,2021 to 2024,2021,FALSE,52,2,577,374
+Specialized Diverge,2021 to 2024,2021,FALSE,54,3,592,383
+Specialized Diverge,2021 to 2024,2021,FALSE,56,4,610,392
+Specialized Diverge,2021 to 2024,2021,FALSE,58,5,634,401
+Specialized Diverge,2021 to 2024,2021,FALSE,61,6,659,410
+Specialized Crux,2018 to 2021,2019,FALSE,46,1,522,366
+Specialized Crux,2018 to 2021,2019,FALSE,49,2,540,369
+Specialized Crux,2018 to 2021,2019,FALSE,52,3,554,376
+Specialized Crux,2018 to 2021,2019,FALSE,54,4,566,379
+Specialized Crux,2018 to 2021,2019,FALSE,56,5,583,384
+Specialized Crux,2018 to 2021,2019,FALSE,58,6,597,387
+Specialized Crux,2018 to 2021,2019,FALSE,61,7,618,393
+Canyon Grail,Gen 1 (2019 to 2023),2019,FALSE,S,3,513,405
+Canyon Grail,Gen 1 (2019 to 2023),2019,FALSE,M,4,536,421
+Canyon Grail,Gen 1 (2019 to 2023),2019,FALSE,L,5,563,423
+Canyon Grail,Gen 1 (2019 to 2023),2019,FALSE,XL,6,584,441
+Canyon Grail,Gen 1 (2019 to 2023),2019,FALSE,2XL,7,604,446
+Cannondale Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,XS,1,518,368
+Cannondale Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,S,2,549,377
+Cannondale Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,M,3,579,385
+Cannondale Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,L,4,610,394
+Cannondale Topstone Carbon,Gen 1 (2020 to 2024),2020,FALSE,XL,5,640,402
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,XS,1,548,373
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,S,2,558,375
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,M,3,572,381
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,ML,4,588,385
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,L,5,602,391
+Giant Revolt Advanced,2019 to 2021,2020,FALSE,XL,6,616,402
+Trek Checkpoint,Current,2026,TRUE,XS,1,535,380
+Trek Checkpoint,Current,2026,TRUE,S,2,556,386
+Trek Checkpoint,Current,2026,TRUE,M,3,579,391
+Trek Checkpoint,Current,2026,TRUE,ML,4,601,397
+Trek Checkpoint,Current,2026,TRUE,L,5,620,402
+Trek Checkpoint,Current,2026,TRUE,XL,6,640,408
+Specialized Crux,Current,2026,TRUE,49,1,530,375
+Specialized Crux,Current,2026,TRUE,52,2,547,382
+Specialized Crux,Current,2026,TRUE,54,3,560,388
+Specialized Crux,Current,2026,TRUE,56,4,578,400
+Specialized Crux,Current,2026,TRUE,58,5,598,412
+Specialized Crux,Current,2026,TRUE,61,6,621,425
+Specialized Diverge,Current,2026,TRUE,49,1,563,365
+Specialized Diverge,Current,2026,TRUE,52,2,578,374
+Specialized Diverge,Current,2026,TRUE,54,3,592,387
+Specialized Diverge,Current,2026,TRUE,56,4,610,400
+Specialized Diverge,Current,2026,TRUE,58,5,634,412
+Specialized Diverge,Current,2026,TRUE,61,6,659,425
+Norco Search,Current,2026,TRUE,1,1,554,385
+Norco Search,Current,2026,TRUE,2,2,564,400
+Norco Search,Current,2026,TRUE,3,3,587,415
+Norco Search,Current,2026,TRUE,4,4,611,430
+Norco Search,Current,2026,TRUE,5,5,634,445
+Canyon Grail,Current,2026,TRUE,2XS,1,525,372
+Canyon Grail,Current,2026,TRUE,XS,2,537,385
+Canyon Grail,Current,2026,TRUE,S,3,558,394
+Canyon Grail,Current,2026,TRUE,M,4,575,411
+Canyon Grail,Current,2026,TRUE,L,5,598,427
+Canyon Grail,Current,2026,TRUE,XL,6,618,435
+Canyon Grail,Current,2026,TRUE,2XL,7,640,454
+Cannondale Topstone Carbon,Current,2026,TRUE,47,1,554,364
+Cannondale Topstone Carbon,Current,2026,TRUE,51,2,561,373
+Cannondale Topstone Carbon,Current,2026,TRUE,54,3,579,378
+Cannondale Topstone Carbon,Current,2026,TRUE,56,4,597,383
+Cannondale Topstone Carbon,Current,2026,TRUE,58,5,615,389
+Cannondale Topstone Carbon,Current,2026,TRUE,61,6,646,397
+Giant Revolt Advanced,Current,2026,TRUE,XS,1,556,381
+Giant Revolt Advanced,Current,2026,TRUE,S,2,570,381
+Giant Revolt Advanced,Current,2026,TRUE,M,3,586,387
+Giant Revolt Advanced,Current,2026,TRUE,ML,4,602,391
+Giant Revolt Advanced,Current,2026,TRUE,L,5,616,397
+Giant Revolt Advanced,Current,2026,TRUE,XL,6,630,407

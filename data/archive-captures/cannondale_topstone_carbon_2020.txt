@@ -1,0 +1,7 @@
+SOURCE: https://web.archive.org/web/20200508111148/https://www.cannondale.com/en-us/bikes/road/gravel/topstone-carbon/topstone-carbon-105
+CAPTURED (Wayback): 2020-05-08. Topstone Carbon 105, first carbon generation (Kingpin rear). cm values (inches also on page). Seat tube angle row not in the captured table.
+Size XS SM MD LG XL
+Seat tube 41 45.8 50.5 55.3 60 | Top tube 52.5 54.4 56.1 57.9 59.6 | HTA 70.0 71.2 71.2 71.2 71.2 | Standover 71.5 76.1 80.3 84.3 88.5
+Head tube 9.7 13.1 16.5 19.8 23.2 | Wheelbase 99.9 101 103 104 106 | Front centre 59.4 60.4 62.3 64.2 66 | Chainstay 41.5
+BB drop 6.9 6.4 6.1 6.1 5.9 | BB height 27.3 27.8 28 28 28.3 | Fork rake 5.5 | Trail 6.6 5.8 5.8 5.8 5.8
+Stack 51.8 54.9 57.9 61 64 | Reach 36.8 37.7 38.5 39.4 40.2

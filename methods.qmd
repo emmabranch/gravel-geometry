@@ -50,6 +50,20 @@ Inputs.table(sources, {
 
 **Downloads:** [typed-in geometry](data/gravel_geometry.csv) · [with calculated measures](data/gravel_geometry_derived.csv) · [data dictionary](data/data_dictionary.csv)
 
+## Older geometry {#older-geometry}
+
+The [Epi studies](epi.qmd#study-5) page compares today's bikes with their older generations. Those charts come from the [Internet Archive](https://web.archive.org/)'s saved copies of the manufacturers' own product pages, typed in the same way as the main dataset and kept in [`data/gravel_geometry_history.csv`](data/gravel_geometry_history.csv) with the archive address and capture date for every chart.
+
+```{ojs}
+history = FileAttachment("data/gravel_geometry_history.csv").csv({typed: true})
+Inputs.table(Array.from(d3.group(history, d => `${d.brand} ${d.model}, ${d.generation}`), ([k, v]) => ({Chart: k, Sizes: v.length, Captured: v[0].capture_date, Source: v[0].source_url})), {
+  format: {Source: u => html`<a href="${u}" target="_blank" rel="noopener">archived page</a>`, Captured: d => typeof d === "string" ? d : d.toISOString().slice(0, 10)},
+  layout: "auto", rows: 12, maxHeight: 420
+})
+```
+
+The same checks were run on these charts. Wheelbase recalculated from the other numbers matches the published wheelbase within 1.5 mm for 51 of the 53 700c sizes. Cannondale's 2020 Topstone Carbon chart gives wheelbase to the nearest centimetre, and its L and XL wheelbases are 9 to 10 mm shorter than the chart's own front centre implies. The first Canyon Grail chart has no fork offset, so it is back-calculated from wheelbase (about 43 mm), as for the current bikes.
+
 ## Categories
 
 Race, all-round, and adventure are this site's labels, not the manufacturers'. They follow how each manufacturer describes the bike's intended use. They are a rough grouping for filtering, and several bikes sit near the edges: the Norco Search, for example, is labelled adventure but is long and low, with a slack head angle.
