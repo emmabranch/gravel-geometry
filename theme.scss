@@ -20,6 +20,21 @@ main.content:not(:has(.hero-full)) #title-block-header { margin-top: 1.5rem; }
 /* Home page: the hero carries the title, so the standard title block is hidden */
 body:has(.hero-full) #title-block-header { display: none; }
 
+/* Hero background: the bikes drawing fills the hero and sits to the right */
+.hero-full .hero-bg { z-index: 1; }
+.hero-full .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: right center; }
+/* Fade the bikes out towards the left so the headline and buttons sit on clear background */
+.hero-full .hero-bg img {
+  -webkit-mask-image: linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.45) 64%, #000 80%);
+  mask-image: linear-gradient(90deg, transparent 50%, rgba(0, 0, 0, 0.45) 64%, #000 80%);
+}
+@media (max-width: 767.98px) {
+  .hero-full .hero-bg img {
+    -webkit-mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.35) 100%);
+    mask-image: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.35) 100%);
+  }
+}
+
 /* Hero note is a short line of small print */
 .hero-full .hero-note { display: block; line-height: 1.5; }
 

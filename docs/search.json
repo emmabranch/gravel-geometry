@@ -81,7 +81,7 @@
     "href": "index.html",
     "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
     "section": "",
-    "text": "Portfolio project · Quarto · Observable JS · D3\n\n\nPublished geometry for current gravel bikes, every size, typed in from the manufacturers’ own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.\nExplore the bikes Code on GitHub"
+    "text": "Portfolio project · Quarto · Observable JS · D3\n\n\nPublished geometry for current gravel bikes, every size, typed in from the manufacturers’ own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.\nExplore the bikes Compare two bikes Code on GitHub\nBackground: all 24 bikes in their middle size, drawn to scale over each other at the bottom bracket, lit up one at a time."
   },
   {
     "objectID": "index.html#what-this-is",

@@ -12,6 +12,7 @@ project:
     - data/gravel_geometry_derived.csv
     - data/data_dictionary.csv
     - js/geometry.js
+    - figures/hero-bikes.svg
 
 website:
   title: "Gravel geometry explorer"

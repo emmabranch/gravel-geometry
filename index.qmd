@@ -6,6 +6,10 @@ description: "Compare the published geometry of current gravel bikes, put a ride
 
 ::::: {.hero-full .column-screen}
 
+```{=html}
+<div class="hero-bg" aria-hidden="true"><img src="figures/hero-bikes.svg" alt=""></div>
+```
+
 :::: {.hero-inner}
 
 [Portfolio project · Quarto · Observable JS · D3]{.eyebrow}
@@ -14,7 +18,9 @@ description: "Compare the published geometry of current gravel bikes, put a ride
 
 Published geometry for current gravel bikes, every size, typed in from the manufacturers' own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.
 
-[Explore the bikes](explore.qmd){.btn .btn-accent} [Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
+[Explore the bikes](explore.qmd){.btn .btn-accent} [Compare two bikes](compare.qmd){.btn .btn-ghost} [Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
+
+[Background: all 24 bikes in their middle size, drawn to scale over each other at the bottom bracket, lit up one at a time.]{.hero-note}
 
 ::::
 
