@@ -1,0 +1,34 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+  resources:
+    - .nojekyll
+
+website:
+  title: "Gravel geometry explorer"
+  site-url: https://emmabranch.github.io/gravel-geometry/
+  repo-url: https://github.com/emmabranch/gravel-geometry
+  description: "An interactive explorer of published gravel bike geometry: compare bikes, put a rider on them, and design your own."
+  navbar:
+    left:
+      - href: index.qmd
+        text: Overview
+    right:
+      - icon: github
+        href: https://github.com/emmabranch/gravel-geometry
+        aria-label: Code on GitHub
+  page-footer:
+    center: "Independent project. Geometry figures are typed in from manufacturers' published charts and may change without notice. Not affiliated with or endorsed by any company named here."
+
+format:
+  html:
+    theme: [flatly, brand, brand.scss, theme.scss]
+    include-after-body: footer.html
+    toc: false
+
+execute:
+  echo: false
+  warning: false
+  message: false

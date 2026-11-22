@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
+    "section": "",
+    "text": "Portfolio project · Quarto · Observable JS · D3\n\n\nPublished geometry for current gravel bikes, drawn to scale, with an estimated rider on top. Under construction, one stage at a time.\nCode on GitHub"
+  },
+  {
+    "objectID": "index.html#a-first-test-trail",
+    "href": "index.html#a-first-test-trail",
+    "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
+    "section": "A first test: trail",
+    "text": "A first test: trail\nTrail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.\n\n\nviewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: \"Head tube angle (°)\"})\nviewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: \"Fork offset (mm)\"})\nviewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: \"Tyre width (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrail = {\n  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width\n  const a = hta * Math.PI / 180;\n  return (radius * Math.cos(a) - offset) / Math.sin(a);\n}\nmd`**Trail: ${trail.toFixed(1)} mm**`"
+  }
+]

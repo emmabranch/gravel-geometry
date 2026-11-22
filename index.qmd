@@ -1,0 +1,48 @@
+---
+pagetitle: "Gravel geometry explorer"
+author: "Emma Branch"
+description: "Compare the published geometry of current gravel bikes, put a rider on them, and design your own."
+---
+
+::::: {.hero-full .column-screen}
+
+:::: {.hero-inner}
+
+[Portfolio project · Quarto · Observable JS · D3]{.eyebrow}
+
+# Gravel bike geometry. [Compared, explained, and test-ridden on paper.]{.accent}
+
+Published geometry for current gravel bikes, drawn to scale, with an estimated rider on top. Under construction, one stage at a time.
+
+[Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
+
+::::
+
+```{=html}
+<svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z"></path></svg>
+```
+
+:::::
+
+## A first test: trail
+
+Trail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.
+
+::: {.calc-card}
+
+```{ojs}
+viewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: "Head tube angle (°)"})
+viewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: "Fork offset (mm)"})
+viewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: "Tyre width (mm)"})
+```
+
+```{ojs}
+trail = {
+  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width
+  const a = hta * Math.PI / 180;
+  return (radius * Math.cos(a) - offset) / Math.sin(a);
+}
+md`**Trail: ${trail.toFixed(1)} mm**`
+```
+
+:::

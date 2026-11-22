@@ -1,0 +1,29 @@
+/* Gravel geometry explorer: project colours (Gravel dust) */
+/*-- scss:defaults --*/
+
+/*-- scss:rules --*/
+:root {
+  --eb-accent: #7a5c43;
+  --eb-accent-2: #c19a6b;
+  --eb-accent-light: #e2c9a6;
+  --eb-hero-glow: rgba(193, 154, 107, 0.22);
+}
+
+/* Pages without a hero: a little more space under the navbar */
+main.content:not(:has(.hero-full)) #title-block-header { margin-top: 1.5rem; }
+
+/* Home page: the hero carries the title, so the standard title block is hidden */
+body:has(.hero-full) #title-block-header { display: none; }
+
+/* Hero note is a short line of small print */
+.hero-full .hero-note { display: block; line-height: 1.5; }
+
+/* Test widget card */
+.calc-card {
+  background: #ffffff;
+  border-left: 4px solid var(--eb-accent);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08), 0 8px 20px rgba(16, 42, 67, 0.06);
+  padding: 1rem 1.2rem;
+  margin: 1.5rem 0 2rem;
+}
