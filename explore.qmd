@@ -201,6 +201,35 @@ Plot.plot({
 
 :::
 
+## In plain words
+
+Pick a bike and a size for a short summary of what its numbers add up to. It starts on whichever bike you've highlighted above.
+
+```{ojs}
+//| output: false
+import {explainCard} from "./js/explain.js"
+explainPopulation = bikes.filter(d => d.is_default_config)
+```
+
+::: {.explain-controls}
+```{ojs}
+viewof explainBikeName = Inputs.select(bikeList, {label: "Bike", value: highlight !== "(none)" ? highlight : "Norco Search C Gen 3"})
+```
+
+```{ojs}
+viewof explainSize = {
+  const sizes = explainPopulation.filter(d => d.label === explainBikeName).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
+  return Inputs.select(sizes, {label: "Size", value: sizes[Math.floor(sizes.length / 2)]});
+}
+```
+:::
+
+```{ojs}
+explainCard(explainPopulation.find(d => d.label === explainBikeName && d.size_label === explainSize), explainPopulation)
+```
+
+[A summary of the published numbers, not a review: how a bike rides also depends on tyres, pressures, the load, and the rider. See [How geometry changes handling](handling.qmd) for what each number does.]{.data-note}
+
 ## The numbers behind the dots
 
 ```{ojs}

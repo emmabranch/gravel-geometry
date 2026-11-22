@@ -31,6 +31,7 @@ project:
     - js/draw.js
     - js/share.js
     - js/export.js
+    - js/explain.js
     - figures/hero-bikes.svg
 
 website:

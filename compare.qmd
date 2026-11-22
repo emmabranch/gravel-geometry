@@ -367,4 +367,25 @@ summary = {
 }
 ```
 
+### Each bike in plain words
+
+```{ojs}
+//| output: false
+import {explainCard} from "./js/explain.js"
+```
+
+::: {.explain-grid}
+```{ojs}
+{
+  const wrap = document.createElement("div");
+  wrap.className = "explain-cards";
+  for (const p of picks) {
+    const card = explainCard(p.row, population, {heading: `<span class="slot-dot" style="background:${slotColours[p.slot]}">${p.slot}</span> ${p.row.label}, size ${p.row.size_label}${p.row.config === "standard" ? "" : ` (${p.row.config})`}`});
+    wrap.append(card);
+  }
+  return wrap;
+}
+```
+:::
+
 These sentences only flag differences big enough to notice on the road: at least 10 mm of stack, 8 mm of reach, 5 mm of trail, or 0.75° of head angle. The thresholds are rules of thumb, not standards.

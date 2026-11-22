@@ -327,6 +327,16 @@ body:has(.hero-full) #title-block-header { display: none; }
 .readout small { display: block; font-size: 0.82rem; color: #5b7083; margin-top: 0.2rem; }
 .handling-card ul { margin-top: 0.6rem; }
 
+/* Explain this bike */
+.explain-controls { display: flex; flex-wrap: wrap; gap: 0.2rem 1.5rem; }
+.explain-card { background: #ffffff; border-radius: 14px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); border-top: 4px solid #c19a6b; padding: 0.9rem 1.2rem 0.5rem; margin: 0.6rem 0 0.8rem; }
+.explain-head { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.1rem; color: #0b2233; display: flex; align-items: center; gap: 0.5rem; }
+.explain-lede { font-size: 1.05rem; margin: 0.4rem 0 0.5rem; color: #1f2a33; }
+.explain-card ul { margin-bottom: 0.4rem; padding-left: 1.1rem; }
+.explain-card li { margin-bottom: 0.3rem; }
+.explain-basis { font-size: 0.82rem; color: #5b7083; margin-bottom: 0.3rem; }
+.explain-cards { display: grid; gap: 0.9rem; }
+
 /* Export buttons */
 .export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.5rem 0 1rem; }
 .print-source { display: none; }
