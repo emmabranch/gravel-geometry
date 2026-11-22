@@ -40,25 +40,30 @@ starts = ({
 })
 ```
 
+```{ojs}
+//| output: false
+import {fromUrl, shareButton} from "./js/share.js"
+```
+
 ::: {.slot-grid}
 
 ::: {.slot-card .slot-a}
 [[A]{.slot-badge} [Bike A]{.slot-title}]{.slot-head}
 
 ```{ojs}
-viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: starts.A.bike})
+viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: fromUrl("a", starts.A.bike, {options: bikeList})})
 ```
 
 ```{ojs}
 viewof configA = Inputs.select(configsFor(bikeA), {
-  label: "Setting", value: defaultConfigFor(bikeA), disabled: configsFor(bikeA).length < 2
+  label: "Setting", value: fromUrl("ac", defaultConfigFor(bikeA), {options: configsFor(bikeA)}), disabled: configsFor(bikeA).length < 2
 })
 ```
 
 ```{ojs}
 viewof sizeA = {
   const sizes = sizesFor(bikeA, configA);
-  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.A.size) ? starts.A.size : middleSize(sizes)});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("as", sizes.includes(starts.A.size) ? starts.A.size : middleSize(sizes), {options: sizes})});
 }
 ```
 :::
@@ -67,19 +72,19 @@ viewof sizeA = {
 [[B]{.slot-badge} [Bike B]{.slot-title}]{.slot-head}
 
 ```{ojs}
-viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: starts.B.bike})
+viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: fromUrl("b", starts.B.bike, {options: bikeList})})
 ```
 
 ```{ojs}
 viewof configB = Inputs.select(configsFor(bikeB), {
-  label: "Setting", value: defaultConfigFor(bikeB), disabled: configsFor(bikeB).length < 2
+  label: "Setting", value: fromUrl("bc", defaultConfigFor(bikeB), {options: configsFor(bikeB)}), disabled: configsFor(bikeB).length < 2
 })
 ```
 
 ```{ojs}
 viewof sizeB = {
   const sizes = sizesFor(bikeB, configB);
-  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.B.size) ? starts.B.size : middleSize(sizes)});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("bs", sizes.includes(starts.B.size) ? starts.B.size : middleSize(sizes), {options: sizes})});
 }
 ```
 :::
@@ -88,25 +93,33 @@ viewof sizeB = {
 [[C]{.slot-badge} [Bike C]{.slot-title} [optional]{.slot-optional}]{.slot-head}
 
 ```{ojs}
-viewof bikeC = Inputs.select(["(none)", ...bikeList], {label: "Bike", value: starts.C.bike})
+viewof bikeC = Inputs.select(["(none)", ...bikeList], {label: "Bike", value: fromUrl("c", starts.C.bike, {options: ["(none)", ...bikeList]})})
 ```
 
 ```{ojs}
 viewof configC = bikeC === "(none)"
   ? Inputs.select(["–"], {label: "Setting", disabled: true})
-  : Inputs.select(configsFor(bikeC), {label: "Setting", value: defaultConfigFor(bikeC), disabled: configsFor(bikeC).length < 2})
+  : Inputs.select(configsFor(bikeC), {label: "Setting", value: fromUrl("cc", defaultConfigFor(bikeC), {options: configsFor(bikeC)}), disabled: configsFor(bikeC).length < 2})
 ```
 
 ```{ojs}
 viewof sizeC = {
   if (bikeC === "(none)") return Inputs.select(["–"], {label: "Size", disabled: true});
   const sizes = sizesFor(bikeC, configC);
-  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.C.size) ? starts.C.size : middleSize(sizes)});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("cs", sizes.includes(starts.C.size) ? starts.C.size : middleSize(sizes), {options: sizes})});
 }
 ```
 :::
 
 :::
+
+```{ojs}
+shareButton({
+  a: bikeA, ac: configA, as: sizeA, b: bikeB, bc: configB, bs: sizeB,
+  c: bikeC, cc: bikeC === "(none)" ? null : configC, cs: bikeC === "(none)" ? null : sizeC,
+  align: alignAt, guides: showDims, toe: showToe
+}, "Copy a link to this comparison")
+```
 
 ```{ojs}
 //| output: false
@@ -154,15 +167,15 @@ import {bikePoints, frameSegments} from "./js/geometry.js"
 
 ::: {.draw-controls}
 ```{ojs}
-viewof alignAt = Inputs.radio(["bottom bracket", "rear axle", "front axle"], {label: "Line the bikes up at", value: "bottom bracket"})
+viewof alignAt = Inputs.radio(["bottom bracket", "rear axle", "front axle"], {label: "Line the bikes up at", value: fromUrl("align", "bottom bracket", {options: ["bottom bracket", "rear axle", "front axle"]})})
 ```
 
 ```{ojs}
-viewof showDims = Inputs.toggle({label: "Show stack and reach guides", value: true})
+viewof showDims = Inputs.toggle({label: "Show stack and reach guides", value: fromUrl("guides", true, {bool: true})})
 ```
 
 ```{ojs}
-viewof showToe = Inputs.toggle({label: "Show toe overlap zone", value: false})
+viewof showToe = Inputs.toggle({label: "Show toe overlap zone", value: fromUrl("toe", false, {bool: true})})
 ```
 :::
 

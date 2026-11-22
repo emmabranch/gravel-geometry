@@ -28,6 +28,7 @@ project:
     - js/geometry.js
     - js/rider.js
     - js/draw.js
+    - js/share.js
     - figures/hero-bikes.svg
 
 website:

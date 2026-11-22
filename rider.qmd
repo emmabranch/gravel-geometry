@@ -11,6 +11,7 @@ description: "An estimated rider, drawn to scale on every size of a gravel bike,
 //| output: false
 import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS, INSEAM_RATIO} from "./js/rider.js"
 import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
+import {fromUrl, shareButton} from "./js/share.js"
 
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
 bikes = raw.map(d => ({
@@ -57,7 +58,7 @@ viewof preset = {
 
 ```{ojs}
 viewof heightCm = {
-  const input = Inputs.range([140, 205], {label: "Height (cm)", step: 1, value: 176});
+  const input = Inputs.range([140, 205], {label: "Height (cm)", step: 1, value: fromUrl("h", 176, {min: 140, max: 205})});
   // a preset button sets the slider
   if (preset) { input.value = preset.height; }
   return input;
@@ -65,12 +66,12 @@ viewof heightCm = {
 ```
 
 ```{ojs}
-viewof useInseam = Inputs.toggle({label: "I know my inseam", value: false})
+viewof useInseam = Inputs.toggle({label: "I know my inseam", value: fromUrl("useins", false, {bool: true})})
 ```
 
 ```{ojs}
 viewof inseamCm = useInseam
-  ? Inputs.range([60, 100], {label: "Inseam (cm)", step: 0.5, value: Math.round(INSEAM_RATIO * heightCm * 2) / 2})
+  ? Inputs.range([60, 100], {label: "Inseam (cm)", step: 0.5, value: fromUrl("in", Math.round(INSEAM_RATIO * heightCm * 2) / 2, {min: 60, max: 100})})
   : Inputs.range([60, 100], {label: "Inseam (cm), estimated", step: 0.5, value: Math.round(INSEAM_RATIO * heightCm * 2) / 2, disabled: true})
 ```
 
@@ -81,25 +82,33 @@ viewof inseamCm = useInseam
 [Cockpit and setup]{.card-heading}
 
 ```{ojs}
-viewof stemMm = Inputs.range([50, 130], {label: "Stem length (mm)", step: 10, value: defaultStem(heightCm * 10)})
+viewof stemMm = Inputs.range([50, 130], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", defaultStem(heightCm * 10), {min: 50, max: 130})})
 ```
 
 ```{ojs}
-viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: DEFAULTS.stemAngle})
+viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", DEFAULTS.stemAngle, {min: -17, max: 17})})
 ```
 
 ```{ojs}
-viewof spacersMm = Inputs.range([0, 50], {label: "Spacers under the stem (mm)", step: 5, value: DEFAULTS.spacers})
+viewof spacersMm = Inputs.range([0, 50], {label: "Spacers under the stem (mm)", step: 5, value: fromUrl("sp", DEFAULTS.spacers, {min: 0, max: 50})})
 ```
 
 ```{ojs}
-viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: defaultCrank(heightCm * 10)})
+viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", defaultCrank(heightCm * 10), {options: [160, 165, 170, 172.5, 175]})})
 ```
 
 [Starting values change with height: a 90 mm stem and 172.5 mm cranks suit a 176 cm rider, for example. Change them to match your own bike.]{.data-note}
 :::
 
 :::
+
+```{ojs}
+shareButton({
+  h: heightCm, useins: useInseam, in: useInseam ? inseamCm : null,
+  stem: stemMm, sa: stemAngle, sp: spacersMm, crank: crankMm,
+  grid: gridBike, a: bikeA, as: sizeA, b: bikeB, bs: sizeB
+}, "Copy a link to this rider and these bikes")
+```
 
 ```{ojs}
 //| output: false
@@ -110,7 +119,7 @@ setup = ({stemLength: stemMm, stemAngle, spacers: spacersMm, crank: crankMm})
 ## 2. Every size of one bike
 
 ```{ojs}
-viewof gridBike = Inputs.select(bikeList, {label: "Bike", value: "Norco Search C Gen 3"})
+viewof gridBike = Inputs.select(bikeList, {label: "Bike", value: fromUrl("grid", "Norco Search C Gen 3", {options: bikeList})})
 ```
 
 ```{ojs}
@@ -155,7 +164,7 @@ Compare the same rider on two bikes, or on two sizes of the same bike.
 [[A]{.slot-badge} [Bike A]{.slot-title}]{.slot-head}
 
 ```{ojs}
-viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: "Specialized Crux 5"})
+viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: fromUrl("a", "Specialized Crux 5", {options: bikeList})})
 ```
 
 ```{ojs}
@@ -163,7 +172,7 @@ viewof sizeA = {
   const sizes = bikes.filter(d => d.label === bikeA && d.is_default_config).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
   // start on the size the flags like best for this rider
   const best = sizes.find(s => fitFlags(riderOnBike(bikes.find(d => d.label === bikeA && d.size_label === s && d.is_default_config), riderIn, setup)).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
-  return Inputs.select(sizes, {label: "Size", value: best});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("as", best, {options: sizes})});
 }
 ```
 :::
@@ -172,14 +181,14 @@ viewof sizeA = {
 [[B]{.slot-badge} [Bike B]{.slot-title}]{.slot-head}
 
 ```{ojs}
-viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: "Norco Search C Gen 3"})
+viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: fromUrl("b", "Norco Search C Gen 3", {options: bikeList})})
 ```
 
 ```{ojs}
 viewof sizeB = {
   const sizes = bikes.filter(d => d.label === bikeB && d.is_default_config).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
   const best = sizes.find(s => fitFlags(riderOnBike(bikes.find(d => d.label === bikeB && d.size_label === s && d.is_default_config), riderIn, setup)).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
-  return Inputs.select(sizes, {label: "Size", value: best});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("bs", best, {options: sizes})});
 }
 ```
 :::

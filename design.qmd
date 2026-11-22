@@ -10,6 +10,7 @@ Start from any bike, then change the numbers. The drawing, the handling numbers,
 import {designRow, designChecks, bikePoints} from "./js/geometry.js"
 import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS} from "./js/rider.js"
 import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
+import {fromUrl, shareButton} from "./js/share.js"
 
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
 bikes = raw.map(d => ({
@@ -42,13 +43,13 @@ forkLengthOf = r => {
 [Start from]{.card-heading}
 
 ```{ojs}
-viewof baseBike = Inputs.select(bikeList, {label: "Bike", value: "Norco Search C Gen 3"})
+viewof baseBike = Inputs.select(bikeList, {label: "Bike", value: fromUrl("base", "Norco Search C Gen 3", {options: bikeList})})
 ```
 
 ```{ojs}
 viewof baseSize = {
   const sizes = sizesOf(baseBike);
-  return Inputs.select(sizes, {label: "Size", value: sizes[Math.floor(sizes.length / 2)]});
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("bsize", sizes[Math.floor(sizes.length / 2)], {options: sizes})});
 }
 ```
 
@@ -64,31 +65,31 @@ base = rowOf(baseBike, baseSize)
 [Frame]{.card-heading}
 
 ```{ojs}
-viewof stack = Inputs.range([470, 690], {label: "Stack (mm)", step: 1, value: base.stack})
+viewof stack = Inputs.range([470, 690], {label: "Stack (mm)", step: 1, value: fromUrl("stack", base.stack, {min: 470, max: 690})})
 ```
 
 ```{ojs}
-viewof reach = Inputs.range([330, 480], {label: "Reach (mm)", step: 1, value: base.reach})
+viewof reach = Inputs.range([330, 480], {label: "Reach (mm)", step: 1, value: fromUrl("reach", base.reach, {min: 330, max: 480})})
 ```
 
 ```{ojs}
-viewof hta = Inputs.range([64, 76], {label: "Head tube angle (°)", step: 0.1, value: base.head_tube_angle})
+viewof hta = Inputs.range([64, 76], {label: "Head tube angle (°)", step: 0.1, value: fromUrl("hta", base.head_tube_angle, {min: 64, max: 76})})
 ```
 
 ```{ojs}
-viewof sta = Inputs.range([70, 78], {label: "Seat tube angle (°)", step: 0.1, value: base.seat_tube_angle})
+viewof sta = Inputs.range([70, 78], {label: "Seat tube angle (°)", step: 0.1, value: fromUrl("sta", base.seat_tube_angle, {min: 70, max: 78})})
 ```
 
 ```{ojs}
-viewof bbDrop = Inputs.range([50, 100], {label: "BB drop (mm)", step: 1, value: base.bb_drop})
+viewof bbDrop = Inputs.range([50, 100], {label: "BB drop (mm)", step: 1, value: fromUrl("drop", base.bb_drop, {min: 50, max: 100})})
 ```
 
 ```{ojs}
-viewof chainstay = Inputs.range([395, 480], {label: "Chainstay (mm)", step: 1, value: base.chainstay})
+viewof chainstay = Inputs.range([395, 480], {label: "Chainstay (mm)", step: 1, value: fromUrl("cs", base.chainstay, {min: 395, max: 480})})
 ```
 
 ```{ojs}
-viewof seatTube = Inputs.range([350, 620], {label: "Seat tube (mm)", step: 5, value: base.seat_tube_length ?? Math.round(0.86 * base.stack / 5) * 5})
+viewof seatTube = Inputs.range([350, 620], {label: "Seat tube (mm)", step: 5, value: fromUrl("st", base.seat_tube_length ?? Math.round(0.86 * base.stack / 5) * 5, {min: 350, max: 620})})
 ```
 :::
 
@@ -96,19 +97,19 @@ viewof seatTube = Inputs.range([350, 620], {label: "Seat tube (mm)", step: 5, va
 [Fork and wheels]{.card-heading}
 
 ```{ojs}
-viewof offset = Inputs.range([30, 75], {label: "Fork offset (mm)", step: 1, value: base.fork_offset_used})
+viewof offset = Inputs.range([30, 75], {label: "Fork offset (mm)", step: 1, value: fromUrl("off", base.fork_offset_used, {min: 30, max: 75})})
 ```
 
 ```{ojs}
-viewof forkAC = Inputs.range([360, 520], {label: "Fork axle-to-crown (mm)", step: 1, value: forkLengthOf(base)})
+viewof forkAC = Inputs.range([360, 520], {label: "Fork axle-to-crown (mm)", step: 1, value: fromUrl("fork", forkLengthOf(base), {min: 360, max: 520})})
 ```
 
 ```{ojs}
-viewof wheelSize = Inputs.radio(["700c", "650b", "29er"], {label: "Wheel size", value: base.wheel_size === "29er" ? "29er" : "700c"})
+viewof wheelSize = Inputs.radio(["700c", "650b", "29er"], {label: "Wheel size", value: fromUrl("wheel", base.wheel_size === "29er" ? "29er" : "700c", {options: ["700c", "650b", "29er"]})})
 ```
 
 ```{ojs}
-viewof tyre = Inputs.range([30, 70], {label: "Tyre width (mm)", step: 1, value: base.wheel_size === "29er" ? 57 : 45})
+viewof tyre = Inputs.range([30, 70], {label: "Tyre width (mm)", step: 1, value: fromUrl("tyre", base.wheel_size === "29er" ? 57 : 45, {min: 30, max: 70})})
 ```
 :::
 
@@ -116,23 +117,23 @@ viewof tyre = Inputs.range([30, 70], {label: "Tyre width (mm)", step: 1, value: 
 [Rider and cockpit]{.card-heading}
 
 ```{ojs}
-viewof heightCm = Inputs.range([140, 205], {label: "Rider height (cm)", step: 1, value: 176})
+viewof heightCm = Inputs.range([140, 205], {label: "Rider height (cm)", step: 1, value: fromUrl("h", 176, {min: 140, max: 205})})
 ```
 
 ```{ojs}
-viewof stemMm = Inputs.range([40, 130], {label: "Stem length (mm)", step: 10, value: defaultStem(heightCm * 10)})
+viewof stemMm = Inputs.range([40, 130], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", defaultStem(heightCm * 10), {min: 40, max: 130})})
 ```
 
 ```{ojs}
-viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: DEFAULTS.stemAngle})
+viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", DEFAULTS.stemAngle, {min: -17, max: 17})})
 ```
 
 ```{ojs}
-viewof spacersMm = Inputs.range([0, 50], {label: "Spacers (mm)", step: 5, value: DEFAULTS.spacers})
+viewof spacersMm = Inputs.range([0, 50], {label: "Spacers (mm)", step: 5, value: fromUrl("sp", DEFAULTS.spacers, {min: 0, max: 50})})
 ```
 
 ```{ojs}
-viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: defaultCrank(heightCm * 10)})
+viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", defaultCrank(heightCm * 10), {options: [160, 165, 170, 172.5, 175]})})
 ```
 :::
 
@@ -194,12 +195,22 @@ statusStrip = {
 }
 ```
 
+```{ojs}
+shareButton({
+  base: baseBike, bsize: baseSize, stack, reach, hta, sta, drop: bbDrop, cs: chainstay, st: seatTube,
+  off: offset, fork: forkAC, wheel: wheelSize, tyre, h: heightCm, stem: stemMm, sa: stemAngle, sp: spacersMm, crank: crankMm,
+  vs: compareWith ? `${compareWith.label}|${compareWith.size_label}` : "none"
+}, "Copy a link to this design")
+```
+
 ::: {.overlay-pick}
 ```{ojs}
 viewof compareWith = {
   // Options don't depend on the design, so moving a slider never resets this.
   const options = [["(none)", null], ...production.map(d => [`${d.label}, size ${d.size_label}`, d])];
-  return Inputs.select(new Map(options), {label: "Overlay a production bike", value: base});
+  const pick = fromUrl("vs", null);
+  const start = pick === "none" ? null : (pick && production.find(d => `${d.label}|${d.size_label}` === pick)) || base;
+  return Inputs.select(new Map(options), {label: "Overlay a production bike", value: start});
 }
 ```
 :::

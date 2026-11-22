@@ -306,3 +306,10 @@ body:has(.hero-full) #title-block-header { display: none; }
 .gen-legend { display: flex; flex-wrap: wrap; gap: 0.4rem 1.1rem; font-size: 0.85rem; color: #1f2a33; margin: 0.2rem 0 0.4rem; }
 .gen-key { display: inline-flex; align-items: center; gap: 0.4rem; }
 .gen-key i { width: 14px; height: 4px; border-radius: 2px; display: inline-block; }
+
+/* Shareable links */
+.share-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.6rem 0 0.4rem; }
+.share-button { font: inherit; font-size: 0.9rem; color: #1f2a33; background: #ffffff; border: 1px solid #c19a6b; border-radius: 999px; padding: 0.35rem 0.95rem; cursor: pointer; }
+.share-button:hover, .share-button:focus-visible { background: #e2c9a6; }
+.share-msg { font-size: 0.85rem; color: #5b7083; }
+.share-box { font-size: 0.8rem; width: min(100%, 34rem); padding: 0.2rem 0.4rem; border: 1px solid #c9d6e0; border-radius: 6px; }
