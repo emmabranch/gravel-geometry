@@ -50,7 +50,7 @@ A bike's geometry is the set of lengths and angles that decide how it fits and h
 - **The numbers are checked against each other.** Trail, top tube, and wheelbase can each be recalculated from the other measurements, which catches typing slips.
 - **No rankings.** Different geometry suits different riders and rides. The point is to see the differences, not to pick a winner.
 
-## A quick taste: trail
+## Try it: how trail changes
 
 Trail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.
 

@@ -91,11 +91,11 @@
     "text": "What this is\nA bike’s geometry is the set of lengths and angles that decide how it fits and how it handles. Manufacturers publish them in charts that are hard to compare by eye. This site puts them side by side.\n\nEvery number comes from the manufacturer’s own chart, with the page and the date it was read. Charts change, so check the source before buying anything.\nThe numbers are checked against each other. Trail, top tube, and wheelbase can each be recalculated from the other measurements, which catches typing slips.\nNo rankings. Different geometry suits different riders and rides. The point is to see the differences, not to pick a winner."
   },
   {
-    "objectID": "index.html#a-quick-taste-trail",
-    "href": "index.html#a-quick-taste-trail",
+    "objectID": "index.html#try-it-how-trail-changes",
+    "href": "index.html#try-it-how-trail-changes",
     "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
-    "section": "A quick taste: trail",
-    "text": "A quick taste: trail\nTrail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.\n\n\nviewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: \"Head tube angle (°)\"})\nviewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: \"Fork offset (mm)\"})\nviewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: \"Tyre width (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrail = {\n  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width\n  const a = hta * Math.PI / 180;\n  return (radius * Math.cos(a) - offset) / Math.sin(a);\n}\nmd`**Trail: ${trail.toFixed(1)} mm**`"
+    "section": "Try it: how trail changes",
+    "text": "Try it: how trail changes\nTrail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.\n\n\nviewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: \"Head tube angle (°)\"})\nviewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: \"Fork offset (mm)\"})\nviewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: \"Tyre width (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrail = {\n  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width\n  const a = hta * Math.PI / 180;\n  return (radius * Math.cos(a) - offset) / Math.sin(a);\n}\nmd`**Trail: ${trail.toFixed(1)} mm**`"
   },
   {
     "objectID": "compare.html",
