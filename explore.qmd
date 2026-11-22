@@ -46,7 +46,21 @@ viewof cats = Inputs.checkbox(categories, {
 
 ::: {.brand-list}
 ```{ojs}
-viewof brands = Inputs.checkbox(brandList, {label: "Brand", value: brandList})
+viewof brands = {
+  const list = Inputs.checkbox(brandList, {label: "Brand", value: brandList});
+  // Set the list's value and tell Observable it changed
+  const setTo = v => {
+    list.value = v;
+    list.dispatchEvent(new Event("input", {bubbles: true}));
+  };
+  const all = html`<button type="button">Select all</button>`;
+  const none = html`<button type="button">Deselect all</button>`;
+  all.onclick = () => setTo(brandList);
+  none.onclick = () => setTo([]);
+  const wrapper = html`<div>${list}<div class="filter-buttons">${all}${none}</div></div>`;
+  Object.defineProperty(wrapper, "value", {get: () => list.value, set: v => { list.value = v; }});
+  return wrapper;
+}
 ```
 :::
 

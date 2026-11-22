@@ -65,8 +65,10 @@ body:has(.hero-full) #title-block-header { display: none; }
 /* Brand list scrolls inside its own box */
 .brand-list form > div { max-height: 11rem; overflow-y: auto; border: 1px solid #e3e0d8; border-radius: 6px; padding: 0.35rem 0.5rem; }
 .brand-list form > div label { display: block; font-size: 0.88rem; }
-.filter-buttons { display: flex; gap: 0.5rem; margin: -0.4rem 0 0.9rem; }
-.filter-buttons button { font-size: 0.8rem; padding: 0.15rem 0.6rem; border: 1px solid #c9d6e0; background: #f6f4ef; border-radius: 6px; color: #1f2a33; }
+.filter-buttons { display: flex; gap: 0.5rem; margin: 0.4rem 0 0.9rem; }
+.brand-list form { margin-bottom: 0 !important; }
+.filter-buttons button:hover, .filter-buttons button:focus { background: #e2c9a6; color: #0b2233; border-color: #7a5c43; }
+.filter-buttons button { font-size: 0.8rem; padding: 0.15rem 0.6rem; border: 1px solid #c9d6e0; background: #f6f4ef; border-radius: 6px; color: #1f2a33 !important; }
 
 .chart-panel {
   background: #ffffff;
