@@ -78,3 +78,5 @@ md`**Trail: ${trail.toFixed(1)} mm**`
 ```
 
 :::
+
+For diagrams of trail, wheelbase, and bottom bracket drop, and what each does to how a bike rides, see [How geometry changes handling](handling.qmd).

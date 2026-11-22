@@ -7,6 +7,7 @@ project:
     - compare.qmd
     - rider.qmd
     - design.qmd
+    - handling.qmd
     - epi.qmd
     - methods.qmd
   resources:
@@ -49,6 +50,8 @@ website:
         text: Rider
       - href: design.qmd
         text: Design
+      - href: handling.qmd
+        text: Handling
       - href: epi.qmd
         text: Epi studies
       - href: methods.qmd

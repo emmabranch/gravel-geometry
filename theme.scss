@@ -314,6 +314,19 @@ body:has(.hero-full) #title-block-header { display: none; }
 .share-msg { font-size: 0.85rem; color: #5b7083; }
 .share-box { font-size: 0.8rem; width: min(100%, 34rem); padding: 0.2rem 0.4rem; border: 1px solid #c9d6e0; border-radius: 6px; }
 
+/* Handling page */
+.handling-card { background: #ffffff; border-radius: 14px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); padding: 1rem 1.2rem 0.4rem; margin: 0.6rem 0 1.6rem; }
+.handling-grid { display: grid; grid-template-columns: minmax(250px, 320px) minmax(0, 1fr); gap: 1.2rem; align-items: center; }
+@media (max-width: 760px) { .handling-grid { grid-template-columns: 1fr; } .handling-figure { order: -1; } }
+.handling-controls form { --input-width: 100%; }
+.handling-svg svg { display: block; width: 100%; height: auto; max-height: 340px; }
+.readout { border-left: 4px solid #c19a6b; padding: 0.35rem 0 0.35rem 0.8rem; margin-top: 0.4rem; }
+.readout span { display: block; font-size: 0.8rem; color: #5b7083; text-transform: uppercase; letter-spacing: 0.04em; }
+.readout strong { display: block; font-family: "Fraunces", serif; font-size: 1.7rem; color: #0b2233; line-height: 1.2; }
+.readout em { display: block; font-style: normal; font-weight: 600; color: #7a5c43; }
+.readout small { display: block; font-size: 0.82rem; color: #5b7083; margin-top: 0.2rem; }
+.handling-card ul { margin-top: 0.6rem; }
+
 /* Export buttons */
 .export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.5rem 0 1rem; }
 .print-source { display: none; }

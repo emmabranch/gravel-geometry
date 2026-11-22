@@ -1,0 +1,293 @@
+---
+title: "How geometry changes handling"
+description: "Three small diagrams that show what head angle, fork offset, trail, wheelbase, chainstays, and bottom bracket drop actually do to how a bike rides."
+---
+
+A geometry chart is a list of numbers, but a few of them decide most of how a bike feels. Move the sliders to see what each one does. The strip under each diagram shows every size of every bike on this site, so you can see where your numbers sit.
+
+```{ojs}
+//| output: false
+import {wheelRadius, trail} from "./js/geometry.js"
+
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+bikes = raw.map(d => ({
+  ...d,
+  is_default_config: d.is_default_config === true || d.is_default_config === "TRUE",
+  size_label: String(d.size_label),
+  label: `${d.brand} ${d.model}`
+})).filter(d => d.is_default_config)
+bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+rad = d => d * Math.PI / 180
+fmt = (v, dp = 0) => v.toFixed(dp)
+plotStyle = ({fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"})
+
+// Where a value sits among all sizes, as a percentile
+pctOf = (vals, v) => Math.round(100 * vals.filter(x => x < v).length / vals.length)
+
+// A strip of every size (grey ticks), the slider value (brown), and the chosen
+// bike's sizes (navy)
+strip = ({key, value, unit, label, picked}) => {
+  const vals = bikes.map(d => d[key]).filter(v => v != null);
+  const marks = [
+    Plot.tickX(bikes, {x: key, stroke: "#9fb0bf", strokeOpacity: 0.6}),
+    Plot.ruleX([value], {stroke: "#7a5c43", strokeWidth: 3}),
+    Plot.text([value], {x: d => d, frameAnchor: "top", dy: -8, text: () => `this setting`, fill: "#7a5c43", fontSize: 11, fontWeight: 600})
+  ];
+  if (picked.length) marks.push(Plot.dot(picked, {x: key, y: () => 0.5, r: 4.5, fill: "#0b2233", stroke: "#fff", strokeWidth: 1,
+    title: d => `${d.label}, size ${d.size_label}: ${fmt(d[key])}${unit}`, tip: true}));
+  return Plot.plot({
+    height: 78, marginTop: 22, marginBottom: 30, marginLeft: 12, marginRight: 12, style: plotStyle,
+    x: {label: `${label} (${unit.trim()}) →`, domain: [Math.min(...vals, value) - 3, Math.max(...vals, value) + 3]},
+    y: {axis: null, domain: [0, 1]},
+    marks
+  });
+}
+
+feel = (v, lo, hi, words) => v < lo ? words[0] : v > hi ? words[2] : words[1]
+```
+
+::: {.epi-control}
+```{ojs}
+viewof pickBike = Inputs.select(["(none)", ...bikeList], {label: "Mark a bike on the strips", value: "Norco Search C Gen 3"})
+```
+:::
+
+```{ojs}
+//| output: false
+picked = pickBike === "(none)" ? [] : bikes.filter(d => d.label === pickBike)
+```
+
+## 1. Steering: head angle, fork offset, and trail
+
+::: {.handling-card}
+
+::: {.handling-grid}
+
+::: {.handling-controls}
+```{ojs}
+viewof hta = Inputs.range([66, 75], {label: "Head angle (°)", step: 0.25, value: 71})
+```
+
+```{ojs}
+viewof off = Inputs.range([35, 70], {label: "Fork offset (mm)", step: 1, value: 50})
+```
+
+```{ojs}
+viewof tyreS = Inputs.range([32, 60], {label: "Tyre width (mm)", step: 1, value: 45})
+```
+
+```{ojs}
+steerReadout = {
+  const R = wheelRadius("700c", tyreS), t = trail(hta, off, R);
+  const vals = bikes.map(d => d.trail_calc);
+  return html`<div class="readout"><span>Trail</span><strong>${fmt(t)} mm</strong><em>${feel(t, 60, 75, ["quick, light steering", "middle of the range", "steady, self-centring steering"])}</em><small>More trail than ${pctOf(vals, t)}% of production sizes</small></div>`;
+}
+```
+:::
+
+::: {.handling-figure}
+```{ojs}
+steerDiagram = {
+  const R = wheelRadius("700c", tyreS), th = rad(hta), t = trail(hta, off, R);
+  const dir = [-Math.cos(th), Math.sin(th)];          // up the steering axis
+  const n = [Math.sin(th), Math.cos(th)];             // at right angles to it, forwards
+  const Q = [-off * n[0], R - off * n[1]];            // the point on the axis level with the axle
+  const along = s => [Q[0] + s * dir[0], Q[1] + s * dir[1]];
+  const sGround = -(R - off * n[1]) / dir[1];
+  const G = along(sGround);                            // axis meets the ground
+  const crown = along(390), htTop = along(540), axisTop = along(640);
+  const X = x => x, Y = y => -y;
+  const ln = (a, b, attrs) => `<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" ${attrs}/>`;
+  let s = "";
+  s += ln([-520, 0], [520, 0], `stroke="#9fb0bf" stroke-width="2"`);
+  s += `<circle cx="0" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/>`;
+  s += `<circle cx="0" cy="${Y(R)}" r="${311}" fill="none" stroke="#c19a6b" stroke-width="2" stroke-opacity="0.4"/>`;
+  s += ln(axisTop, G, `stroke="#5b7083" stroke-width="2" stroke-dasharray="10,8"`);
+  s += ln(crown, htTop, `stroke="#0b2233" stroke-width="16" stroke-linecap="round"`);
+  s += ln([0, R], crown, `stroke="#7a5c43" stroke-width="9" stroke-linecap="round"`);
+  // offset: from the axle at right angles to the axis
+  s += ln([0, R], Q, `stroke="#d2691e" stroke-width="4"`);
+  s += `<circle cx="0" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
+  // trail: along the ground from the contact patch to where the axis lands
+  s += ln([0, -28], [t, -28], `stroke="#2a6fb0" stroke-width="5"`);
+  s += ln([0, -14], [0, -42], `stroke="#2a6fb0" stroke-width="3"`) + ln([t, -14], [t, -42], `stroke="#2a6fb0" stroke-width="3"`);
+  s += `<circle cx="0" cy="0" r="7" fill="#2a6fb0"/><circle cx="${G[0]}" cy="0" r="7" fill="#5b7083"/>`;
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="40" font-family="Inter, sans-serif" ${attrs}>${str}</text>`;
+  s += txt(Math.min(t, 0) - 10, -88, `trail ${fmt(t)} mm`, `fill="#2a6fb0" font-weight="700" text-anchor="${t >= 0 ? "start" : "end"}"`);
+  s += txt(Q[0] - 20, Q[1] + 30, `offset ${off} mm`, `fill="#d2691e" font-weight="600" text-anchor="end"`);
+  s += txt(htTop[0] - 30, htTop[1] + 10, `head angle ${hta}°`, `fill="#0b2233" font-weight="600" text-anchor="end"`);
+  s += txt(G[0] + 18, 34, "steering axis", `fill="#5b7083" font-size="32"`);
+  const el = document.createElement("div");
+  el.className = "handling-svg";
+  const top = axisTop[1] + 30;
+  el.innerHTML = `<svg viewBox="-600 ${Y(top)} 1120 ${top + 130}" role="img" aria-label="Front wheel with a ${hta} degree head angle and ${off} mm fork offset, giving ${fmt(t)} mm of trail">${s}</svg>`;
+  return el;
+}
+```
+:::
+
+:::
+
+```{ojs}
+strip({key: "trail_calc", value: trail(hta, off, wheelRadius("700c", tyreS)), unit: " mm", label: "Trail on a 700 × 45 tyre", picked})
+```
+
+- **Trail** is how far the tyre's contact patch trails behind the point where the steering axis meets the ground. Like the caster on a shopping trolley, that gap is what makes the front wheel want to straighten itself.
+- **More trail** means steadier, slower steering that holds a line on loose gravel and at speed. **Less trail** means lighter, quicker steering that can feel twitchy when rough ground knocks the wheel.
+- **Head angle and fork offset pull in opposite directions.** A slacker head angle adds trail; more fork offset takes it away. That's why two bikes with the same head angle can steer quite differently.
+- **Wider tyres add trail too,** because the wheel gets taller. Going from 40 to 50 mm tyres adds about 3 mm on a typical bike.
+- Some bikepacking and randonneur bikes use low trail on purpose, because a heavy bag on the handlebars upsets them less.
+
+:::
+
+## 2. Length: front centre, chainstay, and wheelbase
+
+::: {.handling-card}
+
+::: {.handling-grid}
+
+::: {.handling-controls}
+```{ojs}
+viewof fc = Inputs.range([560, 720], {label: "Front centre (mm)", step: 1, value: 620})
+```
+
+```{ojs}
+viewof cs = Inputs.range([405, 460], {label: "Chainstay (mm)", step: 1, value: 425})
+```
+
+```{ojs}
+//| output: false
+lenDrop = 75
+csH = Math.sqrt(cs ** 2 - lenDrop ** 2)
+fcH = Math.sqrt(fc ** 2 - lenDrop ** 2)
+wb = csH + fcH
+rearShare = csH / wb
+```
+
+```{ojs}
+lenReadout = {
+  const vals = bikes.map(d => d.wheelbase);
+  return html`<div class="readout"><span>Wheelbase</span><strong>${fmt(wb)} mm</strong><em>${feel(wb, 1015, 1070, ["short and nimble", "middle of the range", "long and stable"])}</em><small>Longer than ${pctOf(vals, wb)}% of production sizes. The pedals sit ${Math.round(100 * rearShare)}% of the way from the rear axle to the front.</small></div>`;
+}
+```
+:::
+
+::: {.handling-figure}
+```{ojs}
+lenDiagram = {
+  const R = wheelRadius("700c", 45);
+  const rear = -csH, front = fcH, bbY = R - lenDrop;
+  const Y = y => -y;
+  let s = "";
+  s += `<line x1="${rear - R - 40}" y1="0" x2="${front + R + 40}" y2="0" stroke="#9fb0bf" stroke-width="2"/>`;
+  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
+  s += `<line x1="${rear}" y1="${Y(R)}" x2="0" y2="${Y(bbY)}" stroke="#7a5c43" stroke-width="10" stroke-linecap="round"/>`;
+  s += `<line x1="0" y1="${Y(bbY)}" x2="${front}" y2="${Y(R)}" stroke="#d2691e" stroke-width="4" stroke-dasharray="14,10"/>`;
+  s += `<circle cx="0" cy="${Y(bbY)}" r="20" fill="#fff" stroke="#0b2233" stroke-width="6"/>`;
+  // wheelbase bracket
+  const yb = -60;
+  s += `<line x1="${rear}" y1="${-yb}" x2="${front}" y2="${-yb}" stroke="#2a6fb0" stroke-width="5"/>`;
+  for (const x of [rear, front]) s += `<line x1="${x}" y1="${-yb - 16}" x2="${x}" y2="${-yb + 16}" stroke="#2a6fb0" stroke-width="3"/>`;
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="62" font-family="Inter, sans-serif" text-anchor="middle" ${attrs}>${str}</text>`;
+  s += txt((rear + front) / 2, yb - 78, `wheelbase ${fmt(wb)} mm`, `fill="#2a6fb0" font-weight="700"`);
+  s += txt(rear - 40, 2 * R + 50, `chainstay ${cs}`, `fill="#7a5c43" font-weight="600"`);
+  s += txt(front + 40, 2 * R + 50, `front centre ${fc}`, `fill="#d2691e" font-weight="600"`);
+  const x0 = -460 - R - 60, w = 460 + 720 + 2 * R + 120;
+  const el = document.createElement("div");
+  el.className = "handling-svg";
+  el.innerHTML = `<svg viewBox="${x0} ${Y(2 * R + 120)} ${w} ${2 * R + 120 + 200}" role="img" aria-label="Wheelbase ${fmt(wb)} mm, made of ${cs} mm chainstays and ${fc} mm front centre">${s}</svg>`;
+  return el;
+}
+```
+:::
+
+:::
+
+```{ojs}
+strip({key: "wheelbase", value: wb, unit: " mm", label: "Wheelbase", picked})
+```
+
+- **Wheelbase** is the distance between the axles. It's made of two parts: the chainstays behind the pedals and the front centre ahead of them.
+- **A longer wheelbase** is calmer at speed and on rough descents, and pitches less over bumps. **A shorter one** turns tighter and feels livelier, but can feel nervous when it gets fast and loose.
+- **Where the length goes matters.** Longer chainstays put more of your weight on the front wheel, which helps it grip in loose corners, and leave room for wider tyres. Shorter ones make it easier to lift the front wheel over a rut.
+- **Front centre grows with reach and a slacker head angle.** It's also what decides toe overlap: a short front centre puts the tyre closer to your foot.
+
+:::
+
+## 3. Height: bottom bracket drop
+
+::: {.handling-card}
+
+::: {.handling-grid}
+
+::: {.handling-controls}
+```{ojs}
+viewof drop = Inputs.range([50, 95], {label: "BB drop (mm)", step: 1, value: 75})
+```
+
+```{ojs}
+viewof tyreH = Inputs.range([32, 60], {label: "Tyre width (mm)", step: 1, value: 45})
+```
+
+```{ojs}
+viewof crank = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: 172.5})
+```
+
+```{ojs}
+//| output: false
+Rh = wheelRadius("700c", tyreH)
+bbHeight = Rh - drop
+pedalClear = bbHeight - crank
+```
+
+```{ojs}
+htReadout = {
+  const vals = bikes.map(d => d.bb_drop);
+  return html`<div class="readout"><span>Pedal at its lowest</span><strong>${fmt(pedalClear)} mm</strong><em>${feel(pedalClear, 95, 120, ["low: pedal strikes likely in ruts", "typical", "plenty of ground clearance"])}</em><small>BB height ${fmt(bbHeight)} mm. More drop than ${pctOf(vals, drop)}% of production sizes.</small></div>`;
+}
+```
+:::
+
+::: {.handling-figure}
+```{ojs}
+htDiagram = {
+  const R = Rh, Y = y => -y;
+  const rear = -470, front = 800;   // spaced out so the labels fit; not to scale along the ground
+  let s = "";
+  s += `<line x1="${rear - R - 30}" y1="0" x2="${front + R + 30}" y2="0" stroke="#9fb0bf" stroke-width="2"/>`;
+  s += `<line x1="${rear - R}" y1="${Y(R)}" x2="${front + R}" y2="${Y(R)}" stroke="#5b7083" stroke-width="2" stroke-dasharray="10,8"/>`;
+  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
+  s += `<line x1="0" y1="${Y(bbHeight)}" x2="0" y2="${Y(pedalClear)}" stroke="#0b2233" stroke-width="12" stroke-linecap="round"/>`;
+  s += `<rect x="-55" y="${Y(pedalClear) - 9}" width="110" height="18" rx="6" fill="#0b2233"/>`;
+  s += `<circle cx="0" cy="${Y(bbHeight)}" r="20" fill="#fff" stroke="#0b2233" stroke-width="6"/>`;
+  // brackets
+  const br = (x, y1, y2, c) => `<line x1="${x}" y1="${Y(y1)}" x2="${x}" y2="${Y(y2)}" stroke="${c}" stroke-width="5"/><line x1="${x - 14}" y1="${Y(y1)}" x2="${x + 14}" y2="${Y(y1)}" stroke="${c}" stroke-width="3"/><line x1="${x - 14}" y1="${Y(y2)}" x2="${x + 14}" y2="${Y(y2)}" stroke="${c}" stroke-width="3"/>`;
+  s += br(110, R, bbHeight, "#d2691e") + br(110, pedalClear, 0, "#2a6fb0");
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="50" font-family="Inter, sans-serif" ${attrs}>${str}</text>`;
+  s += txt(140, (R + bbHeight) / 2 - 20, `drop ${drop} mm`, `fill="#d2691e" font-weight="700"`);
+  s += txt(140, pedalClear / 2 - 20, `${fmt(pedalClear)} mm`, `fill="#2a6fb0" font-weight="700"`);
+  s += txt(rear - R + 10, R + 24, "axle line", `fill="#5b7083" font-size="46"`);
+  const el = document.createElement("div");
+  el.className = "handling-svg";
+  el.innerHTML = `<svg viewBox="${rear - R - 40} ${Y(2 * R + 30)} ${front - rear + 2 * R + 80} ${2 * R + 60}" role="img" aria-label="Bottom bracket ${drop} mm below the axles, leaving the pedal ${fmt(pedalClear)} mm above the ground">${s}</svg>`;
+  return el;
+}
+```
+:::
+
+:::
+
+```{ojs}
+strip({key: "bb_drop", value: drop, unit: " mm", label: "BB drop", picked})
+```
+
+- **BB drop** is how far the bottom bracket (the crank axle) sits below a line between the wheel axles.
+- **More drop** sits you lower between the wheels, so the bike feels planted and settles into corners. **Less drop** sits you higher, on top of the bike, which feels quicker to lean but less settled.
+- **The cost of more drop is ground clearance.** Pedal strikes happen when a pedal at the bottom of its stroke catches a rut or a rock. Longer cranks and narrower tyres make that more likely.
+- **Brands quote drop, not height, because drop doesn't change with tyres.** Bottom bracket height does: every millimetre of tyre height lifts it by a millimetre.
+
+:::
+
+## What this leaves out
+
+These diagrams change one thing at a time, but real bikes change several at once, and handling also depends on the rider, the tyres and their pressure, the load, the speed, and the ground. Think of the numbers as tendencies, not verdicts. For the formulas behind trail, wheelbase, and front centre, see [Data and methods](methods.qmd#what-this-site-calculates).
