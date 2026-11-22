@@ -1,0 +1,331 @@
+---
+title: "Geometry epidemiology"
+description: "Four small studies that borrow epidemiology's methods: measurement agreement, growth charts, equity, and misclassification, applied to gravel bike geometry."
+---
+
+Epidemiologists spend a lot of time asking whether two measurements agree, where someone sits against a reference population, whether a group is being served as well as everyone else, and whether a label matches what's really going on. The same questions work surprisingly well on bike geometry.
+
+::: {.study-nav}
+[1. Do the charts agree with themselves?](#study-1) [2. Growth charts for bikes](#study-2) [3. Do smaller riders get the same bike?](#study-3) [4. Does the marketing match the data?](#study-4)
+:::
+
+```{ojs}
+//| output: false
+categoryColours = new Map([["race", "#2a6fb0"], ["all-round", "#e0a030"], ["adventure", "#a03a6a"]])
+categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
+plotStyle = ({fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"})
+
+// Nudge labels so they don't overlap: place them one by one, and move a label
+// down (in 13 px steps) while it overlaps a label already placed. Needs the
+// plot's pixel size and fixed domains to convert data to pixels.
+nudge = (data, {x, y, text, xDomain, yDomain, width, height, marginLeft = 50, marginRight = 20, marginTop = 20, marginBottom = 30, dx = 8}) => {
+  const px = v => marginLeft + (v - xDomain[0]) / (xDomain[1] - xDomain[0]) * (width - marginLeft - marginRight);
+  const py = v => marginTop + (yDomain[1] - v) / (yDomain[1] - yDomain[0]) * (height - marginTop - marginBottom);
+  const placed = [];
+  return [...data].sort((a, b) => py(a[y]) - py(b[y])).map(d => {
+    const w = String(d[text]).length * 6.2, x0 = px(d[x]) + dx;
+    let top = py(d[y]) - 7, shift = 0;
+    while (placed.some(p => x0 < p.x1 && x0 + w > p.x0 && top + shift < p.y1 && top + shift + 13 > p.y0) && shift < 120) shift += 13;
+    placed.push({x0, x1: x0 + w, y0: top + shift, y1: top + shift + 13});
+    const perPx = (yDomain[1] - yDomain[0]) / (height - marginTop - marginBottom);
+    return {...d, _dy: shift, _yl: d[y] - shift * perPx};
+  });
+}
+```
+
+## 1. Do the charts agree with themselves? {#study-1}
+
+*Method: Bland–Altman agreement, the standard way to compare two ways of measuring the same thing.*
+
+A geometry chart has more numbers than it strictly needs: trail, wheelbase, top tube, and fork offset can each be recalculated from the others. If the chart is internally consistent, the published and recalculated values should agree. Each dot below is one frame size. The solid line is the average difference (the bias), and the dashed lines are the 95% limits of agreement, inside which about 95% of differences fall.
+
+```{ojs}
+//| output: false
+agreement = FileAttachment("data/epi_agreement.csv").csv({typed: true})
+agreementSummary = FileAttachment("data/epi_agreement_summary.csv").csv({typed: true})
+measureOrder = ["Wheelbase", "Fork offset", "Trail", "Top tube"]
+```
+
+::: {.column-page}
+```{ojs}
+{
+  const panels = measureOrder.map(m => {
+    const d = agreement.filter(r => r.measure === m);
+    const s = agreementSummary.find(r => r.measure === m);
+    const lim = Math.max(8, ...d.map(r => Math.abs(r.diff))) * 1.1;
+    const plot = Plot.plot({
+      width: 480, height: 260, marginLeft: 40, marginBottom: 36, style: plotStyle,
+      x: {label: `Average of the two (mm) →`, nice: true, grid: true},
+      y: {label: "↑ Calculated − published (mm)", domain: [-lim, lim], grid: true},
+      marks: [
+        Plot.ruleY([0], {stroke: "#c9d6e0"}),
+        Plot.ruleY([s.bias], {stroke: "#0b2233", strokeWidth: 1.5}),
+        Plot.ruleY([s.loa_low, s.loa_high], {stroke: "#0b2233", strokeDasharray: "4,3"}),
+        Plot.dot(d, {x: "mean", y: "diff", r: 3.5, fill: "#7a5c43", fillOpacity: 0.7, stroke: "#fff", strokeWidth: 0.8,
+          channels: {Bike: d => `${d.brand} ${d.model}`, Size: "size_label", Published: "published", Calculated: "calculated"},
+          tip: true})
+      ]
+    });
+    return html`<figure class="ba-panel"><figcaption><strong>${m}</strong> <span>${s.n_sizes} sizes, ${s.n_bikes} bikes · bias ${Math.abs(s.bias) < 0.05 ? "0.0" : (s.bias > 0 ? "+" : "") + s.bias.toFixed(1)} mm · limits ${s.loa_low.toFixed(1)} to +${s.loa_high.toFixed(1)} mm</span></figcaption>${plot}</figure>`;
+  });
+  return html`<div class="ba-grid">${panels}</div>`;
+}
+```
+:::
+
+**What it shows.** The charts mostly agree with themselves, so the typed-in numbers can be trusted. The exceptions come from brands measuring things slightly differently, not from typing mistakes.
+
+- **Wheelbase and fork offset agree almost perfectly**, within about ±1.3 mm. The charts are internally consistent, and the method this site uses to estimate missing fork offsets is reliable.
+- **Trail agrees within about ±4 mm.** Most of the spread is the reference tyre: each brand assumes a different tyre when it calculates trail, and few say which.
+- **Orbea is the outlier.** Its published trail sits about 5 mm below the recalculated value at every size, which fits its chart assuming a smaller tyre than the 700 × 45 mm used here.
+- **Top tube has the widest limits** (about ±7 mm). A few brands measure top tube to a different point. The OPEN WI.DE. even publishes two top tube figures.
+
+## 2. Growth charts for bikes {#study-2}
+
+*Method: reference centiles from quantile regression, the technique behind paediatric growth charts.*
+
+A growth chart shows the range of heights children usually have at each age. Here, the shaded bands show the range of stack that bikes usually have at each reach, across all 135 production sizes. A size above the 95th centile is unusually tall for its length. Below the 5th, it's unusually low.
+
+```{ojs}
+//| output: false
+centiles = FileAttachment("data/epi_centiles.csv").csv({typed: true})
+zscores = FileAttachment("data/epi_zscores.csv").csv({typed: true}).then(d => d.map(r => ({...r, size_label: String(r.size_label), label: `${r.brand} ${r.model}`})))
+zBikes = Array.from(new Set(zscores.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+```
+
+::: {.epi-control}
+```{ojs}
+viewof zBike = Inputs.select(["(none)", ...zBikes], {label: "Highlight a bike", value: "Norco Search C Gen 3"})
+```
+:::
+
+::: {.column-page}
+```{ojs}
+{
+  const hi = zscores.filter(d => d.label === zBike);
+  const W = Math.min(width, 1000), Hh = 440, yDom = [460, 690];
+  const outliers = nudge(zscores.filter(d => d.band !== "within 5th to 95th").map(d => ({...d, lab: `${d.model} ${d.size_label}`})),
+    {x: "reach", y: "stack", text: "lab", xDomain: [340, 460], yDomain: yDom, width: W, height: Hh});
+  return Plot.plot({
+    width: W, height: Hh, marginLeft: 50, style: plotStyle,
+    x: {label: "Reach (mm) →", domain: [340, 460], grid: true},
+    y: {label: "↑ Stack (mm)", domain: yDom, grid: true},
+    marks: [
+      Plot.areaY(centiles, {x: "reach", y1: "p5", y2: "p95", fill: "#7a5c43", fillOpacity: 0.10}),
+      Plot.areaY(centiles, {x: "reach", y1: "p25", y2: "p75", fill: "#7a5c43", fillOpacity: 0.18}),
+      Plot.line(centiles, {x: "reach", y: "p50", stroke: "#7a5c43", strokeWidth: 2}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p95", text: () => "95th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p50", text: () => "50th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p5", text: () => "5th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
+      Plot.dot(zscores, {x: "reach", y: "stack", r: 3.5, fill: d => categoryColours.get(d.category), fillOpacity: zBike === "(none)" ? 0.85 : 0.3, stroke: "#fff", strokeWidth: 0.8}),
+      Plot.text(outliers, {x: "reach", y: "_yl", text: "lab", dx: 8, textAnchor: "start", fontSize: 11, fill: "#1f2a33", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      Plot.line(hi, {x: "reach", y: "stack", sort: "size_order", stroke: "#0b2233", strokeWidth: 2}),
+      Plot.dot(hi, {x: "reach", y: "stack", r: 5.5, fill: "#0b2233", stroke: "#fff", strokeWidth: 1.5}),
+      Plot.text(hi, {x: "reach", y: "stack", text: d => `${d.size_label}: z ${d.z > 0 ? "+" : ""}${d.z.toFixed(1)}`, dx: 9, textAnchor: "start", fontSize: 11, fontWeight: 600, fill: "#0b2233", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      Plot.tip(zscores, Plot.pointer({x: "reach", y: "stack", maxRadius: 10, lineWidth: 40,
+        title: d => `${d.label}, size ${d.size_label}\nStack ${d.stack} mm, reach ${d.reach} mm\nz-score ${d.z > 0 ? "+" : ""}${d.z.toFixed(2)} (${d.band})`}))
+    ]
+  });
+}
+```
+:::
+
+[Bands: 5th to 95th centile (light) and 25th to 75th (darker), with the median line. The z-score is the distance from the median line in robust standard deviations (interquartile range ÷ 1.349), so ±1.645 marks the 5th and 95th centiles.]{.data-note}
+
+**What it shows.** Almost every size (129 of 135) falls inside the 5th to 95th centile band. The sizes outside it make sense:
+
+- **The tallest Salsa Cutthroat sizes**, a drop-bar mountain bike built for long-distance touring, with a tall suspension-corrected fork.
+- **The largest Cannondale Topstone and Specialized Diverge**, which both have suspension in or under the front end.
+- **The smallest Factor ELARA**, below the 5th centile: an aero race bike that keeps its small size low.
+
+## 3. Do smaller riders get the same bike? {#study-3}
+
+*Method: an equity comparison, using the rider model from the [Rider page](rider.qmd).*
+
+Bikes are usually designed around a middle size and then scaled. Riders at the ends of the height range, often women and shorter men at the small end, may get a different bike: slacker or steeper angles to fit the wheels in, more toe overlap, or no size that fits at all.
+
+```{ojs}
+//| output: false
+import {riderOnBike, fitFlags} from "./js/rider.js"
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+bikes = raw.map(d => ({...d, is_default_config: d.is_default_config === true || d.is_default_config === "TRUE", size_label: String(d.size_label), label: `${d.brand} ${d.model}`}))
+production = bikes.filter(d => d.is_default_config)
+byBike = d3.groups(production, d => d.label).map(([label, rows]) => ({label, category: rows[0].category, rows: rows.sort((a, b) => a.size_order - b.size_order)}))
+
+// For each height, how many of the 24 bikes have at least one size the model rates "fits"
+access = d3.range(145, 206, 1).map(h => {
+  let fits = 0, fitsOrNear = 0;
+  for (const b of byBike) {
+    const verdicts = b.rows.map(r => fitFlags(riderOnBike(r, {height: h * 10})).verdict);
+    if (verdicts.includes("fits")) fits++;
+    if (verdicts.some(v => v === "fits" || v === "on the small side" || v === "on the large side")) fitsOrNear++;
+  }
+  return {height: h, fits, fitsOrNear};
+})
+
+// Smallest against largest size of each bike
+ends = byBike.map(b => {
+  const s = b.rows[0], l = b.rows.at(-1);
+  return {label: b.label, category: b.category, smallSize: s.size_label, largeSize: l.size_label,
+    trailS: s.trail_calc, trailL: l.trail_calc, toeS: s.toe_clearance, toeL: l.toe_clearance,
+    htaS: s.head_tube_angle, htaL: l.head_tube_angle, staS: s.seat_tube_angle, staL: l.seat_tube_angle};
+})
+median = a => d3.median(a)
+```
+
+### How many bikes come in a size that fits?
+
+```{ojs}
+Plot.plot({
+  width: Math.min(width, 900), height: 300, marginLeft: 44, style: plotStyle,
+  x: {label: "Rider height (cm) →", domain: [145, 205], grid: true},
+  y: {label: "↑ Bikes (of 24) with a size that fits", domain: [0, 24], grid: true},
+  marks: [
+    Plot.areaY(access, {x: "height", y: "fitsOrNear", fill: "#7a5c43", fillOpacity: 0.15, curve: "step"}),
+    Plot.lineY(access, {x: "height", y: "fits", stroke: "#7a5c43", strokeWidth: 2.5, curve: "step"}),
+    Plot.ruleX([153, 162, 176, 188], {stroke: "#5b7083", strokeDasharray: "3,3"}),
+    Plot.text([[153, "5th pct woman"], [162, "average woman"], [176, "average man"], [188, "95th pct man"]], {x: d => d[0], y: 0.6, text: d => d[1], rotate: -90, textAnchor: "start", dx: -5, fontSize: 10.5, fill: "#5b7083", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+    Plot.tip(access, Plot.pointerX({x: "height", y: "fits", title: d => `${d.height} cm: ${d.fits} bikes have a size that fits; ${d.fitsOrNear} have one that fits or is close`}))
+  ]
+})
+```
+
+[Line: bikes with at least one size rated "fits". Shaded: bikes with a size rated "fits" or only slightly "on the small side" or "on the large side". Uses the rider model's default stem, spacers, and cranks for each height.]{.data-note}
+
+```{ojs}
+{
+  const at = h => access.find(d => d.height === h);
+  const all = access.filter(d => d.fits === 24);
+  const lowest = access.find(d => d.fits >= 20)?.height, highest = [...access].reverse().find(d => d.fits >= 20)?.height;
+  return md`**What it shows.** Riders near the middle are well served. **Every one of the 24 bikes** comes in a size that fits riders from **${all[0].height} to ${all.at(-1).height} cm**, which covers both the 5th-percentile woman (153 cm, ${at(153).fits} bikes) and nearly the 95th-percentile man (188 cm, ${at(188).fits} bikes).
+
+Beyond that, choice falls away quickly at both ends: **${at(145).fits}** bikes fit a 145 cm rider and **${at(149).fits}** a 149 cm rider; at the top, **${at(195).fits}** fit a 195 cm rider and **${at(201).fits}** a 201 cm rider. At least 20 bikes fit riders from ${lowest} to ${highest} cm. The model is least certain at these extremes, so treat the exact counts there as rough.`;
+}
+```
+
+### Smallest against largest size
+
+::: {.epi-control}
+```{ojs}
+viewof endMeasure = Inputs.radio(new Map([["Toe clearance", "toe"], ["Trail", "trail"], ["Head angle", "hta"], ["Seat angle", "sta"]]), {label: "Compare", value: "toe"})
+```
+:::
+
+::: {.column-page}
+```{ojs}
+{
+  const unit = endMeasure === "hta" || endMeasure === "sta" ? "°" : " mm";
+  const sKey = endMeasure + "S", lKey = endMeasure + "L";
+  const data = [...ends].sort((a, b) => (a[sKey] - a[lKey]) - (b[sKey] - b[lKey]));
+  const ref = endMeasure === "toe" ? [Plot.ruleX([90], {stroke: "#b33a0e", strokeDasharray: "4,3"}), Plot.text([90], {x: d => d, frameAnchor: "top", text: () => "90 mm: about where a shoe reaches", dy: -10, textAnchor: "middle", fontSize: 10.5, fill: "#7a2508"})] : [];
+  return Plot.plot({
+    width: Math.min(width, 1000), height: 24 * data.length + 70, marginTop: 30, marginLeft: 200, style: plotStyle,
+    x: {label: `${{toe: "Toe clearance", trail: "Trail (700 × 45)", hta: "Head angle", sta: "Seat angle"}[endMeasure]} (${unit.trim()}) →`, grid: true, nice: true},
+    y: {label: null, domain: data.map(d => d.label)},
+    marks: [
+      ...ref,
+      Plot.link(data, {x1: sKey, x2: lKey, y1: "label", y2: "label", stroke: "#c9d6e0", strokeWidth: 2}),
+      Plot.dot(data, {x: lKey, y: "label", r: 5, fill: "#ffffff", stroke: "#0b2233", strokeWidth: 1.5, title: d => `Largest (${d.largeSize}): ${d[lKey]?.toFixed(1)}${unit}`, tip: true}),
+      Plot.dot(data, {x: sKey, y: "label", r: 5, fill: "#7a5c43", title: d => `Smallest (${d.smallSize}): ${d[sKey]?.toFixed(1)}${unit}`, tip: true})
+    ]
+  });
+}
+```
+:::
+
+[Filled dot: smallest size. Open dot: largest size. Bikes are sorted by the gap between them. On toe clearance, the red dashed line marks 90 mm, roughly how far a shoe sticks out ahead of the pedal axle. A dot left of it means the toe can touch the front tyre when turning at low speed.]{.data-note}
+
+```{ojs}
+{
+  const toeSmall = ends.filter(d => d.toeS < 90).length;
+  const toeLarge = ends.filter(d => d.toeL < 90).length;
+  const trailUp = ends.filter(d => d.trailS > d.trailL + 3).length;
+  const htaSlack = ends.filter(d => d.htaS < d.htaL - 0.25).length;
+  const staSteep = ends.filter(d => d.staS > d.staL + 0.25).length;
+  return md`**What it shows.** The differences between a model's smallest and largest sizes mostly land on the smallest riders.
+
+- **Toe overlap is a small-size problem.** ${toeSmall} of 24 smallest sizes leave less than 90 mm between pedal and tyre, the rough length of a shoe ahead of the pedal axle. ${toeLarge === 0 ? "None of the largest sizes do." : `Only ${toeLarge} of the largest sizes do.`} Median toe clearance is ${median(ends.map(d => d.toeS)).toFixed(0)} mm in the smallest sizes and ${median(ends.map(d => d.toeL)).toFixed(0)} mm in the largest.
+- **Small sizes often steer differently.** ${htaSlack} of 24 bikes give their smallest size a slacker head angle than their largest, usually to make room for the front wheel, and ${trailUp} give it noticeably more trail (over 3 mm). So the smallest rider on a given model may get steadier, slower steering than the brand's marketing describes.
+- **Seat angles go the other way.** ${staSteep} of 24 bikes give their smallest size a steeper seat angle, which moves a shorter rider forward over the pedals.`;
+}
+```
+
+## 4. Does the marketing match the data? {#study-4}
+
+*Method: unsupervised clustering against an assigned label, with agreement measured by Cohen's kappa, much as a diagnostic label is checked against an independent classification.*
+
+This site sorts bikes into race, all-round, and adventure, based on how each manufacturer describes them. Here, the 24 bikes are grouped again using geometry alone, then the two groupings are compared. Each bike is described by its middle size on six measures that don't depend on size: stack-to-reach ratio, head angle, trail, chainstay length, BB drop, and tyre clearance. They are clustered into three groups (Ward's method on standardised values).
+
+```{ojs}
+//| output: false
+// R writes TRUE/FALSE in capitals; turn them into real true/false
+clusters = FileAttachment("data/epi_clusters.csv").csv({typed: true}).then(d => d.map(r => ({...r, agrees: r.agrees === true || r.agrees === "TRUE"})))
+clusterSummary = FileAttachment("data/epi_clusters_summary.csv").csv({typed: true})
+loadings = FileAttachment("data/epi_pca_loadings.csv").csv({typed: true})
+cs = Object.fromEntries(clusterSummary.map(d => [d.item, d.value]))
+```
+
+::: {.column-page}
+```{ojs}
+{
+  const W = Math.min(width, 1000), Hh = 480, xDom = [-6, 3.5], yDom = [-2.6, 2.3];
+  const labelled = nudge(clusters.map(d => ({...d, lab: d.model})), {x: "pc1", y: "pc2", text: "lab", xDomain: xDom, yDomain: yDom, width: W, height: Hh, marginBottom: 46, dx: 10});
+  return Plot.plot({
+    width: W, height: Hh, marginLeft: 50, marginBottom: 46, style: plotStyle,
+    x: {label: `First component (${cs.pc1_var}% of variation) →`, domain: xDom, grid: true},
+    y: {label: `↑ Second component (${cs.pc2_var}%)`, domain: yDom, grid: true},
+    symbol: {domain: ["race", "all-round", "adventure"], range: ["circle", "square", "triangle"]},
+    marks: [
+      Plot.link(labelled.filter(d => d._dy > 0), {x1: "pc1", y1: "pc2", x2: "pc1", y2: "_yl", stroke: "#c9d6e0"}),
+      Plot.dot(clusters, {x: "pc1", y: "pc2", r: 7, fill: d => categoryColours.get(d.category), symbol: "data_label", stroke: d => d.agrees ? "#ffffff" : "#0b2233", strokeWidth: d => d.agrees ? 1 : 2.5}),
+      Plot.text(labelled, {x: "pc1", y: "_yl", text: "lab", dx: 10, textAnchor: "start", fontSize: 10.5, fill: "#1f2a33", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      // Tooltip only when the pointer is on or right next to a dot, so it never shows a neighbouring bike
+      Plot.tip(clusters, Plot.pointer({x: "pc1", y: "pc2", maxRadius: 12, lineWidth: 40,
+        title: d => `${d.brand} ${d.model}\nSite label: ${categoryNames[d.category]}\nGeometry group: ${categoryNames[d.data_label]}-like\n${d.agrees ? "The two agree" : "The two disagree"}`}))
+    ]
+  });
+}
+```
+:::
+
+
+[Colour: the site's label (blue race, amber all-round, berry adventure). Shape: the geometry group (circle race-like, square all-round-like, triangle adventure-like). Dark outline: the two disagree. The axes are the first two principal components, which compress the six measures into two directions.]{.data-note}
+
+```{ojs}
+{
+  // [wording when the measure goes up, wording when it goes down]
+  const words = {stack_reach_ratio: ["a taller, shorter front end", "a lower, longer front end"], head_tube_angle: ["a steeper head angle", "a slacker head angle"], trail_calc: ["more trail", "less trail"], chainstay: ["longer chainstays", "shorter chainstays"], bb_drop: ["a lower bottom bracket", "a higher bottom bracket"], tyre_clearance_mm: ["more tyre clearance", "less tyre clearance"]};
+  const top = pc => [...loadings].sort((a, b) => Math.abs(b[pc]) - Math.abs(a[pc])).slice(0, 2).map(d => words[d.feature][d[pc] > 0 ? 0 : 1]).join(" and ");
+  return md`**Reading the axes.** Moving right along the first component means ${top("PC1")}. Moving up the second means ${top("PC2")}.`;
+}
+```
+
+```{ojs}
+{
+  const lev = ["race", "all-round", "adventure"];
+  const cell = (a, b) => clusters.filter(d => d.category === a && d.data_label === b).length;
+  const rows = lev.map(a => `<tr><th scope="row">${categoryNames[a]}</th>${lev.map(b => `<td class="num ${a === b ? "diag" : ""}">${cell(a, b)}</td>`).join("")}</tr>`).join("");
+  const el = document.createElement("div");
+  el.className = "compare-scroll confusion";
+  el.innerHTML = `<table class="compare-table"><thead><tr><th>Site label ↓ · geometry group →</th>${lev.map(b => `<th class="num">${categoryNames[b]}-like</th>`).join("")}</tr></thead><tbody>${rows}</tbody></table>`;
+  return el;
+}
+```
+
+```{ojs}
+{
+  const disagree = clusters.filter(d => !d.agrees);
+  const advAlone = clusters.filter(d => d.data_label === "adventure");
+  return md`**What it shows.** The labels and the geometry agree for **${cs.percent_agree}%** of bikes (${clusters.filter(d => d.agrees).length} of ${cs.n_bikes}), a Cohen's kappa of **${cs.kappa.toFixed(2)}**. That counts as "fair" agreement on the usual scale (0.21 to 0.40): better than chance, but far from a reliable label.
+
+- **Race bikes are the most distinct.** ${clusters.filter(d => d.category === "race" && d.agrees).length} of ${clusters.filter(d => d.category === "race").length} race bikes land in the race-like group.
+- **"Adventure" barely exists as a geometry.** The adventure-like group holds only ${advAlone.map(d => `the ${d.brand} ${d.model}`).join(" and ")}, a drop-bar mountain bike. The other adventure bikes look like all-round bikes on these six measures. What makes them "adventure" is mostly mounts, tyre size, and intent, not frame geometry.
+- **Several all-round bikes are race-shaped**: ${disagree.filter(d => d.category === "all-round" && d.data_label === "race").map(d => `${d.brand} ${d.model}`).join(", ")}.
+
+With only 24 bikes and three groups chosen in advance, this is a description, not a test. A different set of bikes, or different measures, would move some of them.`;
+}
+```
+
+## How these were done
+
+The analyses for studies 1, 2, and 4 are in [`R/epi_studies.R`](https://github.com/emmabranch/gravel-geometry/blob/main/R/epi_studies.R), which reads the derived geometry and writes the small result files these charts read. Study 3 runs in your browser on the same rider model as the [Rider page](rider.qmd). The data and every assumption are described on the [Data and methods](methods.qmd) page.

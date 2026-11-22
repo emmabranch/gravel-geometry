@@ -16,6 +16,7 @@
 
 /* Pages without a hero: a little more space under the navbar */
 main.content:not(:has(.hero-full)) #title-block-header { margin-top: 1.5rem; }
+#title-block-header.quarto-title-block.default .description { margin-top: 0.75rem; }
 
 /* Home page: the hero carries the title, so the standard title block is hidden */
 body:has(.hero-full) #title-block-header { display: none; }
@@ -283,3 +284,20 @@ body:has(.hero-full) #title-block-header { display: none; }
 .overlay-pick form > label { display: block !important; width: 100% !important; font-weight: 600; font-size: 0.88rem; margin: 0 0 0.2rem; }
 .overlay-pick select { width: 100% !important; max-width: 32rem !important; }
 .design-drawing svg { max-height: 52vh; }
+
+/* ---------- Epi page ---------- */
+.study-nav { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0 0.5rem; }
+.study-nav p { display: contents; }
+.study-nav a { background: #ffffff; border: 1px solid #e3e0d8; border-radius: 999px; padding: 0.3rem 0.8rem; font-size: 0.88rem; text-decoration: none; color: #1f2a33; }
+.study-nav a:hover, .study-nav a:focus { border-color: #7a5c43; background: #fdf8ef; }
+.ba-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.8rem; margin: 0.6rem 0; }
+@media (max-width: 700px) { .ba-grid { grid-template-columns: 1fr; } }
+.ba-panel { margin: 0; background: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); padding: 0.6rem 0.7rem 0.3rem; }
+.ba-panel figcaption { font-size: 0.88rem; margin-bottom: 0.2rem; }
+.ba-panel figcaption span { display: block; font-size: 0.78rem; color: #5b7083; }
+.ba-panel svg { width: 100%; height: auto; }
+.confusion { max-width: 34rem; margin: 0.8rem 0; }
+.confusion .diag { background: #e3f0dc !important; font-weight: 700; }
+.epi-control { --label-width: 9rem; --input-width: 20rem; margin: 0.4rem 0; }
+.epi-control form > label { font-weight: 600; }
+@media (max-width: 600px) { .epi-control { --label-width: 100%; --input-width: 100%; } .epi-control form { display: block !important; } }

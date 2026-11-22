@@ -1,0 +1,25 @@
+bike_id,brand,model,size_label,category,stack_reach_ratio,head_tube_angle,trail_calc,chainstay,bb_drop,tyre_clearance_mm,cluster,data_label,agrees,pc1,pc2
+3t_racemax2,3T,Racemax² Italia,M,race,1.509,71.5,58,420,79,51,1,race,TRUE,1.876,-0.737
+bmc_urs,BMC,URS,M,adventure,1.415,69.5,85.1,430,76,47,2,all-round,FALSE,-1.658,1.98
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,54,all-round,1.532,70.7,66.4,420,76,52,2,all-round,TRUE,0.375,-0.286
+canyon_grail_cf,Canyon,Grail CF,M,race,1.399,71.5,64.3,435,75,57,1,race,TRUE,0.123,-1.44
+canyon_grizl_cf,Canyon,Grizl CF,M,adventure,1.475,71,63.4,440,75,54,1,race,FALSE,-0.54,-1.766
+cervelo_aspero,Cervélo,Áspero,54,race,1.43,72,67.3,425,76,45,1,race,TRUE,1.551,0.712
+devinci_hatchet_pro,Devinci,Hatchet Pro,M,race,1.444,72,58.9,425,75,45,1,race,TRUE,1.998,0.172
+devinci_hatchet_vista,Devinci,Hatchet Vista,M,adventure,1.492,70.5,73,428,70,45,2,all-round,FALSE,-0.748,0.951
+factor_elara,Factor,ELARA,54,race,1.391,72.2,60.7,420,80,57,1,race,TRUE,2.277,-0.861
+giant_revolt_advanced,Giant,Revolt Advanced,M,all-round,1.514,71.5,66.4,425,80,53,1,race,FALSE,0.926,-0.951
+lauf_seigla_rigid,Lauf,Seigla Rigid,M,race,1.431,70.5,76.2,425,65,57,2,all-round,FALSE,-1.712,0.106
+liv_devote_advanced,Liv,Devote Advanced,S,all-round,1.417,70.5,73,425,80,53,1,race,FALSE,0.161,0.414
+marin_headlands,Marin,Headlands,54,all-round,1.53,70.5,73,420,76,50,2,all-round,TRUE,-0.091,0.436
+norco_search_c,Norco,Search C Gen 3,3,adventure,1.414,69.5,78.7,427.5,75,50,2,all-round,FALSE,-1.308,1.394
+open_wide,OPEN,WI.DE.,M,adventure,1.541,71,69.7,420,75,46,2,all-round,FALSE,0.554,0.599
+orbea_terra,Orbea,Terra (carbon),M,all-round,1.45,70,81.7,430,80,50,2,all-round,TRUE,-1.027,0.909
+salsa_cutthroat_c,Salsa,Cutthroat C,56,adventure,1.61,69,86.6,445,70,61,3,adventure,TRUE,-5.058,-2.073
+salsa_flyway_c,Salsa,Flyway C,M,race,1.451,70.5,72,425,76,50,1,race,TRUE,-0.08,0.599
+santacruz_stigmata,Santa Cruz,Stigmata,MD,all-round,1.422,69.5,78.7,423,76,50,2,all-round,TRUE,-0.951,1.628
+scott_addict_gravel,Scott,Addict Gravel,M 54,race,1.445,70,65.7,425,78,57,1,race,TRUE,-0.151,-0.558
+specialized_crux_5,Specialized,Crux 5,54,race,1.443,71,68.6,425,78,55,1,race,TRUE,0.399,-0.43
+specialized_diverge_4,Specialized,Diverge 4,54,all-round,1.53,71,64.4,430,85,50,1,race,FALSE,1,-0.979
+trek_checkmate_slr,Trek,Checkmate SLR,M,race,1.429,71.5,67.4,426,80,45,1,race,TRUE,1.533,0.771
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,M,all-round,1.481,71.6,66.8,430,76,50,1,race,FALSE,0.551,-0.591

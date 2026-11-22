@@ -1,0 +1,5 @@
+measure,n_sizes,n_bikes,bias,sd,loa_low,loa_high
+Fork offset,102,18,0.03,0.62,-1.18,1.24
+Top tube,129,23,-0,3.67,-7.2,7.2
+Trail,62,11,-0.26,1.97,-4.12,3.59
+Wheelbase,102,18,-0.03,0.66,-1.32,1.26

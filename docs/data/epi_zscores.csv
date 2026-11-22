@@ -1,0 +1,136 @@
+bike_id,brand,model,category,size_label,size_order,stack,reach,median_stack,z,band
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,XS,1,535,380,563.5,-0.95,within 5th to 95th
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,S,2,556,386,571.1,-0.52,within 5th to 95th
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,M,3,579,391,577.5,0.05,within 5th to 95th
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,ML,4,601,397,585.2,0.58,within 5th to 95th
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,L,5,620,402,591.6,1.08,within 5th to 95th
+trek_checkpoint_sl,Trek,Checkpoint SL Gen 3,all-round,XL,6,640,408,599.3,1.62,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,XS,1,525,380,563.5,-1.29,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,S,2,540,385,569.9,-1.03,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,M,3,560,392,578.8,-0.67,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,ML,4,584,399,587.8,-0.14,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,L,5,608,404,594.2,0.54,within 5th to 95th
+trek_checkmate_slr,Trek,Checkmate SLR,race,XL,6,633,409,600.5,1.3,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,49,1,530,375,557.1,-0.88,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,52,2,547,382,566,-0.64,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,54,3,560,388,573.7,-0.48,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,56,4,578,400,589,-0.42,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,58,5,598,412,604.4,-0.26,within 5th to 95th
+specialized_crux_5,Specialized,Crux 5,race,61,6,621,425,621,-0,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,49,1,563,365,544.3,0.58,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,52,2,578,374,555.8,0.72,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,54,3,592,387,572.4,0.68,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,56,4,610,400,589,0.79,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,58,5,634,412,604.4,1.21,within 5th to 95th
+specialized_diverge_4,Specialized,Diverge 4,all-round,61,6,659,425,621,1.7,above 95th centile
+norco_search_c,Norco,Search C Gen 3,adventure,1,1,554,385,569.9,-0.55,within 5th to 95th
+norco_search_c,Norco,Search C Gen 3,adventure,2,2,564,400,589,-0.94,within 5th to 95th
+norco_search_c,Norco,Search C Gen 3,adventure,3,3,587,415,608.2,-0.88,within 5th to 95th
+norco_search_c,Norco,Search C Gen 3,adventure,4,4,611,430,627.4,-0.76,within 5th to 95th
+norco_search_c,Norco,Search C Gen 3,adventure,5,5,634,445,646.6,-0.66,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,2XS,1,525,372,553.2,-0.9,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,XS,2,537,385,569.9,-1.13,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,S,3,558,394,581.4,-0.85,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,M,4,575,411,603.1,-1.14,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,L,5,598,427,623.6,-1.16,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,XL,6,618,435,633.8,-0.76,within 5th to 95th
+canyon_grail_cf,Canyon,Grail CF,race,2XL,7,640,454,658.1,-1.04,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,2XS,1,550,369,549.4,0.02,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,XS,2,559,380,563.5,-0.15,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,S,3,578,388,573.7,0.15,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,M,4,596,404,594.2,0.07,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,L,5,619,420,614.6,0.19,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,XL,6,638,429,626.1,0.55,within 5th to 95th
+canyon_grizl_cf,Canyon,Grizl CF,adventure,2XL,7,660,448,650.4,0.52,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,47,1,554,364,543,0.34,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,51,2,561,373,554.5,0.21,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,54,3,579,378,560.9,0.6,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,56,4,597,383,567.3,1.01,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,58,5,615,389,575,1.41,within 5th to 95th
+cannondale_topstone_carbon,Cannondale,Topstone Carbon,all-round,61,6,646,397,585.2,2.25,above 95th centile
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,XS,1,556,381,564.7,-0.29,within 5th to 95th
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,S,2,570,381,564.7,0.18,within 5th to 95th
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,M,3,586,387,572.4,0.47,within 5th to 95th
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,ML,4,602,391,577.5,0.87,within 5th to 95th
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,L,5,616,397,585.2,1.14,within 5th to 95th
+giant_revolt_advanced,Giant,Revolt Advanced,all-round,XL,6,630,407,598,1.26,within 5th to 95th
+liv_devote_advanced,Liv,Devote Advanced,all-round,XS,1,523,380,563.5,-1.35,within 5th to 95th
+liv_devote_advanced,Liv,Devote Advanced,all-round,S,2,544,384,568.6,-0.84,within 5th to 95th
+liv_devote_advanced,Liv,Devote Advanced,all-round,M,3,574,386,571.1,0.1,within 5th to 95th
+liv_devote_advanced,Liv,Devote Advanced,all-round,L,4,593,391,577.5,0.55,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,48,1,505,370,550.7,-1.45,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,51,2,530,379,562.2,-1.07,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,54,3,555,388,573.7,-0.65,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,56,4,580,397,585.2,-0.19,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,58,5,605,406,596.7,0.32,within 5th to 95th
+cervelo_aspero,Cervélo,Áspero,race,61,6,630,415,608.2,0.91,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,XS,1,550,375,557.1,-0.23,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,SM,2,564,390,576.3,-0.43,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,MD,3,576,405,595.4,-0.76,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,LG,4,600,420,614.6,-0.63,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,XL,5,612,435,633.8,-1.05,within 5th to 95th
+santacruz_stigmata,Santa Cruz,Stigmata,all-round,XXL,6,631,450,653,-1.21,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,XS,1,535,386,571.1,-1.25,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,S,2,558,392,578.8,-0.75,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,M,3,580,400,589,-0.34,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,L,4,602,406,596.7,0.21,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,XL,5,625,412,604.4,0.84,within 5th to 95th
+orbea_terra,Orbea,Terra (carbon),all-round,XXL,6,645,417,610.8,1.45,within 5th to 95th
+devinci_hatchet_pro,Devinci,Hatchet Pro,race,S,1,537,383,567.3,-1.03,within 5th to 95th
+devinci_hatchet_pro,Devinci,Hatchet Pro,race,M,2,563,390,576.3,-0.47,within 5th to 95th
+devinci_hatchet_pro,Devinci,Hatchet Pro,race,L,3,593,397,585.2,0.29,within 5th to 95th
+devinci_hatchet_pro,Devinci,Hatchet Pro,race,XL,4,617,404,594.2,0.88,within 5th to 95th
+devinci_hatchet_vista,Devinci,Hatchet Vista,adventure,XS,1,530,376,558.4,-0.93,within 5th to 95th
+devinci_hatchet_vista,Devinci,Hatchet Vista,adventure,S,2,559,383,567.3,-0.28,within 5th to 95th
+devinci_hatchet_vista,Devinci,Hatchet Vista,adventure,M,3,582,390,576.3,0.2,within 5th to 95th
+devinci_hatchet_vista,Devinci,Hatchet Vista,adventure,L,4,610,397,585.2,0.92,within 5th to 95th
+devinci_hatchet_vista,Devinci,Hatchet Vista,adventure,XL,5,634,404,594.2,1.54,within 5th to 95th
+salsa_cutthroat_c,Salsa,Cutthroat C,adventure,52,1,585,357,534.1,1.51,within 5th to 95th
+salsa_cutthroat_c,Salsa,Cutthroat C,adventure,54,2,592,372,553.2,1.24,within 5th to 95th
+salsa_cutthroat_c,Salsa,Cutthroat C,adventure,56,3,620,385,569.9,1.72,above 95th centile
+salsa_cutthroat_c,Salsa,Cutthroat C,adventure,58,4,645,394,581.4,2.31,above 95th centile
+salsa_cutthroat_c,Salsa,Cutthroat C,adventure,60,5,664,406,596.7,2.64,above 95th centile
+salsa_flyway_c,Salsa,Flyway C,race,XS,1,540.5,375.2,557.3,-0.55,within 5th to 95th
+salsa_flyway_c,Salsa,Flyway C,race,S,2,549.9,387.7,573.3,-0.82,within 5th to 95th
+salsa_flyway_c,Salsa,Flyway C,race,M,3,568.8,391.9,578.7,-0.35,within 5th to 95th
+salsa_flyway_c,Salsa,Flyway C,race,M/L,4,592.3,405.2,595.7,-0.13,within 5th to 95th
+salsa_flyway_c,Salsa,Flyway C,race,L,5,625.3,420.7,615.5,0.42,within 5th to 95th
+salsa_flyway_c,Salsa,Flyway C,race,XL,6,644.2,435.3,634.2,0.49,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,XXS 47,1,520,383,567.3,-1.61,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,XS 49,2,532,390,576.3,-1.57,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,S 52,3,555,394,581.4,-0.96,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,M 54,4,575,398,586.5,-0.43,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,L 56,5,596,401,590.3,0.22,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,XL 58,6,614,407,598,0.63,within 5th to 95th
+scott_addict_gravel,Scott,Addict Gravel,race,XXL 61,7,633,415,608.2,1.03,within 5th to 95th
+factor_elara,Factor,ELARA,race,49,1,515,382,566,-1.73,below 5th centile
+factor_elara,Factor,ELARA,race,52,2,535,390,576.3,-1.46,within 5th to 95th
+factor_elara,Factor,ELARA,race,54,3,555,399,587.8,-1.23,within 5th to 95th
+factor_elara,Factor,ELARA,race,56,4,580,407,598,-0.71,within 5th to 95th
+factor_elara,Factor,ELARA,race,58,5,605,417,610.8,-0.24,within 5th to 95th
+factor_elara,Factor,ELARA,race,61,6,625,427,623.6,0.07,within 5th to 95th
+lauf_seigla_rigid,Lauf,Seigla Rigid,race,XS,1,523,378,560.9,-1.25,within 5th to 95th
+lauf_seigla_rigid,Lauf,Seigla Rigid,race,S,2,537,383,567.3,-1.03,within 5th to 95th
+lauf_seigla_rigid,Lauf,Seigla Rigid,race,M,3,564,394,581.4,-0.63,within 5th to 95th
+lauf_seigla_rigid,Lauf,Seigla Rigid,race,L,4,593,405,595.4,-0.09,within 5th to 95th
+lauf_seigla_rigid,Lauf,Seigla Rigid,race,XL,5,623,416,609.5,0.57,within 5th to 95th
+open_wide,OPEN,WI.DE.,adventure,XS,1,520,346,520,0,within 5th to 95th
+open_wide,OPEN,WI.DE.,adventure,S,2,545,358,535.3,0.29,within 5th to 95th
+open_wide,OPEN,WI.DE.,adventure,M,3,570,370,550.7,0.61,within 5th to 95th
+open_wide,OPEN,WI.DE.,adventure,L,4,595,382,566,0.98,within 5th to 95th
+open_wide,OPEN,WI.DE.,adventure,XL,5,620,394,581.4,1.4,within 5th to 95th
+bmc_urs,BMC,URS,adventure,XS,1,560,390,576.3,-0.58,within 5th to 95th
+bmc_urs,BMC,URS,adventure,S,2,560,400,589,-1.09,within 5th to 95th
+bmc_urs,BMC,URS,adventure,M,3,580,410,601.8,-0.88,within 5th to 95th
+bmc_urs,BMC,URS,adventure,L,4,610,420,614.6,-0.2,within 5th to 95th
+bmc_urs,BMC,URS,adventure,XL,5,640,430,627.4,0.59,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,49,1,541,370,550.7,-0.31,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,52,2,555,372,553.2,0.06,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,54,3,569,372,553.2,0.5,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,56,4,588,385,569.9,0.62,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,58,5,607,410,601.8,0.21,within 5th to 95th
+marin_headlands,Marin,Headlands,all-round,60,6,626,425,621,0.22,within 5th to 95th
+3t_racemax2,3T,Racemax² Italia,race,S,1,547,367,546.8,0,within 5th to 95th
+3t_racemax2,3T,Racemax² Italia,race,M,2,569,377,559.6,0.31,within 5th to 95th
+3t_racemax2,3T,Racemax² Italia,race,L,3,589,385,569.9,0.66,within 5th to 95th
+3t_racemax2,3T,Racemax² Italia,race,XL,4,609,393,580.1,1.04,within 5th to 95th
