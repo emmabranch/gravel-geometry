@@ -1,0 +1,240 @@
+---
+title: "Compare bikes"
+description: "Put two or three gravel bikes side by side, size by size, and see what actually differs."
+---
+
+Pick up to three bikes and a size for each. The table lines up their numbers, shows how each one differs from bike A, and places all three among every size of every bike in the dataset.
+
+```{ojs}
+//| output: false
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+
+bikes = raw.map(d => ({
+  ...d,
+  is_default_config: d.is_default_config === true || d.is_default_config === "TRUE",
+  offset_estimated: d.offset_estimated === true || d.offset_estimated === "TRUE",
+  size_label: String(d.size_label),
+  label: `${d.brand} ${d.model}`
+}))
+
+bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+
+slotColours = ({A: "#2563a8", B: "#d2691e", C: "#2a9d8f"})
+categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
+
+configsFor = bike => Array.from(new Set(bikes.filter(d => d.label === bike).map(d => d.config)))
+defaultConfigFor = bike => (bikes.find(d => d.label === bike && d.is_default_config) ?? {}).config
+sizesFor = (bike, config) => bikes
+  .filter(d => d.label === bike && d.config === config)
+  .sort((a, b) => a.size_order - b.size_order)
+  .map(d => d.size_label)
+// middle size, rounding up, as a sensible starting point
+middleSize = sizes => sizes[Math.floor(sizes.length / 2)]
+rowFor = (bike, config, size) => bikes.find(d => d.label === bike && d.config === config && d.size_label === size)
+
+// Starting picks: one race, one adventure, one all-round bike
+starts = ({
+  A: {bike: "Specialized Crux 5", size: "56"},
+  B: {bike: "Norco Search C Gen 3", size: "3"},
+  C: {bike: "Trek Checkpoint SL Gen 3", size: "ML"}
+})
+```
+
+::: {.slot-grid}
+
+::: {.slot-card .slot-a}
+[[A]{.slot-badge} [Bike A]{.slot-title}]{.slot-head}
+
+```{ojs}
+viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: starts.A.bike})
+```
+
+```{ojs}
+viewof configA = Inputs.select(configsFor(bikeA), {
+  label: "Setting", value: defaultConfigFor(bikeA), disabled: configsFor(bikeA).length < 2
+})
+```
+
+```{ojs}
+viewof sizeA = {
+  const sizes = sizesFor(bikeA, configA);
+  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.A.size) ? starts.A.size : middleSize(sizes)});
+}
+```
+:::
+
+::: {.slot-card .slot-b}
+[[B]{.slot-badge} [Bike B]{.slot-title}]{.slot-head}
+
+```{ojs}
+viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: starts.B.bike})
+```
+
+```{ojs}
+viewof configB = Inputs.select(configsFor(bikeB), {
+  label: "Setting", value: defaultConfigFor(bikeB), disabled: configsFor(bikeB).length < 2
+})
+```
+
+```{ojs}
+viewof sizeB = {
+  const sizes = sizesFor(bikeB, configB);
+  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.B.size) ? starts.B.size : middleSize(sizes)});
+}
+```
+:::
+
+::: {.slot-card .slot-c}
+[[C]{.slot-badge} [Bike C]{.slot-title} [optional]{.slot-optional}]{.slot-head}
+
+```{ojs}
+viewof bikeC = Inputs.select(["(none)", ...bikeList], {label: "Bike", value: starts.C.bike})
+```
+
+```{ojs}
+viewof configC = bikeC === "(none)"
+  ? Inputs.select(["–"], {label: "Setting", disabled: true})
+  : Inputs.select(configsFor(bikeC), {label: "Setting", value: defaultConfigFor(bikeC), disabled: configsFor(bikeC).length < 2})
+```
+
+```{ojs}
+viewof sizeC = {
+  if (bikeC === "(none)") return Inputs.select(["–"], {label: "Size", disabled: true});
+  const sizes = sizesFor(bikeC, configC);
+  return Inputs.select(sizes, {label: "Size", value: sizes.includes(starts.C.size) ? starts.C.size : middleSize(sizes)});
+}
+```
+:::
+
+:::
+
+```{ojs}
+//| output: false
+picks = [
+  {slot: "A", row: rowFor(bikeA, configA, sizeA)},
+  {slot: "B", row: rowFor(bikeB, configB, sizeB)},
+  ...(bikeC === "(none)" ? [] : [{slot: "C", row: rowFor(bikeC, configC, sizeC)}])
+].filter(p => p.row)
+
+// Everything we compare, grouped, with a plain-language reading of "higher"
+measures = [
+  {group: "Fit", key: "stack", label: "Stack", unit: "mm", dp: 0, higher: "taller front end, more upright"},
+  {group: "Fit", key: "reach", label: "Reach", unit: "mm", dp: 0, higher: "longer front end, more stretched out"},
+  {group: "Fit", key: "stack_reach_ratio", label: "Stack/reach", unit: "", dp: 2, higher: "more upright overall"},
+  {group: "Fit", key: "head_tube_length", label: "Head tube", unit: "mm", dp: 0, higher: "higher handlebars before spacers"},
+  {group: "Fit", key: "seat_tube_angle", label: "Seat angle", unit: "°", dp: 1, higher: "saddle further forward over the pedals"},
+  {group: "Fit", key: "top_tube_effective", label: "Top tube (effective)", unit: "mm", dp: 0, higher: "longer cockpit"},
+  {group: "Fit", key: "standover", label: "Standover", unit: "mm", dp: 0, higher: "less room over the top tube (measured differently by each brand)"},
+  {group: "Handling", key: "head_tube_angle", label: "Head angle", unit: "°", dp: 1, higher: "steeper, quicker steering"},
+  {group: "Handling", key: "fork_offset_used", label: "Fork offset", unit: "mm", dp: 0, higher: "less trail for the same head angle"},
+  {group: "Handling", key: "trail_calc", label: "Trail (700 × 45)", unit: "mm", dp: 0, higher: "steadier, more self-centring steering"},
+  {group: "Handling", key: "wheelbase", label: "Wheelbase", unit: "mm", dp: 0, higher: "more stable, less nimble"},
+  {group: "Handling", key: "front_centre_calc", label: "Front centre", unit: "mm", dp: 0, higher: "front wheel further ahead of the pedals"},
+  {group: "Handling", key: "chainstay", label: "Chainstay", unit: "mm", dp: 0, higher: "steadier rear end, more tyre room"},
+  {group: "Handling", key: "bb_drop", label: "BB drop", unit: "mm", dp: 0, higher: "pedals sit lower between the wheels"},
+  {group: "Handling", key: "toe_clearance", label: "Toe clearance", unit: "mm", dp: 0, higher: "less chance of toe overlap"},
+  {group: "Tyres", key: "tyre_clearance_mm", label: "Max tyre width", unit: "mm", dp: 0, higher: "room for wider tyres"}
+]
+
+// Reference population for the strips: every size, default setting only
+population = bikes.filter(d => d.is_default_config)
+```
+
+```{ojs}
+legend = html`<div class="gg-legend">${picks.map(p => html`<span><span class="slot-dot" style="background:${slotColours[p.slot]}">${p.slot}</span>${p.row.label}, size ${p.row.size_label}${p.row.config === "standard" ? "" : ` (${p.row.config})`} · ${categoryNames[p.row.category]}</span>`)}</div>`
+```
+
+::: {.compare-wrap .column-page}
+```{ojs}
+compareTable = {
+  const fmt = (v, dp) => v == null || Number.isNaN(v) ? "–" : v.toFixed(dp);
+  const a = picks[0]?.row;
+
+  // Small strip: grey ticks for every size in the dataset, letters for the picks
+  const strip = m => {
+    const vals = population.map(d => d[m.key]).filter(v => v != null);
+    if (!vals.length) return "";
+    const lo = Math.min(...vals), hi = Math.max(...vals);
+    const W = 180, H = 34, pad = 9;
+    const x = v => pad + (hi === lo ? 0.5 : (v - lo) / (hi - lo)) * (W - 2 * pad);
+    const ticks = vals.map(v => `<line x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 4}" stroke="#9fb0bf" stroke-opacity="0.35"/>`).join("");
+    const marks = picks.map((p, i) => {
+      const v = p.row[m.key];
+      if (v == null) return "";
+      const cy = 9 + i * 8;
+      return `<circle cx="${x(v)}" cy="${cy}" r="6" fill="${slotColours[p.slot]}" stroke="#fff" stroke-width="1.5"/>
+              <text x="${x(v)}" y="${cy + 3}" text-anchor="middle" font-size="8" font-weight="700" fill="#fff">${p.slot}</text>`;
+    }).join("");
+    return `<svg class="strip" width="${W}" height="${H}" role="img" aria-label="Where each bike sits among all ${vals.length} sizes, from ${fmt(lo, m.dp)} to ${fmt(hi, m.dp)}">${ticks}${marks}</svg>
+            <div class="strip-ends"><span>${fmt(lo, m.dp)}</span><span>${fmt(hi, m.dp)}</span></div>`;
+  };
+
+  const head = `<tr><th>Measure</th>${picks.map(p =>
+    `<th class="num"><span class="slot-dot" style="background:${slotColours[p.slot]}">${p.slot}</span></th>`).join("")}<th class="strip-head">Among all ${population.length} sizes</th></tr>`;
+
+  let lastGroup = "";
+  const body = measures.map(m => {
+    const groupRow = m.group !== lastGroup ? `<tr class="group-row"><th colspan="${picks.length + 2}">${m.group}</th></tr>` : "";
+    lastGroup = m.group;
+    const cells = picks.map((p, i) => {
+      const v = p.row[m.key];
+      let diff = "";
+      if (i > 0 && a && v != null && a[m.key] != null) {
+        const d = v - a[m.key];
+        const shown = d.toFixed(m.dp);
+        if (Number(shown) !== 0) diff = `<span class="diff">${d > 0 ? "+" : ""}${shown}</span>`;
+      }
+      const est = m.key === "fork_offset_used" && p.row.offset_estimated ? `<span class="est" title="Estimated from the wheelbase">est.</span>` : "";
+      return `<td class="num">${fmt(v, m.dp)}${m.unit && v != null ? `<span class="unit">${m.unit}</span>` : ""}${est}${diff}</td>`;
+    }).join("");
+    return `${groupRow}<tr><th scope="row" title="Higher means: ${m.higher}">${m.label}<div class="higher">Higher: ${m.higher}</div></th>${cells}<td class="strip-cell">${strip(m)}</td></tr>`;
+  }).join("");
+
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table"><thead>${head}</thead><tbody>${body}</tbody></table>`;
+  return el;
+}
+```
+:::
+
+[Differences are shown against bike A. "est." marks a fork offset this site estimated because the manufacturer doesn't publish it. Standover and seat tube length are measured differently by each brand, so compare them with care.]{.data-note}
+
+## What stands out
+
+```{ojs}
+summary = {
+  if (picks.length < 2) return md`Pick at least two bikes.`;
+  const a = picks[0].row;
+  const name = p => `**${p.slot}** (${p.row.label}, size ${p.row.size_label})`;
+  const lines = [];
+  const listJoin = xs => xs.length < 3 ? xs.join(" and ") : `${xs.slice(0, -1).join(", ")}, and ${xs.at(-1)}`;
+  for (const p of picks.slice(1)) {
+    const b = p.row, out = [];
+    const d = k => (b[k] ?? NaN) - (a[k] ?? NaN);
+    const say = (k, tol, more, less, unit = " mm", dp = 0) => {
+      const v = d(k);
+      if (Number.isNaN(v) || Math.abs(v) < tol) return;
+      out.push(`${Math.abs(v).toFixed(dp)}${unit} ${v > 0 ? more : less}`);
+    };
+    say("stack", 10, "more stack (a taller front end)", "less stack (a lower front end)");
+    say("reach", 8, "more reach (a longer front end)", "less reach (a shorter front end)");
+    say("trail_calc", 5, "more trail (steadier steering)", "less trail (quicker steering)");
+    say("head_tube_angle", 0.75, "steeper head angle", "slacker head angle", "°", 1);
+    say("wheelbase", 15, "longer wheelbase", "shorter wheelbase");
+    say("chainstay", 8, "longer chainstays", "shorter chainstays");
+    say("bb_drop", 5, "more BB drop (sits lower between the wheels)", "less BB drop (sits higher)");
+    say("tyre_clearance_mm", 3, "more tyre room", "less tyre room");
+    lines.push(out.length
+      ? `- Compared with **A**, ${name(p)} has ${listJoin(out)}.`
+      : `- ${name(p)} is within a few millimetres of **A** on every main measure.`);
+  }
+  for (const p of picks) {
+    if (p.row.toe_clearance != null && p.row.toe_clearance < 90)
+      lines.push(`- ${name(p)} has ${p.row.toe_clearance.toFixed(0)} mm between pedal and tyre, so toe overlap is likely in tight turns.`);
+  }
+  return md`${lines.join("\n")}`;
+}
+```
+
+These sentences only flag differences big enough to notice on the road: at least 10 mm of stack, 8 mm of reach, 5 mm of trail, or 0.75° of head angle. The thresholds are rules of thumb, not standards.

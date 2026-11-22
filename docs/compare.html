@@ -1,0 +1,1152 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Put two or three gravel bikes side by side, size by size, and see what actually differs.">
+
+<title>Compare bikes – Gravel geometry explorer</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-b4b2eb587336bb7cd463892286a2e50d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-2b16004eb5d41a67c6017a54f7cd1729.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b4b2eb587336bb7cd463892286a2e50d.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Gravel geometry explorer</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./explore.html"> 
+<span class="menu-text">Explore</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./compare.html" aria-current="page"> 
+<span class="menu-text">Compare</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/emmabranch/gravel-geometry"> <i class="bi bi-github" role="img" aria-label="Code on GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Compare bikes</h1>
+</div>
+
+<div>
+  <div class="description">
+    Put two or three gravel bikes side by side, size by size, and see what actually differs.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Pick up to three bikes and a size for each. The table lines up their numbers, shows how each one differs from bike A, and places all three among every size of every bike in the dataset.</p>
+<div class="cell hidden">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="10" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 9;"><span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/gravel_geometry_derived.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({<span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span>})</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>bikes <span class="op">=</span> raw<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>d<span class="op">,</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">is_default_config</span><span class="op">:</span> d<span class="op">.</span><span class="at">is_default_config</span> <span class="op">===</span> <span class="kw">true</span> <span class="op">||</span> d<span class="op">.</span><span class="at">is_default_config</span> <span class="op">===</span> <span class="st">"TRUE"</span><span class="op">,</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">offset_estimated</span><span class="op">:</span> d<span class="op">.</span><span class="at">offset_estimated</span> <span class="op">===</span> <span class="kw">true</span> <span class="op">||</span> d<span class="op">.</span><span class="at">offset_estimated</span> <span class="op">===</span> <span class="st">"TRUE"</span><span class="op">,</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">size_label</span><span class="op">:</span> <span class="bu">String</span>(d<span class="op">.</span><span class="at">size_label</span>)<span class="op">,</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">brand</span><span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">model</span><span class="sc">}</span><span class="vs">`</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>bikeList <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(bikes<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span>)))<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="fu">localeCompare</span>(b))</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>slotColours <span class="op">=</span> ({<span class="dt">A</span><span class="op">:</span> <span class="st">"#2563a8"</span><span class="op">,</span> <span class="dt">B</span><span class="op">:</span> <span class="st">"#d2691e"</span><span class="op">,</span> <span class="dt">C</span><span class="op">:</span> <span class="st">"#2a9d8f"</span>})</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>categoryNames <span class="op">=</span> ({<span class="st">"race"</span><span class="op">:</span> <span class="st">"Race"</span><span class="op">,</span> <span class="st">"all-round"</span><span class="op">:</span> <span class="st">"All-round"</span><span class="op">,</span> <span class="st">"adventure"</span><span class="op">:</span> <span class="st">"Adventure"</span>})</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>configsFor <span class="op">=</span> bike <span class="kw">=&gt;</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(<span class="kw">new</span> <span class="bu">Set</span>(bikes<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span> <span class="op">===</span> bike)<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">config</span>)))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>defaultConfigFor <span class="op">=</span> bike <span class="kw">=&gt;</span> (bikes<span class="op">.</span><span class="fu">find</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span> <span class="op">===</span> bike <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">is_default_config</span>) <span class="op">??</span> {})<span class="op">.</span><span class="at">config</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>sizesFor <span class="op">=</span> (bike<span class="op">,</span> config) <span class="kw">=&gt;</span> bikes</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span> <span class="op">===</span> bike <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">config</span> <span class="op">===</span> config)</span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">size_order</span> <span class="op">-</span> b<span class="op">.</span><span class="at">size_order</span>)</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">size_label</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co">// middle size, rounding up, as a sensible starting point</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>middleSize <span class="op">=</span> sizes <span class="kw">=&gt;</span> sizes[<span class="bu">Math</span><span class="op">.</span><span class="fu">floor</span>(sizes<span class="op">.</span><span class="at">length</span> <span class="op">/</span> <span class="dv">2</span>)]</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>rowFor <span class="op">=</span> (bike<span class="op">,</span> config<span class="op">,</span> size) <span class="kw">=&gt;</span> bikes<span class="op">.</span><span class="fu">find</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">label</span> <span class="op">===</span> bike <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">config</span> <span class="op">===</span> config <span class="op">&amp;&amp;</span> d<span class="op">.</span><span class="at">size_label</span> <span class="op">===</span> size)</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a><span class="co">// Starting picks: one race, one adventure, one all-round bike</span></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>starts <span class="op">=</span> ({</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">A</span><span class="op">:</span> {<span class="dt">bike</span><span class="op">:</span> <span class="st">"Specialized Crux 5"</span><span class="op">,</span> <span class="dt">size</span><span class="op">:</span> <span class="st">"56"</span>}<span class="op">,</span></span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">B</span><span class="op">:</span> {<span class="dt">bike</span><span class="op">:</span> <span class="st">"Norco Search C Gen 3"</span><span class="op">,</span> <span class="dt">size</span><span class="op">:</span> <span class="st">"3"</span>}<span class="op">,</span></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  <span class="dt">C</span><span class="op">:</span> {<span class="dt">bike</span><span class="op">:</span> <span class="st">"Trek Checkpoint SL Gen 3"</span><span class="op">,</span> <span class="dt">size</span><span class="op">:</span> <span class="st">"ML"</span>}</span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-11" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="slot-grid">
+<div class="slot-card slot-a">
+<p><span class="slot-head"><span class="slot-badge">A</span> <span class="slot-title">Bike A</span></span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="48" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 47;"><span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>viewof bikeA <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(bikeList<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Bike"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> starts<span class="op">.</span><span class="at">A</span><span class="op">.</span><span class="at">bike</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb3" data-startfrom="52" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 51;"><span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>viewof configA <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="fu">configsFor</span>(bikeA)<span class="op">,</span> {</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Setting"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fu">defaultConfigFor</span>(bikeA)<span class="op">,</span> <span class="dt">disabled</span><span class="op">:</span> <span class="fu">configsFor</span>(bikeA)<span class="op">.</span><span class="at">length</span> <span class="op">&lt;</span> <span class="dv">2</span></span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb4" data-startfrom="58" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 57;"><span id="cb4-58"><a href="#cb4-58" aria-hidden="true" tabindex="-1"></a>viewof sizeA <span class="op">=</span> {</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sizes <span class="op">=</span> <span class="fu">sizesFor</span>(bikeA<span class="op">,</span> configA)<span class="op">;</span></span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Inputs<span class="op">.</span><span class="fu">select</span>(sizes<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Size"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> sizes<span class="op">.</span><span class="fu">includes</span>(starts<span class="op">.</span><span class="at">A</span><span class="op">.</span><span class="at">size</span>) <span class="op">?</span> starts<span class="op">.</span><span class="at">A</span><span class="op">.</span><span class="at">size</span> <span class="op">:</span> <span class="fu">middleSize</span>(sizes)})<span class="op">;</span></span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-4" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="slot-card slot-b">
+<p><span class="slot-head"><span class="slot-badge">B</span> <span class="slot-title">Bike B</span></span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb5" data-startfrom="69" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 68;"><span id="cb5-69"><a href="#cb5-69" aria-hidden="true" tabindex="-1"></a>viewof bikeB <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(bikeList<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Bike"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> starts<span class="op">.</span><span class="at">B</span><span class="op">.</span><span class="at">bike</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-5" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb6" data-startfrom="73" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb6-73"><a href="#cb6-73" aria-hidden="true" tabindex="-1"></a>viewof configB <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="fu">configsFor</span>(bikeB)<span class="op">,</span> {</span>
+<span id="cb6-74"><a href="#cb6-74" aria-hidden="true" tabindex="-1"></a>  <span class="dt">label</span><span class="op">:</span> <span class="st">"Setting"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fu">defaultConfigFor</span>(bikeB)<span class="op">,</span> <span class="dt">disabled</span><span class="op">:</span> <span class="fu">configsFor</span>(bikeB)<span class="op">.</span><span class="at">length</span> <span class="op">&lt;</span> <span class="dv">2</span></span>
+<span id="cb6-75"><a href="#cb6-75" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-6" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb7" data-startfrom="79" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 78;"><span id="cb7-79"><a href="#cb7-79" aria-hidden="true" tabindex="-1"></a>viewof sizeB <span class="op">=</span> {</span>
+<span id="cb7-80"><a href="#cb7-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sizes <span class="op">=</span> <span class="fu">sizesFor</span>(bikeB<span class="op">,</span> configB)<span class="op">;</span></span>
+<span id="cb7-81"><a href="#cb7-81" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Inputs<span class="op">.</span><span class="fu">select</span>(sizes<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Size"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> sizes<span class="op">.</span><span class="fu">includes</span>(starts<span class="op">.</span><span class="at">B</span><span class="op">.</span><span class="at">size</span>) <span class="op">?</span> starts<span class="op">.</span><span class="at">B</span><span class="op">.</span><span class="at">size</span> <span class="op">:</span> <span class="fu">middleSize</span>(sizes)})<span class="op">;</span></span>
+<span id="cb7-82"><a href="#cb7-82" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-7" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="slot-card slot-c">
+<p><span class="slot-head"><span class="slot-badge">C</span> <span class="slot-title">Bike C</span> <span class="slot-optional">optional</span></span></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb8" data-startfrom="90" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 89;"><span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>viewof bikeC <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"(none)"</span><span class="op">,</span> <span class="op">...</span>bikeList]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Bike"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> starts<span class="op">.</span><span class="at">C</span><span class="op">.</span><span class="at">bike</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-8" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb9" data-startfrom="94" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 93;"><span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>viewof configC <span class="op">=</span> bikeC <span class="op">===</span> <span class="st">"(none)"</span></span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>  <span class="op">?</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"–"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Setting"</span><span class="op">,</span> <span class="dt">disabled</span><span class="op">:</span> <span class="kw">true</span>})</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a>  <span class="op">:</span> Inputs<span class="op">.</span><span class="fu">select</span>(<span class="fu">configsFor</span>(bikeC)<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Setting"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> <span class="fu">defaultConfigFor</span>(bikeC)<span class="op">,</span> <span class="dt">disabled</span><span class="op">:</span> <span class="fu">configsFor</span>(bikeC)<span class="op">.</span><span class="at">length</span> <span class="op">&lt;</span> <span class="dv">2</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-9" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb10" data-startfrom="100" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 99;"><span id="cb10-100"><a href="#cb10-100" aria-hidden="true" tabindex="-1"></a>viewof sizeC <span class="op">=</span> {</span>
+<span id="cb10-101"><a href="#cb10-101" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (bikeC <span class="op">===</span> <span class="st">"(none)"</span>) <span class="cf">return</span> Inputs<span class="op">.</span><span class="fu">select</span>([<span class="st">"–"</span>]<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Size"</span><span class="op">,</span> <span class="dt">disabled</span><span class="op">:</span> <span class="kw">true</span>})<span class="op">;</span></span>
+<span id="cb10-102"><a href="#cb10-102" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> sizes <span class="op">=</span> <span class="fu">sizesFor</span>(bikeC<span class="op">,</span> configC)<span class="op">;</span></span>
+<span id="cb10-103"><a href="#cb10-103" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> Inputs<span class="op">.</span><span class="fu">select</span>(sizes<span class="op">,</span> {<span class="dt">label</span><span class="op">:</span> <span class="st">"Size"</span><span class="op">,</span> <span class="dt">value</span><span class="op">:</span> sizes<span class="op">.</span><span class="fu">includes</span>(starts<span class="op">.</span><span class="at">C</span><span class="op">.</span><span class="at">size</span>) <span class="op">?</span> starts<span class="op">.</span><span class="at">C</span><span class="op">.</span><span class="at">size</span> <span class="op">:</span> <span class="fu">middleSize</span>(sizes)})<span class="op">;</span></span>
+<span id="cb10-104"><a href="#cb10-104" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-10" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="cell hidden">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb11" data-startfrom="113" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 112;"><span id="cb11-113"><a href="#cb11-113" aria-hidden="true" tabindex="-1"></a>picks <span class="op">=</span> [</span>
+<span id="cb11-114"><a href="#cb11-114" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">slot</span><span class="op">:</span> <span class="st">"A"</span><span class="op">,</span> <span class="dt">row</span><span class="op">:</span> <span class="fu">rowFor</span>(bikeA<span class="op">,</span> configA<span class="op">,</span> sizeA)}<span class="op">,</span></span>
+<span id="cb11-115"><a href="#cb11-115" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">slot</span><span class="op">:</span> <span class="st">"B"</span><span class="op">,</span> <span class="dt">row</span><span class="op">:</span> <span class="fu">rowFor</span>(bikeB<span class="op">,</span> configB<span class="op">,</span> sizeB)}<span class="op">,</span></span>
+<span id="cb11-116"><a href="#cb11-116" aria-hidden="true" tabindex="-1"></a>  <span class="op">...</span>(bikeC <span class="op">===</span> <span class="st">"(none)"</span> <span class="op">?</span> [] <span class="op">:</span> [{<span class="dt">slot</span><span class="op">:</span> <span class="st">"C"</span><span class="op">,</span> <span class="dt">row</span><span class="op">:</span> <span class="fu">rowFor</span>(bikeC<span class="op">,</span> configC<span class="op">,</span> sizeC)}])</span>
+<span id="cb11-117"><a href="#cb11-117" aria-hidden="true" tabindex="-1"></a>]<span class="op">.</span><span class="fu">filter</span>(p <span class="kw">=&gt;</span> p<span class="op">.</span><span class="at">row</span>)</span>
+<span id="cb11-118"><a href="#cb11-118" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-119"><a href="#cb11-119" aria-hidden="true" tabindex="-1"></a><span class="co">// Everything we compare, grouped, with a plain-language reading of "higher"</span></span>
+<span id="cb11-120"><a href="#cb11-120" aria-hidden="true" tabindex="-1"></a>measures <span class="op">=</span> [</span>
+<span id="cb11-121"><a href="#cb11-121" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"stack"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Stack"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"taller front end, more upright"</span>}<span class="op">,</span></span>
+<span id="cb11-122"><a href="#cb11-122" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"reach"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Reach"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"longer front end, more stretched out"</span>}<span class="op">,</span></span>
+<span id="cb11-123"><a href="#cb11-123" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"stack_reach_ratio"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Stack/reach"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">""</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"more upright overall"</span>}<span class="op">,</span></span>
+<span id="cb11-124"><a href="#cb11-124" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"head_tube_length"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Head tube"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"higher handlebars before spacers"</span>}<span class="op">,</span></span>
+<span id="cb11-125"><a href="#cb11-125" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"seat_tube_angle"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Seat angle"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"°"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"saddle further forward over the pedals"</span>}<span class="op">,</span></span>
+<span id="cb11-126"><a href="#cb11-126" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"top_tube_effective"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Top tube (effective)"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"longer cockpit"</span>}<span class="op">,</span></span>
+<span id="cb11-127"><a href="#cb11-127" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Fit"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"standover"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Standover"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"less room over the top tube (measured differently by each brand)"</span>}<span class="op">,</span></span>
+<span id="cb11-128"><a href="#cb11-128" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"head_tube_angle"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Head angle"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"°"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"steeper, quicker steering"</span>}<span class="op">,</span></span>
+<span id="cb11-129"><a href="#cb11-129" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"fork_offset_used"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Fork offset"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"less trail for the same head angle"</span>}<span class="op">,</span></span>
+<span id="cb11-130"><a href="#cb11-130" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"trail_calc"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Trail (700 × 45)"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"steadier, more self-centring steering"</span>}<span class="op">,</span></span>
+<span id="cb11-131"><a href="#cb11-131" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"wheelbase"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Wheelbase"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"more stable, less nimble"</span>}<span class="op">,</span></span>
+<span id="cb11-132"><a href="#cb11-132" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"front_centre_calc"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Front centre"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"front wheel further ahead of the pedals"</span>}<span class="op">,</span></span>
+<span id="cb11-133"><a href="#cb11-133" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"chainstay"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Chainstay"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"steadier rear end, more tyre room"</span>}<span class="op">,</span></span>
+<span id="cb11-134"><a href="#cb11-134" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"bb_drop"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"BB drop"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"pedals sit lower between the wheels"</span>}<span class="op">,</span></span>
+<span id="cb11-135"><a href="#cb11-135" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Handling"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"toe_clearance"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Toe clearance"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"less chance of toe overlap"</span>}<span class="op">,</span></span>
+<span id="cb11-136"><a href="#cb11-136" aria-hidden="true" tabindex="-1"></a>  {<span class="dt">group</span><span class="op">:</span> <span class="st">"Tyres"</span><span class="op">,</span> <span class="dt">key</span><span class="op">:</span> <span class="st">"tyre_clearance_mm"</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Max tyre width"</span><span class="op">,</span> <span class="dt">unit</span><span class="op">:</span> <span class="st">"mm"</span><span class="op">,</span> <span class="dt">dp</span><span class="op">:</span> <span class="dv">0</span><span class="op">,</span> <span class="dt">higher</span><span class="op">:</span> <span class="st">"room for wider tyres"</span>}</span>
+<span id="cb11-137"><a href="#cb11-137" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb11-138"><a href="#cb11-138" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-139"><a href="#cb11-139" aria-hidden="true" tabindex="-1"></a><span class="co">// Reference population for the strips: every size, default setting only</span></span>
+<span id="cb11-140"><a href="#cb11-140" aria-hidden="true" tabindex="-1"></a>population <span class="op">=</span> bikes<span class="op">.</span><span class="fu">filter</span>(d <span class="kw">=&gt;</span> d<span class="op">.</span><span class="at">is_default_config</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-11-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-11-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-11-3" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb12" data-startfrom="143" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 142;"><span id="cb12-143"><a href="#cb12-143" aria-hidden="true" tabindex="-1"></a>legend <span class="op">=</span> <span class="fu">html</span><span class="vs">`&lt;div class="gg-legend"&gt;</span><span class="sc">${</span>picks<span class="op">.</span><span class="fu">map</span>(p <span class="kw">=&gt;</span> <span class="fu">html</span><span class="vs">`&lt;span&gt;&lt;span class="slot-dot" style="background:</span><span class="sc">${</span>slotColours[p<span class="op">.</span><span class="at">slot</span>]<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">slot</span><span class="sc">}</span><span class="vs">&lt;/span&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">, size </span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">size_label</span><span class="sc">}${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">config</span> <span class="op">===</span> <span class="st">"standard"</span> <span class="op">?</span> <span class="st">""</span> <span class="op">:</span> <span class="vs">` (</span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">config</span><span class="sc">}</span><span class="vs">)`</span><span class="sc">}</span><span class="vs"> · </span><span class="sc">${</span>categoryNames[p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">category</span>]<span class="sc">}</span><span class="vs">&lt;/span&gt;`</span>)<span class="sc">}</span><span class="vs">&lt;/div&gt;`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-12" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="compare-wrap column-page">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb13" data-startfrom="148" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 147;"><span id="cb13-148"><a href="#cb13-148" aria-hidden="true" tabindex="-1"></a>compareTable <span class="op">=</span> {</span>
+<span id="cb13-149"><a href="#cb13-149" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> fmt <span class="op">=</span> (v<span class="op">,</span> dp) <span class="kw">=&gt;</span> v <span class="op">==</span> <span class="kw">null</span> <span class="op">||</span> <span class="bu">Number</span><span class="op">.</span><span class="fu">isNaN</span>(v) <span class="op">?</span> <span class="st">"–"</span> <span class="op">:</span> v<span class="op">.</span><span class="fu">toFixed</span>(dp)<span class="op">;</span></span>
+<span id="cb13-150"><a href="#cb13-150" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> picks[<span class="dv">0</span>]<span class="op">?.</span><span class="at">row</span><span class="op">;</span></span>
+<span id="cb13-151"><a href="#cb13-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-152"><a href="#cb13-152" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Small strip: grey ticks for every size in the dataset, letters for the picks</span></span>
+<span id="cb13-153"><a href="#cb13-153" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> strip <span class="op">=</span> m <span class="kw">=&gt;</span> {</span>
+<span id="cb13-154"><a href="#cb13-154" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> vals <span class="op">=</span> population<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> d[m<span class="op">.</span><span class="at">key</span>])<span class="op">.</span><span class="fu">filter</span>(v <span class="kw">=&gt;</span> v <span class="op">!=</span> <span class="kw">null</span>)<span class="op">;</span></span>
+<span id="cb13-155"><a href="#cb13-155" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="op">!</span>vals<span class="op">.</span><span class="at">length</span>) <span class="cf">return</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-156"><a href="#cb13-156" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> lo <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">min</span>(<span class="op">...</span>vals)<span class="op">,</span> hi <span class="op">=</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">max</span>(<span class="op">...</span>vals)<span class="op">;</span></span>
+<span id="cb13-157"><a href="#cb13-157" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> W <span class="op">=</span> <span class="dv">180</span><span class="op">,</span> H <span class="op">=</span> <span class="dv">34</span><span class="op">,</span> pad <span class="op">=</span> <span class="dv">9</span><span class="op">;</span></span>
+<span id="cb13-158"><a href="#cb13-158" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> x <span class="op">=</span> v <span class="kw">=&gt;</span> pad <span class="op">+</span> (hi <span class="op">===</span> lo <span class="op">?</span> <span class="fl">0.5</span> <span class="op">:</span> (v <span class="op">-</span> lo) <span class="op">/</span> (hi <span class="op">-</span> lo)) <span class="op">*</span> (W <span class="op">-</span> <span class="dv">2</span> <span class="op">*</span> pad)<span class="op">;</span></span>
+<span id="cb13-159"><a href="#cb13-159" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> ticks <span class="op">=</span> vals<span class="op">.</span><span class="fu">map</span>(v <span class="kw">=&gt;</span> <span class="vs">`&lt;line x1="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" x2="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y1="4" y2="</span><span class="sc">${</span>H <span class="op">-</span> <span class="dv">4</span><span class="sc">}</span><span class="vs">" stroke="#9fb0bf" stroke-opacity="0.35"/&gt;`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="op">;</span></span>
+<span id="cb13-160"><a href="#cb13-160" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> marks <span class="op">=</span> picks<span class="op">.</span><span class="fu">map</span>((p<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb13-161"><a href="#cb13-161" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> v <span class="op">=</span> p<span class="op">.</span><span class="at">row</span>[m<span class="op">.</span><span class="at">key</span>]<span class="op">;</span></span>
+<span id="cb13-162"><a href="#cb13-162" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (v <span class="op">==</span> <span class="kw">null</span>) <span class="cf">return</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-163"><a href="#cb13-163" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> cy <span class="op">=</span> <span class="dv">9</span> <span class="op">+</span> i <span class="op">*</span> <span class="dv">8</span><span class="op">;</span></span>
+<span id="cb13-164"><a href="#cb13-164" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="vs">`&lt;circle cx="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" cy="</span><span class="sc">${</span>cy<span class="sc">}</span><span class="vs">" r="6" fill="</span><span class="sc">${</span>slotColours[p<span class="op">.</span><span class="at">slot</span>]<span class="sc">}</span><span class="vs">" stroke="#fff" stroke-width="1.5"/&gt;</span></span>
+<span id="cb13-165"><a href="#cb13-165" aria-hidden="true" tabindex="-1"></a><span class="vs">              &lt;text x="</span><span class="sc">${</span><span class="fu">x</span>(v)<span class="sc">}</span><span class="vs">" y="</span><span class="sc">${</span>cy <span class="op">+</span> <span class="dv">3</span><span class="sc">}</span><span class="vs">" text-anchor="middle" font-size="8" font-weight="700" fill="#fff"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">slot</span><span class="sc">}</span><span class="vs">&lt;/text&gt;`</span><span class="op">;</span></span>
+<span id="cb13-166"><a href="#cb13-166" aria-hidden="true" tabindex="-1"></a>    })<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="op">;</span></span>
+<span id="cb13-167"><a href="#cb13-167" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">`&lt;svg class="strip" width="</span><span class="sc">${</span>W<span class="sc">}</span><span class="vs">" height="</span><span class="sc">${</span>H<span class="sc">}</span><span class="vs">" role="img" aria-label="Where each bike sits among all </span><span class="sc">${</span>vals<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> sizes, from </span><span class="sc">${</span><span class="fu">fmt</span>(lo<span class="op">,</span> m<span class="op">.</span><span class="at">dp</span>)<span class="sc">}</span><span class="vs"> to </span><span class="sc">${</span><span class="fu">fmt</span>(hi<span class="op">,</span> m<span class="op">.</span><span class="at">dp</span>)<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>ticks<span class="sc">}${</span>marks<span class="sc">}</span><span class="vs">&lt;/svg&gt;</span></span>
+<span id="cb13-168"><a href="#cb13-168" aria-hidden="true" tabindex="-1"></a><span class="vs">            &lt;div class="strip-ends"&gt;&lt;span&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(lo<span class="op">,</span> m<span class="op">.</span><span class="at">dp</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;span&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(hi<span class="op">,</span> m<span class="op">.</span><span class="at">dp</span>)<span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/div&gt;`</span><span class="op">;</span></span>
+<span id="cb13-169"><a href="#cb13-169" aria-hidden="true" tabindex="-1"></a>  }<span class="op">;</span></span>
+<span id="cb13-170"><a href="#cb13-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-171"><a href="#cb13-171" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> head <span class="op">=</span> <span class="vs">`&lt;tr&gt;&lt;th&gt;Measure&lt;/th&gt;</span><span class="sc">${</span>picks<span class="op">.</span><span class="fu">map</span>(p <span class="kw">=&gt;</span></span>
+<span id="cb13-172"><a href="#cb13-172" aria-hidden="true" tabindex="-1"></a>    <span class="vs">`&lt;th class="num"&gt;&lt;span class="slot-dot" style="background:</span><span class="sc">${</span>slotColours[p<span class="op">.</span><span class="at">slot</span>]<span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>p<span class="op">.</span><span class="at">slot</span><span class="sc">}</span><span class="vs">&lt;/span&gt;&lt;/th&gt;`</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="sc">}</span><span class="vs">&lt;th class="strip-head"&gt;Among all </span><span class="sc">${</span>population<span class="op">.</span><span class="at">length</span><span class="sc">}</span><span class="vs"> sizes&lt;/th&gt;&lt;/tr&gt;`</span><span class="op">;</span></span>
+<span id="cb13-173"><a href="#cb13-173" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-174"><a href="#cb13-174" aria-hidden="true" tabindex="-1"></a>  <span class="kw">let</span> lastGroup <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-175"><a href="#cb13-175" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> body <span class="op">=</span> measures<span class="op">.</span><span class="fu">map</span>(m <span class="kw">=&gt;</span> {</span>
+<span id="cb13-176"><a href="#cb13-176" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> groupRow <span class="op">=</span> m<span class="op">.</span><span class="at">group</span> <span class="op">!==</span> lastGroup <span class="op">?</span> <span class="vs">`&lt;tr class="group-row"&gt;&lt;th colspan="</span><span class="sc">${</span>picks<span class="op">.</span><span class="at">length</span> <span class="op">+</span> <span class="dv">2</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>m<span class="op">.</span><span class="at">group</span><span class="sc">}</span><span class="vs">&lt;/th&gt;&lt;/tr&gt;`</span> <span class="op">:</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-177"><a href="#cb13-177" aria-hidden="true" tabindex="-1"></a>    lastGroup <span class="op">=</span> m<span class="op">.</span><span class="at">group</span><span class="op">;</span></span>
+<span id="cb13-178"><a href="#cb13-178" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> cells <span class="op">=</span> picks<span class="op">.</span><span class="fu">map</span>((p<span class="op">,</span> i) <span class="kw">=&gt;</span> {</span>
+<span id="cb13-179"><a href="#cb13-179" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> v <span class="op">=</span> p<span class="op">.</span><span class="at">row</span>[m<span class="op">.</span><span class="at">key</span>]<span class="op">;</span></span>
+<span id="cb13-180"><a href="#cb13-180" aria-hidden="true" tabindex="-1"></a>      <span class="kw">let</span> diff <span class="op">=</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-181"><a href="#cb13-181" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (i <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">&amp;&amp;</span> a <span class="op">&amp;&amp;</span> v <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> a[m<span class="op">.</span><span class="at">key</span>] <span class="op">!=</span> <span class="kw">null</span>) {</span>
+<span id="cb13-182"><a href="#cb13-182" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> d <span class="op">=</span> v <span class="op">-</span> a[m<span class="op">.</span><span class="at">key</span>]<span class="op">;</span></span>
+<span id="cb13-183"><a href="#cb13-183" aria-hidden="true" tabindex="-1"></a>        <span class="kw">const</span> shown <span class="op">=</span> d<span class="op">.</span><span class="fu">toFixed</span>(m<span class="op">.</span><span class="at">dp</span>)<span class="op">;</span></span>
+<span id="cb13-184"><a href="#cb13-184" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="bu">Number</span>(shown) <span class="op">!==</span> <span class="dv">0</span>) diff <span class="op">=</span> <span class="vs">`&lt;span class="diff"&gt;</span><span class="sc">${</span>d <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> <span class="st">"+"</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}${</span>shown<span class="sc">}</span><span class="vs">&lt;/span&gt;`</span><span class="op">;</span></span>
+<span id="cb13-185"><a href="#cb13-185" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb13-186"><a href="#cb13-186" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> est <span class="op">=</span> m<span class="op">.</span><span class="at">key</span> <span class="op">===</span> <span class="st">"fork_offset_used"</span> <span class="op">&amp;&amp;</span> p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">offset_estimated</span> <span class="op">?</span> <span class="vs">`&lt;span class="est" title="Estimated from the wheelbase"&gt;est.&lt;/span&gt;`</span> <span class="op">:</span> <span class="st">""</span><span class="op">;</span></span>
+<span id="cb13-187"><a href="#cb13-187" aria-hidden="true" tabindex="-1"></a>      <span class="cf">return</span> <span class="vs">`&lt;td class="num"&gt;</span><span class="sc">${</span><span class="fu">fmt</span>(v<span class="op">,</span> m<span class="op">.</span><span class="at">dp</span>)<span class="sc">}${</span>m<span class="op">.</span><span class="at">unit</span> <span class="op">&amp;&amp;</span> v <span class="op">!=</span> <span class="kw">null</span> <span class="op">?</span> <span class="vs">`&lt;span class="unit"&gt;</span><span class="sc">${</span>m<span class="op">.</span><span class="at">unit</span><span class="sc">}</span><span class="vs">&lt;/span&gt;`</span> <span class="op">:</span> <span class="st">""</span><span class="sc">}${</span>est<span class="sc">}${</span>diff<span class="sc">}</span><span class="vs">&lt;/td&gt;`</span><span class="op">;</span></span>
+<span id="cb13-188"><a href="#cb13-188" aria-hidden="true" tabindex="-1"></a>    })<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="op">;</span></span>
+<span id="cb13-189"><a href="#cb13-189" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> <span class="vs">`</span><span class="sc">${</span>groupRow<span class="sc">}</span><span class="vs">&lt;tr&gt;&lt;th scope="row" title="Higher means: </span><span class="sc">${</span>m<span class="op">.</span><span class="at">higher</span><span class="sc">}</span><span class="vs">"&gt;</span><span class="sc">${</span>m<span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">&lt;div class="higher"&gt;Higher: </span><span class="sc">${</span>m<span class="op">.</span><span class="at">higher</span><span class="sc">}</span><span class="vs">&lt;/div&gt;&lt;/th&gt;</span><span class="sc">${</span>cells<span class="sc">}</span><span class="vs">&lt;td class="strip-cell"&gt;</span><span class="sc">${</span><span class="fu">strip</span>(m)<span class="sc">}</span><span class="vs">&lt;/td&gt;&lt;/tr&gt;`</span><span class="op">;</span></span>
+<span id="cb13-190"><a href="#cb13-190" aria-hidden="true" tabindex="-1"></a>  })<span class="op">.</span><span class="fu">join</span>(<span class="st">""</span>)<span class="op">;</span></span>
+<span id="cb13-191"><a href="#cb13-191" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-192"><a href="#cb13-192" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> el <span class="op">=</span> <span class="bu">document</span><span class="op">.</span><span class="fu">createElement</span>(<span class="st">"div"</span>)<span class="op">;</span></span>
+<span id="cb13-193"><a href="#cb13-193" aria-hidden="true" tabindex="-1"></a>  el<span class="op">.</span><span class="at">className</span> <span class="op">=</span> <span class="st">"compare-scroll"</span><span class="op">;</span></span>
+<span id="cb13-194"><a href="#cb13-194" aria-hidden="true" tabindex="-1"></a>  el<span class="op">.</span><span class="at">innerHTML</span> <span class="op">=</span> <span class="vs">`&lt;table class="compare-table"&gt;&lt;thead&gt;</span><span class="sc">${</span>head<span class="sc">}</span><span class="vs">&lt;/thead&gt;&lt;tbody&gt;</span><span class="sc">${</span>body<span class="sc">}</span><span class="vs">&lt;/tbody&gt;&lt;/table&gt;`</span><span class="op">;</span></span>
+<span id="cb13-195"><a href="#cb13-195" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> el<span class="op">;</span></span>
+<span id="cb13-196"><a href="#cb13-196" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-13" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<p><span class="data-note">Differences are shown against bike A. “est.” marks a fork offset this site estimated because the manufacturer doesn’t publish it. Standover and seat tube length are measured differently by each brand, so compare them with care.</span></p>
+<section id="what-stands-out" class="level2">
+<h2 class="anchored" data-anchor-id="what-stands-out">What stands out</h2>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb14" data-startfrom="205" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 204;"><span id="cb14-205"><a href="#cb14-205" aria-hidden="true" tabindex="-1"></a>summary <span class="op">=</span> {</span>
+<span id="cb14-206"><a href="#cb14-206" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (picks<span class="op">.</span><span class="at">length</span> <span class="op">&lt;</span> <span class="dv">2</span>) <span class="cf">return</span> <span class="fu">md</span><span class="vs">`Pick at least two bikes.`</span><span class="op">;</span></span>
+<span id="cb14-207"><a href="#cb14-207" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> picks[<span class="dv">0</span>]<span class="op">.</span><span class="at">row</span><span class="op">;</span></span>
+<span id="cb14-208"><a href="#cb14-208" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> name <span class="op">=</span> p <span class="kw">=&gt;</span> <span class="vs">`**</span><span class="sc">${</span>p<span class="op">.</span><span class="at">slot</span><span class="sc">}</span><span class="vs">** (</span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">label</span><span class="sc">}</span><span class="vs">, size </span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">size_label</span><span class="sc">}</span><span class="vs">)`</span><span class="op">;</span></span>
+<span id="cb14-209"><a href="#cb14-209" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> lines <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb14-210"><a href="#cb14-210" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> listJoin <span class="op">=</span> xs <span class="kw">=&gt;</span> xs<span class="op">.</span><span class="at">length</span> <span class="op">&lt;</span> <span class="dv">3</span> <span class="op">?</span> xs<span class="op">.</span><span class="fu">join</span>(<span class="st">" and "</span>) <span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>xs<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="op">-</span><span class="dv">1</span>)<span class="op">.</span><span class="fu">join</span>(<span class="st">", "</span>)<span class="sc">}</span><span class="vs">, and </span><span class="sc">${</span>xs<span class="op">.</span><span class="fu">at</span>(<span class="op">-</span><span class="dv">1</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb14-211"><a href="#cb14-211" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> p <span class="kw">of</span> picks<span class="op">.</span><span class="fu">slice</span>(<span class="dv">1</span>)) {</span>
+<span id="cb14-212"><a href="#cb14-212" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> b <span class="op">=</span> p<span class="op">.</span><span class="at">row</span><span class="op">,</span> out <span class="op">=</span> []<span class="op">;</span></span>
+<span id="cb14-213"><a href="#cb14-213" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> d <span class="op">=</span> k <span class="kw">=&gt;</span> (b[k] <span class="op">??</span> <span class="kw">NaN</span>) <span class="op">-</span> (a[k] <span class="op">??</span> <span class="kw">NaN</span>)<span class="op">;</span></span>
+<span id="cb14-214"><a href="#cb14-214" aria-hidden="true" tabindex="-1"></a>    <span class="kw">const</span> say <span class="op">=</span> (k<span class="op">,</span> tol<span class="op">,</span> more<span class="op">,</span> less<span class="op">,</span> unit <span class="op">=</span> <span class="st">" mm"</span><span class="op">,</span> dp <span class="op">=</span> <span class="dv">0</span>) <span class="kw">=&gt;</span> {</span>
+<span id="cb14-215"><a href="#cb14-215" aria-hidden="true" tabindex="-1"></a>      <span class="kw">const</span> v <span class="op">=</span> <span class="fu">d</span>(k)<span class="op">;</span></span>
+<span id="cb14-216"><a href="#cb14-216" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> (<span class="bu">Number</span><span class="op">.</span><span class="fu">isNaN</span>(v) <span class="op">||</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(v) <span class="op">&lt;</span> tol) <span class="cf">return</span><span class="op">;</span></span>
+<span id="cb14-217"><a href="#cb14-217" aria-hidden="true" tabindex="-1"></a>      out<span class="op">.</span><span class="fu">push</span>(<span class="vs">`</span><span class="sc">${</span><span class="bu">Math</span><span class="op">.</span><span class="fu">abs</span>(v)<span class="op">.</span><span class="fu">toFixed</span>(dp)<span class="sc">}${</span>unit<span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>v <span class="op">&gt;</span> <span class="dv">0</span> <span class="op">?</span> more <span class="op">:</span> less<span class="sc">}</span><span class="vs">`</span>)<span class="op">;</span></span>
+<span id="cb14-218"><a href="#cb14-218" aria-hidden="true" tabindex="-1"></a>    }<span class="op">;</span></span>
+<span id="cb14-219"><a href="#cb14-219" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"stack"</span><span class="op">,</span> <span class="dv">10</span><span class="op">,</span> <span class="st">"more stack (a taller front end)"</span><span class="op">,</span> <span class="st">"less stack (a lower front end)"</span>)<span class="op">;</span></span>
+<span id="cb14-220"><a href="#cb14-220" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"reach"</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="st">"more reach (a longer front end)"</span><span class="op">,</span> <span class="st">"less reach (a shorter front end)"</span>)<span class="op">;</span></span>
+<span id="cb14-221"><a href="#cb14-221" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"trail_calc"</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="st">"more trail (steadier steering)"</span><span class="op">,</span> <span class="st">"less trail (quicker steering)"</span>)<span class="op">;</span></span>
+<span id="cb14-222"><a href="#cb14-222" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"head_tube_angle"</span><span class="op">,</span> <span class="fl">0.75</span><span class="op">,</span> <span class="st">"steeper head angle"</span><span class="op">,</span> <span class="st">"slacker head angle"</span><span class="op">,</span> <span class="st">"°"</span><span class="op">,</span> <span class="dv">1</span>)<span class="op">;</span></span>
+<span id="cb14-223"><a href="#cb14-223" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"wheelbase"</span><span class="op">,</span> <span class="dv">15</span><span class="op">,</span> <span class="st">"longer wheelbase"</span><span class="op">,</span> <span class="st">"shorter wheelbase"</span>)<span class="op">;</span></span>
+<span id="cb14-224"><a href="#cb14-224" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"chainstay"</span><span class="op">,</span> <span class="dv">8</span><span class="op">,</span> <span class="st">"longer chainstays"</span><span class="op">,</span> <span class="st">"shorter chainstays"</span>)<span class="op">;</span></span>
+<span id="cb14-225"><a href="#cb14-225" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"bb_drop"</span><span class="op">,</span> <span class="dv">5</span><span class="op">,</span> <span class="st">"more BB drop (sits lower between the wheels)"</span><span class="op">,</span> <span class="st">"less BB drop (sits higher)"</span>)<span class="op">;</span></span>
+<span id="cb14-226"><a href="#cb14-226" aria-hidden="true" tabindex="-1"></a>    <span class="fu">say</span>(<span class="st">"tyre_clearance_mm"</span><span class="op">,</span> <span class="dv">3</span><span class="op">,</span> <span class="st">"more tyre room"</span><span class="op">,</span> <span class="st">"less tyre room"</span>)<span class="op">;</span></span>
+<span id="cb14-227"><a href="#cb14-227" aria-hidden="true" tabindex="-1"></a>    lines<span class="op">.</span><span class="fu">push</span>(out<span class="op">.</span><span class="at">length</span></span>
+<span id="cb14-228"><a href="#cb14-228" aria-hidden="true" tabindex="-1"></a>      <span class="op">?</span> <span class="vs">`- Compared with **A**, </span><span class="sc">${</span><span class="fu">name</span>(p)<span class="sc">}</span><span class="vs"> has </span><span class="sc">${</span><span class="fu">listJoin</span>(out)<span class="sc">}</span><span class="vs">.`</span></span>
+<span id="cb14-229"><a href="#cb14-229" aria-hidden="true" tabindex="-1"></a>      <span class="op">:</span> <span class="vs">`- </span><span class="sc">${</span><span class="fu">name</span>(p)<span class="sc">}</span><span class="vs"> is within a few millimetres of **A** on every main measure.`</span>)<span class="op">;</span></span>
+<span id="cb14-230"><a href="#cb14-230" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-231"><a href="#cb14-231" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (<span class="kw">const</span> p <span class="kw">of</span> picks) {</span>
+<span id="cb14-232"><a href="#cb14-232" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">toe_clearance</span> <span class="op">!=</span> <span class="kw">null</span> <span class="op">&amp;&amp;</span> p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">toe_clearance</span> <span class="op">&lt;</span> <span class="dv">90</span>)</span>
+<span id="cb14-233"><a href="#cb14-233" aria-hidden="true" tabindex="-1"></a>      lines<span class="op">.</span><span class="fu">push</span>(<span class="vs">`- </span><span class="sc">${</span><span class="fu">name</span>(p)<span class="sc">}</span><span class="vs"> has </span><span class="sc">${</span>p<span class="op">.</span><span class="at">row</span><span class="op">.</span><span class="at">toe_clearance</span><span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">0</span>)<span class="sc">}</span><span class="vs"> mm between pedal and tyre, so toe overlap is likely in tight turns.`</span>)<span class="op">;</span></span>
+<span id="cb14-234"><a href="#cb14-234" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb14-235"><a href="#cb14-235" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> <span class="fu">md</span><span class="vs">`</span><span class="sc">${</span>lines<span class="op">.</span><span class="fu">join</span>(<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)<span class="sc">}</span><span class="vs">`</span><span class="op">;</span></span>
+<span id="cb14-236"><a href="#cb14-236" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-14" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<p>These sentences only flag differences big enough to notice on the road: at least 10 mm of stack, 8 mm of reach, 5 mm of trail, or 0.75° of head angle. The thresholds are rules of thumb, not standards.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Shared portfolio footer. Master copy: /Users/ecox/projects/_brand-kit/footer.html -->
+<footer class="eb-footer" role="contentinfo">
+  <div class="eb-footer-inner">
+    <div class="eb-footer-name">Emma Branch</div>
+    <div class="eb-footer-tag">Epidemiologist and data analyst, British Columbia</div>
+    <div class="eb-footer-heading">Portfolio projects</div>
+    <nav class="eb-footer-projects" aria-label="Portfolio projects">
+      <a href="https://emmabranch.github.io/redcap-starter-kit/">REDCap starter kit</a>
+      <a href="https://emmabranch.github.io/bc-housing-indicators/">BC housing indicators</a>
+      <a href="https://emmabranch.github.io/bc-fish-stock-status/">BC fish stock status</a>
+      <a href="https://emmabranch.github.io/bc-lightstation-qc/">BC lightstation sea temperatures</a>
+      <a href="https://emmabranch.github.io/bc-wildfire-bigquery/">BC wildfire history</a>
+      <a href="https://emmabranch.github.io/vch-climate-equity-profile/">VCH climate equity profile</a>
+      <a href="https://emmabranch.shinyapps.io/bc-salmon-explorer">BC Salmon Explorer</a>
+      <a href="https://emmabranch.github.io/ontario-claims-caribou/">Ontario mining claims and caribou</a>
+      <a href="https://emmabranch.github.io/salish-sea-whales/">Salish Sea whales</a>
+      <a href="https://emmabranch.github.io/bike-recall-surveillance/">Bike recall surveillance</a>
+    </nav>
+    <div class="eb-footer-contact">
+      <a href="https://github.com/emmabranch">GitHub</a>
+      <a href="https://www.linkedin.com/in/embranch/">LinkedIn</a>
+      <a href="mailto:emma.branch@gmail.com">emma.branch@gmail.com</a>
+    </div>
+  </div>
+</footer>
+<script>
+  /* Quarto places included HTML inside the page layout. Move the top bar
+     and footer to the edges of the page so they span the full width. */
+  document.addEventListener("DOMContentLoaded", function () {
+    var bar = document.querySelector(".eb-topbar");
+    if (bar) document.body.insertBefore(bar, document.body.firstChild);
+    /* Optional hero for single-page reports (report-hero.html): put it
+       straight after the top bar, above the report itself. */
+    var rhero = document.querySelector(".eb-report-hero");
+    if (rhero) {
+      if (bar) bar.parentNode.insertBefore(rhero, bar.nextSibling);
+      else document.body.insertBefore(rhero, document.body.firstChild);
+      document.body.classList.add("has-report-hero");
+      /* The report card is lifted over the hero, which makes each section's
+         offsetTop relative to the card instead of the page. Quarto's table of
+         contents reads offsetTop, so give each section its true page position. */
+      document.querySelectorAll("main.content section[id]").forEach(function (sec) {
+        Object.defineProperty(sec, "offsetTop", {
+          configurable: true,
+          get: function () { return this.getBoundingClientRect().top + window.scrollY; }
+        });
+      });
+      /* Optional background stripes drawn by R inside the report
+         (a div with class "eb-hero-stripes"): move them into the hero. */
+      var stripes = document.querySelector(".eb-hero-stripes");
+      if (stripes) { stripes.classList.add("hero-bg"); rhero.insertBefore(stripes, rhero.firstChild); }
+    }
+    var foot = document.querySelector(".eb-footer");
+    if (foot) {
+      /* On websites, put it just above Quarto's own footer (which holds the
+         project disclaimer); otherwise at the very end of the page. */
+      var qfoot = document.querySelector("footer.footer");
+      if (qfoot) qfoot.parentNode.insertBefore(foot, qfoot);
+      else document.body.appendChild(foot);
+    }
+    /* On phones, close the navbar menu after a link is tapped. Links to a
+       section of the same page don't reload it, so the menu would stay open. */
+    document.querySelectorAll(".navbar-collapse .nav-link:not(.dropdown-toggle)").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var menu = document.querySelector(".navbar-collapse.show");
+        if (menu && window.bootstrap) window.bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      });
+    });
+    /* Hide Quarto's empty footer columns so they don't add space on phones */
+    document.querySelectorAll(".nav-footer-left, .nav-footer-right").forEach(function (el) {
+      if (!el.children.length && !el.textContent.replace(/[\s\u00a0]/g, "")) el.style.display = "none";
+    });
+  });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InJhdyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9ncmF2ZWxfZ2VvbWV0cnlfZGVyaXZlZC5jc3ZcIikuY3N2KHt0eXBlZDogdHJ1ZX0pXG5cbmJpa2VzID0gcmF3Lm1hcChkID0+ICh7XG4gIC4uLmQsXG4gIGlzX2RlZmF1bHRfY29uZmlnOiBkLmlzX2RlZmF1bHRfY29uZmlnID09PSB0cnVlIHx8IGQuaXNfZGVmYXVsdF9jb25maWcgPT09IFwiVFJVRVwiLFxuICBvZmZzZXRfZXN0aW1hdGVkOiBkLm9mZnNldF9lc3RpbWF0ZWQgPT09IHRydWUgfHwgZC5vZmZzZXRfZXN0aW1hdGVkID09PSBcIlRSVUVcIixcbiAgc2l6ZV9sYWJlbDogU3RyaW5nKGQuc2l6ZV9sYWJlbCksXG4gIGxhYmVsOiBgJHtkLmJyYW5kfSAke2QubW9kZWx9YFxufSkpXG5cbmJpa2VMaXN0ID0gQXJyYXkuZnJvbShuZXcgU2V0KGJpa2VzLm1hcChkID0+IGQubGFiZWwpKSkuc29ydCgoYSwgYikgPT4gYS5sb2NhbGVDb21wYXJlKGIpKVxuXG5zbG90Q29sb3VycyA9ICh7QTogXCIjMjU2M2E4XCIsIEI6IFwiI2QyNjkxZVwiLCBDOiBcIiMyYTlkOGZcIn0pXG5jYXRlZ29yeU5hbWVzID0gKHtcInJhY2VcIjogXCJSYWNlXCIsIFwiYWxsLXJvdW5kXCI6IFwiQWxsLXJvdW5kXCIsIFwiYWR2ZW50dXJlXCI6IFwiQWR2ZW50dXJlXCJ9KVxuXG5jb25maWdzRm9yID0gYmlrZSA9PiBBcnJheS5mcm9tKG5ldyBTZXQoYmlrZXMuZmlsdGVyKGQgPT4gZC5sYWJlbCA9PT0gYmlrZSkubWFwKGQgPT4gZC5jb25maWcpKSlcbmRlZmF1bHRDb25maWdGb3IgPSBiaWtlID0+IChiaWtlcy5maW5kKGQgPT4gZC5sYWJlbCA9PT0gYmlrZSAmJiBkLmlzX2RlZmF1bHRfY29uZmlnKSA/PyB7fSkuY29uZmlnXG5zaXplc0ZvciA9IChiaWtlLCBjb25maWcpID0+IGJpa2VzXG4gIC5maWx0ZXIoZCA9PiBkLmxhYmVsID09PSBiaWtlICYmIGQuY29uZmlnID09PSBjb25maWcpXG4gIC5zb3J0KChhLCBiKSA9PiBhLnNpemVfb3JkZXIgLSBiLnNpemVfb3JkZXIpXG4gIC5tYXAoZCA9PiBkLnNpemVfbGFiZWwpXG4vLyBtaWRkbGUgc2l6ZSwgcm91bmRpbmcgdXAsIGFzIGEgc2Vuc2libGUgc3RhcnRpbmcgcG9pbnRcbm1pZGRsZVNpemUgPSBzaXplcyA9PiBzaXplc1tNYXRoLmZsb29yKHNpemVzLmxlbmd0aCAvIDIpXVxucm93Rm9yID0gKGJpa2UsIGNvbmZpZywgc2l6ZSkgPT4gYmlrZXMuZmluZChkID0+IGQubGFiZWwgPT09IGJpa2UgJiYgZC5jb25maWcgPT09IGNvbmZpZyAmJiBkLnNpemVfbGFiZWwgPT09IHNpemUpXG5cbi8vIFN0YXJ0aW5nIHBpY2tzOiBvbmUgcmFjZSwgb25lIGFkdmVudHVyZSwgb25lIGFsbC1yb3VuZCBiaWtlXG5zdGFydHMgPSAoe1xuICBBOiB7YmlrZTogXCJTcGVjaWFsaXplZCBDcnV4IDVcIiwgc2l6ZTogXCI1NlwifSxcbiAgQjoge2Jpa2U6IFwiTm9yY28gU2VhcmNoIEMgR2VuIDNcIiwgc2l6ZTogXCIzXCJ9LFxuICBDOiB7YmlrZTogXCJUcmVrIENoZWNrcG9pbnQgU0wgR2VuIDNcIiwgc2l6ZTogXCJNTFwifVxufSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMiIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBiaWtlQSA9IElucHV0cy5zZWxlY3QoYmlrZUxpc3QsIHtsYWJlbDogXCJCaWtlXCIsIHZhbHVlOiBzdGFydHMuQS5iaWtlfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMyIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InZpZXdvZiBjb25maWdBID0gSW5wdXRzLnNlbGVjdChjb25maWdzRm9yKGJpa2VBKSwge1xuICBsYWJlbDogXCJTZXR0aW5nXCIsIHZhbHVlOiBkZWZhdWx0Q29uZmlnRm9yKGJpa2VBKSwgZGlzYWJsZWQ6IGNvbmZpZ3NGb3IoYmlrZUEpLmxlbmd0aCA8IDJcbn0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTQiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2Ygc2l6ZUEgPSB7XG4gIGNvbnN0IHNpemVzID0gc2l6ZXNGb3IoYmlrZUEsIGNvbmZpZ0EpO1xuICByZXR1cm4gSW5wdXRzLnNlbGVjdChzaXplcywge2xhYmVsOiBcIlNpemVcIiwgdmFsdWU6IHNpemVzLmluY2x1ZGVzKHN0YXJ0cy5BLnNpemUpID8gc3RhcnRzLkEuc2l6ZSA6IG1pZGRsZVNpemUoc2l6ZXMpfSk7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTUiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgYmlrZUIgPSBJbnB1dHMuc2VsZWN0KGJpa2VMaXN0LCB7bGFiZWw6IFwiQmlrZVwiLCB2YWx1ZTogc3RhcnRzLkIuYmlrZX0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTYiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgY29uZmlnQiA9IElucHV0cy5zZWxlY3QoY29uZmlnc0ZvcihiaWtlQiksIHtcbiAgbGFiZWw6IFwiU2V0dGluZ1wiLCB2YWx1ZTogZGVmYXVsdENvbmZpZ0ZvcihiaWtlQiksIGRpc2FibGVkOiBjb25maWdzRm9yKGJpa2VCKS5sZW5ndGggPCAyXG59KVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC03IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIHNpemVCID0ge1xuICBjb25zdCBzaXplcyA9IHNpemVzRm9yKGJpa2VCLCBjb25maWdCKTtcbiAgcmV0dXJuIElucHV0cy5zZWxlY3Qoc2l6ZXMsIHtsYWJlbDogXCJTaXplXCIsIHZhbHVlOiBzaXplcy5pbmNsdWRlcyhzdGFydHMuQi5zaXplKSA/IHN0YXJ0cy5CLnNpemUgOiBtaWRkbGVTaXplKHNpemVzKX0pO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC04IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoidmlld29mIGJpa2VDID0gSW5wdXRzLnNlbGVjdChbXCIobm9uZSlcIiwgLi4uYmlrZUxpc3RdLCB7bGFiZWw6IFwiQmlrZVwiLCB2YWx1ZTogc3RhcnRzLkMuYmlrZX0pXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTkiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2YgY29uZmlnQyA9IGJpa2VDID09PSBcIihub25lKVwiXG4gID8gSW5wdXRzLnNlbGVjdChbXCLigJNcIl0sIHtsYWJlbDogXCJTZXR0aW5nXCIsIGRpc2FibGVkOiB0cnVlfSlcbiAgOiBJbnB1dHMuc2VsZWN0KGNvbmZpZ3NGb3IoYmlrZUMpLCB7bGFiZWw6IFwiU2V0dGluZ1wiLCB2YWx1ZTogZGVmYXVsdENvbmZpZ0ZvcihiaWtlQyksIGRpc2FibGVkOiBjb25maWdzRm9yKGJpa2VDKS5sZW5ndGggPCAyfSlcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTAiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJ2aWV3b2Ygc2l6ZUMgPSB7XG4gIGlmIChiaWtlQyA9PT0gXCIobm9uZSlcIikgcmV0dXJuIElucHV0cy5zZWxlY3QoW1wi4oCTXCJdLCB7bGFiZWw6IFwiU2l6ZVwiLCBkaXNhYmxlZDogdHJ1ZX0pO1xuICBjb25zdCBzaXplcyA9IHNpemVzRm9yKGJpa2VDLCBjb25maWdDKTtcbiAgcmV0dXJuIElucHV0cy5zZWxlY3Qoc2l6ZXMsIHtsYWJlbDogXCJTaXplXCIsIHZhbHVlOiBzaXplcy5pbmNsdWRlcyhzdGFydHMuQy5zaXplKSA/IHN0YXJ0cy5DLnNpemUgOiBtaWRkbGVTaXplKHNpemVzKX0pO1xufVxuIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0IiwiY2VsbE5hbWUiOiJvanMtY2VsbC0xMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InBpY2tzID0gW1xuICB7c2xvdDogXCJBXCIsIHJvdzogcm93Rm9yKGJpa2VBLCBjb25maWdBLCBzaXplQSl9LFxuICB7c2xvdDogXCJCXCIsIHJvdzogcm93Rm9yKGJpa2VCLCBjb25maWdCLCBzaXplQil9LFxuICAuLi4oYmlrZUMgPT09IFwiKG5vbmUpXCIgPyBbXSA6IFt7c2xvdDogXCJDXCIsIHJvdzogcm93Rm9yKGJpa2VDLCBjb25maWdDLCBzaXplQyl9XSlcbl0uZmlsdGVyKHAgPT4gcC5yb3cpXG5cbi8vIEV2ZXJ5dGhpbmcgd2UgY29tcGFyZSwgZ3JvdXBlZCwgd2l0aCBhIHBsYWluLWxhbmd1YWdlIHJlYWRpbmcgb2YgXCJoaWdoZXJcIlxubWVhc3VyZXMgPSBbXG4gIHtncm91cDogXCJGaXRcIiwga2V5OiBcInN0YWNrXCIsIGxhYmVsOiBcIlN0YWNrXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJ0YWxsZXIgZnJvbnQgZW5kLCBtb3JlIHVwcmlnaHRcIn0sXG4gIHtncm91cDogXCJGaXRcIiwga2V5OiBcInJlYWNoXCIsIGxhYmVsOiBcIlJlYWNoXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJsb25nZXIgZnJvbnQgZW5kLCBtb3JlIHN0cmV0Y2hlZCBvdXRcIn0sXG4gIHtncm91cDogXCJGaXRcIiwga2V5OiBcInN0YWNrX3JlYWNoX3JhdGlvXCIsIGxhYmVsOiBcIlN0YWNrL3JlYWNoXCIsIHVuaXQ6IFwiXCIsIGRwOiAyLCBoaWdoZXI6IFwibW9yZSB1cHJpZ2h0IG92ZXJhbGxcIn0sXG4gIHtncm91cDogXCJGaXRcIiwga2V5OiBcImhlYWRfdHViZV9sZW5ndGhcIiwgbGFiZWw6IFwiSGVhZCB0dWJlXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJoaWdoZXIgaGFuZGxlYmFycyBiZWZvcmUgc3BhY2Vyc1wifSxcbiAge2dyb3VwOiBcIkZpdFwiLCBrZXk6IFwic2VhdF90dWJlX2FuZ2xlXCIsIGxhYmVsOiBcIlNlYXQgYW5nbGVcIiwgdW5pdDogXCLCsFwiLCBkcDogMSwgaGlnaGVyOiBcInNhZGRsZSBmdXJ0aGVyIGZvcndhcmQgb3ZlciB0aGUgcGVkYWxzXCJ9LFxuICB7Z3JvdXA6IFwiRml0XCIsIGtleTogXCJ0b3BfdHViZV9lZmZlY3RpdmVcIiwgbGFiZWw6IFwiVG9wIHR1YmUgKGVmZmVjdGl2ZSlcIiwgdW5pdDogXCJtbVwiLCBkcDogMCwgaGlnaGVyOiBcImxvbmdlciBjb2NrcGl0XCJ9LFxuICB7Z3JvdXA6IFwiRml0XCIsIGtleTogXCJzdGFuZG92ZXJcIiwgbGFiZWw6IFwiU3RhbmRvdmVyXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJsZXNzIHJvb20gb3ZlciB0aGUgdG9wIHR1YmUgKG1lYXN1cmVkIGRpZmZlcmVudGx5IGJ5IGVhY2ggYnJhbmQpXCJ9LFxuICB7Z3JvdXA6IFwiSGFuZGxpbmdcIiwga2V5OiBcImhlYWRfdHViZV9hbmdsZVwiLCBsYWJlbDogXCJIZWFkIGFuZ2xlXCIsIHVuaXQ6IFwiwrBcIiwgZHA6IDEsIGhpZ2hlcjogXCJzdGVlcGVyLCBxdWlja2VyIHN0ZWVyaW5nXCJ9LFxuICB7Z3JvdXA6IFwiSGFuZGxpbmdcIiwga2V5OiBcImZvcmtfb2Zmc2V0X3VzZWRcIiwgbGFiZWw6IFwiRm9yayBvZmZzZXRcIiwgdW5pdDogXCJtbVwiLCBkcDogMCwgaGlnaGVyOiBcImxlc3MgdHJhaWwgZm9yIHRoZSBzYW1lIGhlYWQgYW5nbGVcIn0sXG4gIHtncm91cDogXCJIYW5kbGluZ1wiLCBrZXk6IFwidHJhaWxfY2FsY1wiLCBsYWJlbDogXCJUcmFpbCAoNzAwIMOXIDQ1KVwiLCB1bml0OiBcIm1tXCIsIGRwOiAwLCBoaWdoZXI6IFwic3RlYWRpZXIsIG1vcmUgc2VsZi1jZW50cmluZyBzdGVlcmluZ1wifSxcbiAge2dyb3VwOiBcIkhhbmRsaW5nXCIsIGtleTogXCJ3aGVlbGJhc2VcIiwgbGFiZWw6IFwiV2hlZWxiYXNlXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJtb3JlIHN0YWJsZSwgbGVzcyBuaW1ibGVcIn0sXG4gIHtncm91cDogXCJIYW5kbGluZ1wiLCBrZXk6IFwiZnJvbnRfY2VudHJlX2NhbGNcIiwgbGFiZWw6IFwiRnJvbnQgY2VudHJlXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJmcm9udCB3aGVlbCBmdXJ0aGVyIGFoZWFkIG9mIHRoZSBwZWRhbHNcIn0sXG4gIHtncm91cDogXCJIYW5kbGluZ1wiLCBrZXk6IFwiY2hhaW5zdGF5XCIsIGxhYmVsOiBcIkNoYWluc3RheVwiLCB1bml0OiBcIm1tXCIsIGRwOiAwLCBoaWdoZXI6IFwic3RlYWRpZXIgcmVhciBlbmQsIG1vcmUgdHlyZSByb29tXCJ9LFxuICB7Z3JvdXA6IFwiSGFuZGxpbmdcIiwga2V5OiBcImJiX2Ryb3BcIiwgbGFiZWw6IFwiQkIgZHJvcFwiLCB1bml0OiBcIm1tXCIsIGRwOiAwLCBoaWdoZXI6IFwicGVkYWxzIHNpdCBsb3dlciBiZXR3ZWVuIHRoZSB3aGVlbHNcIn0sXG4gIHtncm91cDogXCJIYW5kbGluZ1wiLCBrZXk6IFwidG9lX2NsZWFyYW5jZVwiLCBsYWJlbDogXCJUb2UgY2xlYXJhbmNlXCIsIHVuaXQ6IFwibW1cIiwgZHA6IDAsIGhpZ2hlcjogXCJsZXNzIGNoYW5jZSBvZiB0b2Ugb3ZlcmxhcFwifSxcbiAge2dyb3VwOiBcIlR5cmVzXCIsIGtleTogXCJ0eXJlX2NsZWFyYW5jZV9tbVwiLCBsYWJlbDogXCJNYXggdHlyZSB3aWR0aFwiLCB1bml0OiBcIm1tXCIsIGRwOiAwLCBoaWdoZXI6IFwicm9vbSBmb3Igd2lkZXIgdHlyZXNcIn1cbl1cblxuLy8gUmVmZXJlbmNlIHBvcHVsYXRpb24gZm9yIHRoZSBzdHJpcHM6IGV2ZXJ5IHNpemUsIGRlZmF1bHQgc2V0dGluZyBvbmx5XG5wb3B1bGF0aW9uID0gYmlrZXMuZmlsdGVyKGQgPT4gZC5pc19kZWZhdWx0X2NvbmZpZylcbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJsZWdlbmQgPSBodG1sYDxkaXYgY2xhc3M9XCJnZy1sZWdlbmRcIj4ke3BpY2tzLm1hcChwID0+IGh0bWxgPHNwYW4+PHNwYW4gY2xhc3M9XCJzbG90LWRvdFwiIHN0eWxlPVwiYmFja2dyb3VuZDoke3Nsb3RDb2xvdXJzW3Auc2xvdF19XCI+JHtwLnNsb3R9PC9zcGFuPiR7cC5yb3cubGFiZWx9LCBzaXplICR7cC5yb3cuc2l6ZV9sYWJlbH0ke3Aucm93LmNvbmZpZyA9PT0gXCJzdGFuZGFyZFwiID8gXCJcIiA6IGAgKCR7cC5yb3cuY29uZmlnfSlgfSDCtyAke2NhdGVnb3J5TmFtZXNbcC5yb3cuY2F0ZWdvcnldfTwvc3Bhbj5gKX08L2Rpdj5gXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTEzIiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoiY29tcGFyZVRhYmxlID0ge1xuICBjb25zdCBmbXQgPSAodiwgZHApID0+IHYgPT0gbnVsbCB8fCBOdW1iZXIuaXNOYU4odikgPyBcIuKAk1wiIDogdi50b0ZpeGVkKGRwKTtcbiAgY29uc3QgYSA9IHBpY2tzWzBdPy5yb3c7XG5cbiAgLy8gU21hbGwgc3RyaXA6IGdyZXkgdGlja3MgZm9yIGV2ZXJ5IHNpemUgaW4gdGhlIGRhdGFzZXQsIGxldHRlcnMgZm9yIHRoZSBwaWNrc1xuICBjb25zdCBzdHJpcCA9IG0gPT4ge1xuICAgIGNvbnN0IHZhbHMgPSBwb3B1bGF0aW9uLm1hcChkID0+IGRbbS5rZXldKS5maWx0ZXIodiA9PiB2ICE9IG51bGwpO1xuICAgIGlmICghdmFscy5sZW5ndGgpIHJldHVybiBcIlwiO1xuICAgIGNvbnN0IGxvID0gTWF0aC5taW4oLi4udmFscyksIGhpID0gTWF0aC5tYXgoLi4udmFscyk7XG4gICAgY29uc3QgVyA9IDE4MCwgSCA9IDM0LCBwYWQgPSA5O1xuICAgIGNvbnN0IHggPSB2ID0+IHBhZCArIChoaSA9PT0gbG8gPyAwLjUgOiAodiAtIGxvKSAvIChoaSAtIGxvKSkgKiAoVyAtIDIgKiBwYWQpO1xuICAgIGNvbnN0IHRpY2tzID0gdmFscy5tYXAodiA9PiBgPGxpbmUgeDE9XCIke3godil9XCIgeDI9XCIke3godil9XCIgeTE9XCI0XCIgeTI9XCIke0ggLSA0fVwiIHN0cm9rZT1cIiM5ZmIwYmZcIiBzdHJva2Utb3BhY2l0eT1cIjAuMzVcIi8+YCkuam9pbihcIlwiKTtcbiAgICBjb25zdCBtYXJrcyA9IHBpY2tzLm1hcCgocCwgaSkgPT4ge1xuICAgICAgY29uc3QgdiA9IHAucm93W20ua2V5XTtcbiAgICAgIGlmICh2ID09IG51bGwpIHJldHVybiBcIlwiO1xuICAgICAgY29uc3QgY3kgPSA5ICsgaSAqIDg7XG4gICAgICByZXR1cm4gYDxjaXJjbGUgY3g9XCIke3godil9XCIgY3k9XCIke2N5fVwiIHI9XCI2XCIgZmlsbD1cIiR7c2xvdENvbG91cnNbcC5zbG90XX1cIiBzdHJva2U9XCIjZmZmXCIgc3Ryb2tlLXdpZHRoPVwiMS41XCIvPlxuICAgICAgICAgICAgICA8dGV4dCB4PVwiJHt4KHYpfVwiIHk9XCIke2N5ICsgM31cIiB0ZXh0LWFuY2hvcj1cIm1pZGRsZVwiIGZvbnQtc2l6ZT1cIjhcIiBmb250LXdlaWdodD1cIjcwMFwiIGZpbGw9XCIjZmZmXCI+JHtwLnNsb3R9PC90ZXh0PmA7XG4gICAgfSkuam9pbihcIlwiKTtcbiAgICByZXR1cm4gYDxzdmcgY2xhc3M9XCJzdHJpcFwiIHdpZHRoPVwiJHtXfVwiIGhlaWdodD1cIiR7SH1cIiByb2xlPVwiaW1nXCIgYXJpYS1sYWJlbD1cIldoZXJlIGVhY2ggYmlrZSBzaXRzIGFtb25nIGFsbCAke3ZhbHMubGVuZ3RofSBzaXplcywgZnJvbSAke2ZtdChsbywgbS5kcCl9IHRvICR7Zm10KGhpLCBtLmRwKX1cIj4ke3RpY2tzfSR7bWFya3N9PC9zdmc+XG4gICAgICAgICAgICA8ZGl2IGNsYXNzPVwic3RyaXAtZW5kc1wiPjxzcGFuPiR7Zm10KGxvLCBtLmRwKX08L3NwYW4+PHNwYW4+JHtmbXQoaGksIG0uZHApfTwvc3Bhbj48L2Rpdj5gO1xuICB9O1xuXG4gIGNvbnN0IGhlYWQgPSBgPHRyPjx0aD5NZWFzdXJlPC90aD4ke3BpY2tzLm1hcChwID0+XG4gICAgYDx0aCBjbGFzcz1cIm51bVwiPjxzcGFuIGNsYXNzPVwic2xvdC1kb3RcIiBzdHlsZT1cImJhY2tncm91bmQ6JHtzbG90Q29sb3Vyc1twLnNsb3RdfVwiPiR7cC5zbG90fTwvc3Bhbj48L3RoPmApLmpvaW4oXCJcIil9PHRoIGNsYXNzPVwic3RyaXAtaGVhZFwiPkFtb25nIGFsbCAke3BvcHVsYXRpb24ubGVuZ3RofSBzaXplczwvdGg+PC90cj5gO1xuXG4gIGxldCBsYXN0R3JvdXAgPSBcIlwiO1xuICBjb25zdCBib2R5ID0gbWVhc3VyZXMubWFwKG0gPT4ge1xuICAgIGNvbnN0IGdyb3VwUm93ID0gbS5ncm91cCAhPT0gbGFzdEdyb3VwID8gYDx0ciBjbGFzcz1cImdyb3VwLXJvd1wiPjx0aCBjb2xzcGFuPVwiJHtwaWNrcy5sZW5ndGggKyAyfVwiPiR7bS5ncm91cH08L3RoPjwvdHI+YCA6IFwiXCI7XG4gICAgbGFzdEdyb3VwID0gbS5ncm91cDtcbiAgICBjb25zdCBjZWxscyA9IHBpY2tzLm1hcCgocCwgaSkgPT4ge1xuICAgICAgY29uc3QgdiA9IHAucm93W20ua2V5XTtcbiAgICAgIGxldCBkaWZmID0gXCJcIjtcbiAgICAgIGlmIChpID4gMCAmJiBhICYmIHYgIT0gbnVsbCAmJiBhW20ua2V5XSAhPSBudWxsKSB7XG4gICAgICAgIGNvbnN0IGQgPSB2IC0gYVttLmtleV07XG4gICAgICAgIGNvbnN0IHNob3duID0gZC50b0ZpeGVkKG0uZHApO1xuICAgICAgICBpZiAoTnVtYmVyKHNob3duKSAhPT0gMCkgZGlmZiA9IGA8c3BhbiBjbGFzcz1cImRpZmZcIj4ke2QgPiAwID8gXCIrXCIgOiBcIlwifSR7c2hvd259PC9zcGFuPmA7XG4gICAgICB9XG4gICAgICBjb25zdCBlc3QgPSBtLmtleSA9PT0gXCJmb3JrX29mZnNldF91c2VkXCIgJiYgcC5yb3cub2Zmc2V0X2VzdGltYXRlZCA/IGA8c3BhbiBjbGFzcz1cImVzdFwiIHRpdGxlPVwiRXN0aW1hdGVkIGZyb20gdGhlIHdoZWVsYmFzZVwiPmVzdC48L3NwYW4+YCA6IFwiXCI7XG4gICAgICByZXR1cm4gYDx0ZCBjbGFzcz1cIm51bVwiPiR7Zm10KHYsIG0uZHApfSR7bS51bml0ICYmIHYgIT0gbnVsbCA/IGA8c3BhbiBjbGFzcz1cInVuaXRcIj4ke20udW5pdH08L3NwYW4+YCA6IFwiXCJ9JHtlc3R9JHtkaWZmfTwvdGQ+YDtcbiAgICB9KS5qb2luKFwiXCIpO1xuICAgIHJldHVybiBgJHtncm91cFJvd308dHI+PHRoIHNjb3BlPVwicm93XCIgdGl0bGU9XCJIaWdoZXIgbWVhbnM6ICR7bS5oaWdoZXJ9XCI+JHttLmxhYmVsfTxkaXYgY2xhc3M9XCJoaWdoZXJcIj5IaWdoZXI6ICR7bS5oaWdoZXJ9PC9kaXY+PC90aD4ke2NlbGxzfTx0ZCBjbGFzcz1cInN0cmlwLWNlbGxcIj4ke3N0cmlwKG0pfTwvdGQ+PC90cj5gO1xuICB9KS5qb2luKFwiXCIpO1xuXG4gIGNvbnN0IGVsID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKTtcbiAgZWwuY2xhc3NOYW1lID0gXCJjb21wYXJlLXNjcm9sbFwiO1xuICBlbC5pbm5lckhUTUwgPSBgPHRhYmxlIGNsYXNzPVwiY29tcGFyZS10YWJsZVwiPjx0aGVhZD4ke2hlYWR9PC90aGVhZD48dGJvZHk+JHtib2R5fTwvdGJvZHk+PC90YWJsZT5gO1xuICByZXR1cm4gZWw7XG59XG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTE0IiwiaW5saW5lIjpmYWxzZSwic291cmNlIjoic3VtbWFyeSA9IHtcbiAgaWYgKHBpY2tzLmxlbmd0aCA8IDIpIHJldHVybiBtZGBQaWNrIGF0IGxlYXN0IHR3byBiaWtlcy5gO1xuICBjb25zdCBhID0gcGlja3NbMF0ucm93O1xuICBjb25zdCBuYW1lID0gcCA9PiBgKioke3Auc2xvdH0qKiAoJHtwLnJvdy5sYWJlbH0sIHNpemUgJHtwLnJvdy5zaXplX2xhYmVsfSlgO1xuICBjb25zdCBsaW5lcyA9IFtdO1xuICBjb25zdCBsaXN0Sm9pbiA9IHhzID0+IHhzLmxlbmd0aCA8IDMgPyB4cy5qb2luKFwiIGFuZCBcIikgOiBgJHt4cy5zbGljZSgwLCAtMSkuam9pbihcIiwgXCIpfSwgYW5kICR7eHMuYXQoLTEpfWA7XG4gIGZvciAoY29uc3QgcCBvZiBwaWNrcy5zbGljZSgxKSkge1xuICAgIGNvbnN0IGIgPSBwLnJvdywgb3V0ID0gW107XG4gICAgY29uc3QgZCA9IGsgPT4gKGJba10gPz8gTmFOKSAtIChhW2tdID8/IE5hTik7XG4gICAgY29uc3Qgc2F5ID0gKGssIHRvbCwgbW9yZSwgbGVzcywgdW5pdCA9IFwiIG1tXCIsIGRwID0gMCkgPT4ge1xuICAgICAgY29uc3QgdiA9IGQoayk7XG4gICAgICBpZiAoTnVtYmVyLmlzTmFOKHYpIHx8IE1hdGguYWJzKHYpIDwgdG9sKSByZXR1cm47XG4gICAgICBvdXQucHVzaChgJHtNYXRoLmFicyh2KS50b0ZpeGVkKGRwKX0ke3VuaXR9ICR7diA+IDAgPyBtb3JlIDogbGVzc31gKTtcbiAgICB9O1xuICAgIHNheShcInN0YWNrXCIsIDEwLCBcIm1vcmUgc3RhY2sgKGEgdGFsbGVyIGZyb250IGVuZClcIiwgXCJsZXNzIHN0YWNrIChhIGxvd2VyIGZyb250IGVuZClcIik7XG4gICAgc2F5KFwicmVhY2hcIiwgOCwgXCJtb3JlIHJlYWNoIChhIGxvbmdlciBmcm9udCBlbmQpXCIsIFwibGVzcyByZWFjaCAoYSBzaG9ydGVyIGZyb250IGVuZClcIik7XG4gICAgc2F5KFwidHJhaWxfY2FsY1wiLCA1LCBcIm1vcmUgdHJhaWwgKHN0ZWFkaWVyIHN0ZWVyaW5nKVwiLCBcImxlc3MgdHJhaWwgKHF1aWNrZXIgc3RlZXJpbmcpXCIpO1xuICAgIHNheShcImhlYWRfdHViZV9hbmdsZVwiLCAwLjc1LCBcInN0ZWVwZXIgaGVhZCBhbmdsZVwiLCBcInNsYWNrZXIgaGVhZCBhbmdsZVwiLCBcIsKwXCIsIDEpO1xuICAgIHNheShcIndoZWVsYmFzZVwiLCAxNSwgXCJsb25nZXIgd2hlZWxiYXNlXCIsIFwic2hvcnRlciB3aGVlbGJhc2VcIik7XG4gICAgc2F5KFwiY2hhaW5zdGF5XCIsIDgsIFwibG9uZ2VyIGNoYWluc3RheXNcIiwgXCJzaG9ydGVyIGNoYWluc3RheXNcIik7XG4gICAgc2F5KFwiYmJfZHJvcFwiLCA1LCBcIm1vcmUgQkIgZHJvcCAoc2l0cyBsb3dlciBiZXR3ZWVuIHRoZSB3aGVlbHMpXCIsIFwibGVzcyBCQiBkcm9wIChzaXRzIGhpZ2hlcilcIik7XG4gICAgc2F5KFwidHlyZV9jbGVhcmFuY2VfbW1cIiwgMywgXCJtb3JlIHR5cmUgcm9vbVwiLCBcImxlc3MgdHlyZSByb29tXCIpO1xuICAgIGxpbmVzLnB1c2gob3V0Lmxlbmd0aFxuICAgICAgPyBgLSBDb21wYXJlZCB3aXRoICoqQSoqLCAke25hbWUocCl9IGhhcyAke2xpc3RKb2luKG91dCl9LmBcbiAgICAgIDogYC0gJHtuYW1lKHApfSBpcyB3aXRoaW4gYSBmZXcgbWlsbGltZXRyZXMgb2YgKipBKiogb24gZXZlcnkgbWFpbiBtZWFzdXJlLmApO1xuICB9XG4gIGZvciAoY29uc3QgcCBvZiBwaWNrcykge1xuICAgIGlmIChwLnJvdy50b2VfY2xlYXJhbmNlICE9IG51bGwgJiYgcC5yb3cudG9lX2NsZWFyYW5jZSA8IDkwKVxuICAgICAgbGluZXMucHVzaChgLSAke25hbWUocCl9IGhhcyAke3Aucm93LnRvZV9jbGVhcmFuY2UudG9GaXhlZCgwKX0gbW0gYmV0d2VlbiBwZWRhbCBhbmQgdHlyZSwgc28gdG9lIG92ZXJsYXAgaXMgbGlrZWx5IGluIHRpZ2h0IHR1cm5zLmApO1xuICB9XG4gIHJldHVybiBtZGAke2xpbmVzLmpvaW4oXCJcXG5cIil9YDtcbn1cbiJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnYmlrZUEnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnY29uZmlnQScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdzaXplQScpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdiaWtlQicpIn0seyJtZXRob2ROYW1lIjoiaW50ZXJwcmV0UXVpZXQiLCJzb3VyY2UiOiJzaGlueUlucHV0KCdjb25maWdCJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ3NpemVCJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2Jpa2VDJykifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InNoaW55SW5wdXQoJ2NvbmZpZ0MnKSJ9LHsibWV0aG9kTmFtZSI6ImludGVycHJldFF1aWV0Iiwic291cmNlIjoic2hpbnlJbnB1dCgnc2l6ZUMnKSJ9XX0=
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/emmabranch\.github\.io\/gravel-geometry\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Independent project. Geometry figures are typed in from manufacturers’ published charts and may change without notice. Not affiliated with or endorsed by any company named here.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

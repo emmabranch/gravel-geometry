@@ -4,6 +4,7 @@ project:
   render:
     - index.qmd
     - explore.qmd
+    - compare.qmd
   resources:
     - .nojekyll
     - data/gravel_geometry.csv
@@ -21,6 +22,8 @@ website:
         text: Overview
       - href: explore.qmd
         text: Explore
+      - href: compare.qmd
+        text: Compare
     right:
       - icon: github
         href: https://github.com/emmabranch/gravel-geometry

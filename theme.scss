@@ -93,3 +93,71 @@ body:has(.hero-full) #title-block-header { display: none; }
 /* Glossary */
 .glossary dt { font-weight: 700; color: #0b2233; margin-top: 0.6rem; }
 .glossary dd { margin-left: 0; margin-bottom: 0.2rem; }
+
+/* ---------- Compare page ---------- */
+.slot-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1.25rem 0 0.75rem;
+}
+@media (max-width: 767.98px) { .slot-grid { grid-template-columns: 1fr; } }
+.slot-card {
+  background: #ffffff;
+  border-radius: 12px;
+  border-top: 5px solid var(--slot);
+  box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08);
+  padding: 0.9rem 1.1rem 0.6rem;
+  display: flex;
+  flex-direction: column;
+  /* Observable Inputs read these: make every control fill the card */
+  --input-width: 100%;
+  --label-width: 100%;
+}
+.slot-a { --slot: #2563a8; }
+.slot-b { --slot: #d2691e; }
+.slot-c { --slot: #2a9d8f; }
+.slot-head {
+  display: flex; align-items: center; gap: 0.55rem;
+  padding-bottom: 0.65rem; margin-bottom: 0.25rem;
+  border-bottom: 1px solid #ece9e1;
+}
+.slot-badge {
+  width: 1.8rem; height: 1.8rem; border-radius: 50%;
+  background: var(--slot); color: #fff; font-weight: 700;
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+}
+.slot-title { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.1rem; color: #0b2233; }
+.slot-optional { margin-left: auto; font-size: 0.8rem; color: #5b7083; }
+.slot-card .cell-output-display, .slot-card .observablehq { width: 100%; margin: 0 !important; }
+.slot-card .cell, .slot-card p { margin: 0 !important; }
+.slot-card p.slot-head-wrap, .slot-card > p:first-of-type { margin-bottom: 0.25rem !important; }
+.slot-card form { display: block !important; width: 100% !important; max-width: none !important; margin: 0.55rem 0 0.6rem !important; }
+.slot-card form > label { display: block !important; width: 100% !important; font-weight: 600; font-size: 0.88rem; margin: 0 0 0.25rem; padding: 0; }
+.slot-card form > div { width: 100% !important; margin: 0 !important; }
+.slot-card select { display: block; width: 100% !important; max-width: none !important; box-sizing: border-box; padding: 0.3rem 0.5rem; border: 1px solid #c9d6e0; border-radius: 6px; background-color: #ffffff; font-size: 0.95rem; }
+.slot-card select:disabled { background-color: #f6f4ef; color: #5b7083; }
+
+.slot-dot {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 1.35rem; height: 1.35rem; border-radius: 50%;
+  color: #fff; font-size: 0.75rem; font-weight: 700; flex: none;
+}
+.gg-legend .slot-dot { margin-right: 0.15rem; }
+
+.compare-scroll { overflow-x: auto; background: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); padding: 0.5rem 0.75rem; }
+.compare-table { background: #ffffff; width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 0.92rem; }
+.compare-table th, .compare-table td { background: #ffffff; padding: 0.4rem 0.6rem; border-bottom: 1px solid #ece9e1; vertical-align: middle; }
+.compare-table thead th { border-bottom: 2px solid #c9d6e0; font-weight: 600; color: #1f2a33; }
+.compare-table th[scope="row"] { font-weight: 600; color: #1f2a33; min-width: 10rem; }
+.compare-table .higher { font-weight: 400; font-size: 0.75rem; color: #5b7083; line-height: 1.25; }
+.compare-table .num { text-align: right; white-space: nowrap; }
+.compare-table .unit { color: #5b7083; font-size: 0.8em; margin-left: 0.1rem; }
+.compare-table .diff { display: block; font-size: 0.78rem; color: #5b7083; }
+.compare-table .est { display: block; font-size: 0.72rem; color: #7a5c43; font-style: italic; }
+.compare-table .group-row th { background: #f6f4ef !important; font-family: "Fraunces", serif; font-weight: 700; color: #0b2233; padding-top: 0.55rem; }
+.compare-table .strip-head { font-weight: 500; color: #5b7083; font-size: 0.82rem; }
+.compare-table .strip-cell { min-width: 190px; }
+.strip { display: block; }
+.strip-ends { display: flex; justify-content: space-between; width: 180px; font-size: 0.7rem; color: #5b7083; margin-top: -2px; }
+@media (max-width: 767.98px) { .compare-table .higher { display: none; } }

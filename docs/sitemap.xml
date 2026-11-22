@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://emmabranch.github.io/gravel-geometry/explore.html</loc>
-    <lastmod>2026-11-22T06:25:29.000Z</lastmod>
+    <loc>https://emmabranch.github.io/gravel-geometry/compare.html</loc>
+    <lastmod>2026-11-22T06:43:54.866Z</lastmod>
   </url>
   <url>
     <loc>https://emmabranch.github.io/gravel-geometry/index.html</loc>
     <lastmod>2026-11-22T06:08:00.575Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/gravel-geometry/explore.html</loc>
+    <lastmod>2026-11-22T06:25:29.000Z</lastmod>
   </url>
 </urlset>
