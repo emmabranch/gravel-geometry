@@ -27,8 +27,8 @@ derived <- geo |>
     cs_horizontal = sqrt(chainstay^2 - bb_drop^2),
 
     # Fork offset worked back from the wheelbase. Where a manufacturer publishes
-    # offset this lands within about 1.5 mm of it (124 sizes checked), so it is
-    # a fair estimate where offset is missing.
+    # offset this lands within 2 mm of it for 115 of 118 sizes, so it is a fair
+    # estimate where offset is missing.
     offset_from_wheelbase = (wheelbase - cs_horizontal - reach - (stack - bb_drop) / tan(hta)) * sin(hta),
 
     fork_offset_source = case_when(

@@ -1,0 +1,104 @@
+---
+title: "Data and methods"
+description: "Where the geometry comes from, how it was checked, what this site calculates, and the assumptions behind it."
+---
+
+## Where the numbers come from
+
+Every number was typed in by hand from the manufacturer's own published geometry chart, read in a web browser on 21 November 2026. Nothing was scraped, and nothing comes from third-party geometry databases. The text of each chart, as read, is kept in the repository (`data/chart-captures/`), so any number can be traced back.
+
+- **24 bikes from 19 brands**, chosen to cover current race, all-round, and adventure gravel bikes, including Canadian brands (Norco and Devinci).
+- **Every published size.** Where a bike has adjustable geometry (Giant and Liv flip chips, the Cervélo Trail Mixer fork insert), each setting has its own rows.
+- **Units:** charts in centimetres (Trek and Cannondale) were converted to millimetres. Cannondale publishes its chart as an image, which was read by eye.
+- **Left out:** the Rocky Mountain Solo (not listed on the Canadian site when checked), Kona, Ridley, and Niner (gravel pages would not load), and the Surly Grappler (closer to a mountain bike).
+
+Manufacturers change their charts, sometimes without notice. Check the source before buying anything.
+
+```{ojs}
+//| output: false
+raw = FileAttachment("data/gravel_geometry.csv").csv({typed: true})
+sources = Array.from(
+  new Map(raw.map(d => [d.bike_id, d])).values(),
+  d => ({
+    Bike: `${d.brand} ${d.model}`,
+    Category: d.category,
+    Sizes: raw.filter(r => r.bike_id === d.bike_id && (r.is_default_config === true || r.is_default_config === "TRUE")).length,
+    "Tyre clearance": d.tyre_clearance_mm,
+    Accessed: d.accessed,
+    url: d.source_url,
+    Notes: d.notes ?? ""
+  })
+).sort((a, b) => a.Bike.localeCompare(b.Bike))
+```
+
+::: {.column-page}
+```{ojs}
+Inputs.table(sources, {
+  rows: 30,
+  maxHeight: 4000,
+  layout: "auto",
+  columns: ["Bike", "Category", "Sizes", "Tyre clearance", "Accessed", "url", "Notes"],
+  header: {url: "Source"},
+  format: {
+    url: u => htl.html`<a href="${u}" target="_blank" rel="noopener">chart</a>`,
+    Accessed: d => d instanceof Date ? d.toISOString().slice(0, 10) : d,
+    Notes: n => htl.html`<span style="white-space: normal; display: inline-block; max-width: 34rem;">${n}</span>`
+  }
+})
+```
+:::
+
+**Downloads:** [typed-in geometry](data/gravel_geometry.csv) · [with calculated measures](data/gravel_geometry_derived.csv) · [data dictionary](data/data_dictionary.csv)
+
+## Categories
+
+Race, all-round, and adventure are this site's labels, not the manufacturers'. They follow how each manufacturer describes the bike's intended use. They are a rough grouping for filtering, and several bikes sit near the edges: the Norco Search, for example, is labelled adventure but is long and low, with a slack head angle.
+
+## How the data were checked
+
+Geometry charts contain redundant numbers: several measurements can be recalculated from the others. Where a recalculated value disagreed with the published one, the typed number was re-read against the chart. The checks run in `R/check_geometry.R`.
+
+| Check | How | Result |
+|---|---|---|
+| Top tube | effective top tube = reach + stack ÷ tan(seat angle) | Within 12 mm for every size except three OPEN WI.DE. sizes, whose "horizontal" top tube is measured differently from its own reach and stack |
+| Wheelbase | rebuilt from stack, reach, head angle, fork offset, BB drop, and chainstay | Within 10 mm for every size with a published offset |
+| Front centre | published front centre plus chainstay against wheelbase | Within 6 mm except the Santa Cruz Stigmata (about 7 mm short), which probably measures front centre differently |
+| Trail | recalculated against published trail, 72 sizes from 11 bikes | Mean difference −0.9 mm (SD 2.5). Orbea runs about 5 mm higher because its chart assumes a smaller tyre |
+| Size order | stack and reach should not shrink as sizes grow | True for every bike |
+
+## What this site calculates
+
+All lengths are in millimetres, angles in degrees. The bottom bracket (BB) is the origin.
+
+**Wheel radius.** A 700c rim has a 622 mm bead seat diameter. The tyre's height is taken as equal to its width, so with the reference 45 mm tyre, *R* = 311 + 45 = 356 mm. The Salsa Cutthroat uses its stock 29 × 2.25" tyre (about 57 mm).
+
+**Trail.** With head angle *θ* and fork offset *f*:
+
+$$\text{trail} = \frac{R \cos\theta - f}{\sin\theta}$$
+
+**Mechanical trail** is trail × sin *θ*: the same gap measured at right angles to the steering axis, which is the lever arm the rider actually feels. **Wheel flop** is trail × sin *θ* × cos *θ*: how far the front of the bike drops as the bars turn.
+
+**Front centre** (horizontal, BB to front axle):
+
+$$\text{front centre} = \text{reach} + \frac{\text{stack} - \text{BB drop}}{\tan\theta} + \frac{f}{\sin\theta}$$
+
+**Fork offset, where it isn't published** (Canyon, Devinci, and 3T). Rearranging the wheelbase equation gives the offset from the published wheelbase, chainstay, BB drop, stack, reach, and head angle. For the 118 sizes where offset *is* published, this lands within 2 mm for 115 of them (mean difference 0.0 mm, SD 0.6). These estimates are marked "est." on the site. The Santa Cruz Stigmata's offset comes from an FAQ answer (45 mm) that does not fit its chart, so the chart-based estimate (51 to 52 mm) is used instead.
+
+**Toe clearance** is the straight-line distance from the BB to the front axle, minus the tyre radius, minus a 172.5 mm crank. A typical shoe reaches about 90 to 110 mm ahead of the pedal axle, so smaller figures suggest toe overlap in tight, slow turns.
+
+**Stack-to-reach ratio** is stack divided by reach.
+
+## Drawings
+
+Bikes are drawn from the same numbers, to the same scale, with the BB at the origin. Tubes are straight lines between published points, so curved tubes and bent forks are simplified. Where a chart leaves out head tube or seat tube length (only the Factor ELARA), the drawing uses the median relationship across the other bikes (head tube about stack minus 434 mm, seat tube about 0.86 × stack), and says so.
+
+## Limitations
+
+- **Manufacturers measure some things differently.** Seat tube length and standover in particular have no single definition, so compare them across brands with care.
+- **Reference tyres differ.** Published trail and BB height depend on the tyre each manufacturer assumed, and few say which.
+- **Charts change.** Values were read on one date and may since have been updated.
+- **No fit advice.** Geometry is one part of fit. A bike's stem, spacers, bars, and saddle setup change the rider's position as much as the frame does.
+
+## Spotted a mistake?
+
+Please open an issue on [GitHub](https://github.com/emmabranch/gravel-geometry/issues) with the bike, size, and the number that looks wrong.

@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.11.9">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Where the geometry comes from, how it was checked, what this site calculates, and the assumptions behind it.">
+
+<title>Data and methods – Gravel geometry explorer</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-8a0de98eb985569d74f177013fbbd9a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-f9e2a4898acb2a2176dee2c54b5df4e2.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-8a0de98eb985569d74f177013fbbd9a7.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-fixed fullcontent quarto-light"><a id="quarto-skip-link" class="visually-hidden-focusable" href="#quarto-document-content">Skip to main content</a>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Gravel geometry explorer</span>
+    </a>
+  </div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Overview</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./explore.html"> 
+<span class="menu-text">Explore</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./compare.html"> 
+<span class="menu-text">Compare</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./methods.html" aria-current="page"> 
+<span class="menu-text">Data and methods</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/emmabranch/gravel-geometry"> <i class="bi bi-github" role="img" aria-label="Code on GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+            <div id="quarto-search" class="" title="Search"></div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content page-columns page-full" id="quarto-document-content" tabindex="-1">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Data and methods</h1>
+</div>
+
+<div>
+  <div class="description">
+    Where the geometry comes from, how it was checked, what this site calculates, and the assumptions behind it.
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="where-the-numbers-come-from" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="where-the-numbers-come-from">Where the numbers come from</h2>
+<p>Every number was typed in by hand from the manufacturer’s own published geometry chart, read in a web browser on 21 November 2026. Nothing was scraped, and nothing comes from third-party geometry databases. The text of each chart, as read, is kept in the repository (<code>data/chart-captures/</code>), so any number can be traced back.</p>
+<ul>
+<li><strong>24 bikes from 19 brands</strong>, chosen to cover current race, all-round, and adventure gravel bikes, including Canadian brands (Norco and Devinci).</li>
+<li><strong>Every published size.</strong> Where a bike has adjustable geometry (Giant and Liv flip chips, the Cervélo Trail Mixer fork insert), each setting has its own rows.</li>
+<li><strong>Units:</strong> charts in centimetres (Trek and Cannondale) were converted to millimetres. Cannondale publishes its chart as an image, which was read by eye.</li>
+<li><strong>Left out:</strong> the Rocky Mountain Solo (not listed on the Canadian site when checked), Kona, Ridley, and Niner (gravel pages would not load), and the Surly Grappler (closer to a mountain bike).</li>
+</ul>
+<p>Manufacturers change their charts, sometimes without notice. Check the source before buying anything.</p>
+<div class="cell hidden">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="19" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 18;"><span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>raw <span class="op">=</span> <span class="fu">FileAttachment</span>(<span class="st">"data/gravel_geometry.csv"</span>)<span class="op">.</span><span class="fu">csv</span>({<span class="dt">typed</span><span class="op">:</span> <span class="kw">true</span>})</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>sources <span class="op">=</span> <span class="bu">Array</span><span class="op">.</span><span class="fu">from</span>(</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="kw">new</span> <span class="bu">Map</span>(raw<span class="op">.</span><span class="fu">map</span>(d <span class="kw">=&gt;</span> [d<span class="op">.</span><span class="at">bike_id</span><span class="op">,</span> d]))<span class="op">.</span><span class="fu">values</span>()<span class="op">,</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  d <span class="kw">=&gt;</span> ({</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Bike</span><span class="op">:</span> <span class="vs">`</span><span class="sc">${</span>d<span class="op">.</span><span class="at">brand</span><span class="sc">}</span><span class="vs"> </span><span class="sc">${</span>d<span class="op">.</span><span class="at">model</span><span class="sc">}</span><span class="vs">`</span><span class="op">,</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Category</span><span class="op">:</span> d<span class="op">.</span><span class="at">category</span><span class="op">,</span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Sizes</span><span class="op">:</span> raw<span class="op">.</span><span class="fu">filter</span>(r <span class="kw">=&gt;</span> r<span class="op">.</span><span class="at">bike_id</span> <span class="op">===</span> d<span class="op">.</span><span class="at">bike_id</span> <span class="op">&amp;&amp;</span> (r<span class="op">.</span><span class="at">is_default_config</span> <span class="op">===</span> <span class="kw">true</span> <span class="op">||</span> r<span class="op">.</span><span class="at">is_default_config</span> <span class="op">===</span> <span class="st">"TRUE"</span>))<span class="op">.</span><span class="at">length</span><span class="op">,</span></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Tyre clearance"</span><span class="op">:</span> d<span class="op">.</span><span class="at">tyre_clearance_mm</span><span class="op">,</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Accessed</span><span class="op">:</span> d<span class="op">.</span><span class="at">accessed</span><span class="op">,</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span><span class="op">:</span> d<span class="op">.</span><span class="at">source_url</span><span class="op">,</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Notes</span><span class="op">:</span> d<span class="op">.</span><span class="at">notes</span> <span class="op">??</span> <span class="st">""</span></span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  })</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>)<span class="op">.</span><span class="fu">sort</span>((a<span class="op">,</span> b) <span class="kw">=&gt;</span> a<span class="op">.</span><span class="at">Bike</span><span class="op">.</span><span class="fu">localeCompare</span>(b<span class="op">.</span><span class="at">Bike</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-1" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+<div class="cell-output cell-output-display hidden">
+<div>
+<div id="ojs-cell-1-2" data-nodetype="declaration">
+
+</div>
+</div>
+</div>
+</div>
+<div class="column-page">
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="35" data-source-offset="0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 34;"><span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>Inputs<span class="op">.</span><span class="fu">table</span>(sources<span class="op">,</span> {</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>  <span class="dt">rows</span><span class="op">:</span> <span class="dv">30</span><span class="op">,</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">maxHeight</span><span class="op">:</span> <span class="dv">4000</span><span class="op">,</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">layout</span><span class="op">:</span> <span class="st">"auto"</span><span class="op">,</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>  <span class="dt">columns</span><span class="op">:</span> [<span class="st">"Bike"</span><span class="op">,</span> <span class="st">"Category"</span><span class="op">,</span> <span class="st">"Sizes"</span><span class="op">,</span> <span class="st">"Tyre clearance"</span><span class="op">,</span> <span class="st">"Accessed"</span><span class="op">,</span> <span class="st">"url"</span><span class="op">,</span> <span class="st">"Notes"</span>]<span class="op">,</span></span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>  <span class="dt">header</span><span class="op">:</span> {<span class="dt">url</span><span class="op">:</span> <span class="st">"Source"</span>}<span class="op">,</span></span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>  <span class="dt">format</span><span class="op">:</span> {</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>    <span class="dt">url</span><span class="op">:</span> u <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;a href="</span><span class="sc">${</span>u<span class="sc">}</span><span class="vs">" target="_blank" rel="noopener"&gt;chart&lt;/a&gt;`</span><span class="op">,</span></span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Accessed</span><span class="op">:</span> d <span class="kw">=&gt;</span> d <span class="kw">instanceof</span> <span class="bu">Date</span> <span class="op">?</span> d<span class="op">.</span><span class="fu">toISOString</span>()<span class="op">.</span><span class="fu">slice</span>(<span class="dv">0</span><span class="op">,</span> <span class="dv">10</span>) <span class="op">:</span> d<span class="op">,</span></span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>    <span class="dt">Notes</span><span class="op">:</span> n <span class="kw">=&gt;</span> htl<span class="op">.</span><span class="fu">html</span><span class="vs">`&lt;span style="white-space: normal; display: inline-block; max-width: 34rem;"&gt;</span><span class="sc">${</span>n<span class="sc">}</span><span class="vs">&lt;/span&gt;`</span></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div id="ojs-cell-2" data-nodetype="expression">
+
+</div>
+</div>
+</div>
+</div>
+<p><strong>Downloads:</strong> <a href="data/gravel_geometry.csv">typed-in geometry</a> · <a href="data/gravel_geometry_derived.csv">with calculated measures</a> · <a href="data/data_dictionary.csv">data dictionary</a></p>
+</section>
+<section id="categories" class="level2">
+<h2 class="anchored" data-anchor-id="categories">Categories</h2>
+<p>Race, all-round, and adventure are this site’s labels, not the manufacturers’. They follow how each manufacturer describes the bike’s intended use. They are a rough grouping for filtering, and several bikes sit near the edges: the Norco Search, for example, is labelled adventure but is long and low, with a slack head angle.</p>
+</section>
+<section id="how-the-data-were-checked" class="level2">
+<h2 class="anchored" data-anchor-id="how-the-data-were-checked">How the data were checked</h2>
+<p>Geometry charts contain redundant numbers: several measurements can be recalculated from the others. Where a recalculated value disagreed with the published one, the typed number was re-read against the chart. The checks run in <code>R/check_geometry.R</code>.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Check</th>
+<th>How</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Top tube</td>
+<td>effective top tube = reach + stack ÷ tan(seat angle)</td>
+<td>Within 12 mm for every size except three OPEN WI.DE. sizes, whose “horizontal” top tube is measured differently from its own reach and stack</td>
+</tr>
+<tr class="even">
+<td>Wheelbase</td>
+<td>rebuilt from stack, reach, head angle, fork offset, BB drop, and chainstay</td>
+<td>Within 10 mm for every size with a published offset</td>
+</tr>
+<tr class="odd">
+<td>Front centre</td>
+<td>published front centre plus chainstay against wheelbase</td>
+<td>Within 6 mm except the Santa Cruz Stigmata (about 7 mm short), which probably measures front centre differently</td>
+</tr>
+<tr class="even">
+<td>Trail</td>
+<td>recalculated against published trail, 72 sizes from 11 bikes</td>
+<td>Mean difference −0.9 mm (SD 2.5). Orbea runs about 5 mm higher because its chart assumes a smaller tyre</td>
+</tr>
+<tr class="odd">
+<td>Size order</td>
+<td>stack and reach should not shrink as sizes grow</td>
+<td>True for every bike</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="what-this-site-calculates" class="level2">
+<h2 class="anchored" data-anchor-id="what-this-site-calculates">What this site calculates</h2>
+<p>All lengths are in millimetres, angles in degrees. The bottom bracket (BB) is the origin.</p>
+<p><strong>Wheel radius.</strong> A 700c rim has a 622 mm bead seat diameter. The tyre’s height is taken as equal to its width, so with the reference 45 mm tyre, <em>R</em> = 311 + 45 = 356 mm. The Salsa Cutthroat uses its stock 29 × 2.25” tyre (about 57 mm).</p>
+<p><strong>Trail.</strong> With head angle <em>θ</em> and fork offset <em>f</em>:</p>
+<p><span class="math display">\[\text{trail} = \frac{R \cos\theta - f}{\sin\theta}\]</span></p>
+<p><strong>Mechanical trail</strong> is trail × sin <em>θ</em>: the same gap measured at right angles to the steering axis, which is the lever arm the rider actually feels. <strong>Wheel flop</strong> is trail × sin <em>θ</em> × cos <em>θ</em>: how far the front of the bike drops as the bars turn.</p>
+<p><strong>Front centre</strong> (horizontal, BB to front axle):</p>
+<p><span class="math display">\[\text{front centre} = \text{reach} + \frac{\text{stack} - \text{BB drop}}{\tan\theta} + \frac{f}{\sin\theta}\]</span></p>
+<p><strong>Fork offset, where it isn’t published</strong> (Canyon, Devinci, and 3T). Rearranging the wheelbase equation gives the offset from the published wheelbase, chainstay, BB drop, stack, reach, and head angle. For the 118 sizes where offset <em>is</em> published, this lands within 2 mm for 115 of them (mean difference 0.0 mm, SD 0.6). These estimates are marked “est.” on the site. The Santa Cruz Stigmata’s offset comes from an FAQ answer (45 mm) that does not fit its chart, so the chart-based estimate (51 to 52 mm) is used instead.</p>
+<p><strong>Toe clearance</strong> is the straight-line distance from the BB to the front axle, minus the tyre radius, minus a 172.5 mm crank. A typical shoe reaches about 90 to 110 mm ahead of the pedal axle, so smaller figures suggest toe overlap in tight, slow turns.</p>
+<p><strong>Stack-to-reach ratio</strong> is stack divided by reach.</p>
+</section>
+<section id="drawings" class="level2">
+<h2 class="anchored" data-anchor-id="drawings">Drawings</h2>
+<p>Bikes are drawn from the same numbers, to the same scale, with the BB at the origin. Tubes are straight lines between published points, so curved tubes and bent forks are simplified. Where a chart leaves out head tube or seat tube length (only the Factor ELARA), the drawing uses the median relationship across the other bikes (head tube about stack minus 434 mm, seat tube about 0.86 × stack), and says so.</p>
+</section>
+<section id="limitations" class="level2">
+<h2 class="anchored" data-anchor-id="limitations">Limitations</h2>
+<ul>
+<li><strong>Manufacturers measure some things differently.</strong> Seat tube length and standover in particular have no single definition, so compare them across brands with care.</li>
+<li><strong>Reference tyres differ.</strong> Published trail and BB height depend on the tyre each manufacturer assumed, and few say which.</li>
+<li><strong>Charts change.</strong> Values were read on one date and may since have been updated.</li>
+<li><strong>No fit advice.</strong> Geometry is one part of fit. A bike’s stem, spacers, bars, and saddle setup change the rider’s position as much as the frame does.</li>
+</ul>
+</section>
+<section id="spotted-a-mistake" class="level2">
+<h2 class="anchored" data-anchor-id="spotted-a-mistake">Spotted a mistake?</h2>
+<p>Please open an issue on <a href="https://github.com/emmabranch/gravel-geometry/issues">GitHub</a> with the bike, size, and the number that looks wrong.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<!-- Shared portfolio footer. Master copy: /Users/ecox/projects/_brand-kit/footer.html -->
+<footer class="eb-footer" role="contentinfo">
+  <div class="eb-footer-inner">
+    <div class="eb-footer-name">Emma Branch</div>
+    <div class="eb-footer-tag">Epidemiologist and data analyst, British Columbia</div>
+    <div class="eb-footer-heading">Portfolio projects</div>
+    <nav class="eb-footer-projects" aria-label="Portfolio projects">
+      <a href="https://emmabranch.github.io/redcap-starter-kit/">REDCap starter kit</a>
+      <a href="https://emmabranch.github.io/bc-housing-indicators/">BC housing indicators</a>
+      <a href="https://emmabranch.github.io/bc-fish-stock-status/">BC fish stock status</a>
+      <a href="https://emmabranch.github.io/bc-lightstation-qc/">BC lightstation sea temperatures</a>
+      <a href="https://emmabranch.github.io/bc-wildfire-bigquery/">BC wildfire history</a>
+      <a href="https://emmabranch.github.io/vch-climate-equity-profile/">VCH climate equity profile</a>
+      <a href="https://emmabranch.shinyapps.io/bc-salmon-explorer">BC Salmon Explorer</a>
+      <a href="https://emmabranch.github.io/ontario-claims-caribou/">Ontario mining claims and caribou</a>
+      <a href="https://emmabranch.github.io/salish-sea-whales/">Salish Sea whales</a>
+      <a href="https://emmabranch.github.io/bike-recall-surveillance/">Bike recall surveillance</a>
+      <a href="https://emmabranch.github.io/gravel-geometry/">Gravel geometry explorer</a>
+    </nav>
+    <div class="eb-footer-contact">
+      <a href="https://github.com/emmabranch">GitHub</a>
+      <a href="https://www.linkedin.com/in/embranch/">LinkedIn</a>
+      <a href="mailto:emma.branch@gmail.com">emma.branch@gmail.com</a>
+    </div>
+  </div>
+</footer>
+<script>
+  /* Quarto places included HTML inside the page layout. Move the top bar
+     and footer to the edges of the page so they span the full width. */
+  document.addEventListener("DOMContentLoaded", function () {
+    var bar = document.querySelector(".eb-topbar");
+    if (bar) document.body.insertBefore(bar, document.body.firstChild);
+    /* Optional hero for single-page reports (report-hero.html): put it
+       straight after the top bar, above the report itself. */
+    var rhero = document.querySelector(".eb-report-hero");
+    if (rhero) {
+      if (bar) bar.parentNode.insertBefore(rhero, bar.nextSibling);
+      else document.body.insertBefore(rhero, document.body.firstChild);
+      document.body.classList.add("has-report-hero");
+      /* The report card is lifted over the hero, which makes each section's
+         offsetTop relative to the card instead of the page. Quarto's table of
+         contents reads offsetTop, so give each section its true page position. */
+      document.querySelectorAll("main.content section[id]").forEach(function (sec) {
+        Object.defineProperty(sec, "offsetTop", {
+          configurable: true,
+          get: function () { return this.getBoundingClientRect().top + window.scrollY; }
+        });
+      });
+      /* Optional background stripes drawn by R inside the report
+         (a div with class "eb-hero-stripes"): move them into the hero. */
+      var stripes = document.querySelector(".eb-hero-stripes");
+      if (stripes) { stripes.classList.add("hero-bg"); rhero.insertBefore(stripes, rhero.firstChild); }
+    }
+    var foot = document.querySelector(".eb-footer");
+    if (foot) {
+      /* On websites, put it just above Quarto's own footer (which holds the
+         project disclaimer); otherwise at the very end of the page. */
+      var qfoot = document.querySelector("footer.footer");
+      if (qfoot) qfoot.parentNode.insertBefore(foot, qfoot);
+      else document.body.appendChild(foot);
+    }
+    /* On phones, close the navbar menu after a link is tapped. Links to a
+       section of the same page don't reload it, so the menu would stay open. */
+    document.querySelectorAll(".navbar-collapse .nav-link:not(.dropdown-toggle)").forEach(function (link) {
+      link.addEventListener("click", function () {
+        var menu = document.querySelector(".navbar-collapse.show");
+        if (menu && window.bootstrap) window.bootstrap.Collapse.getOrCreateInstance(menu).hide();
+      });
+    });
+    /* Hide Quarto's empty footer columns so they don't add space on phones */
+    document.querySelectorAll(".nav-footer-left, .nav-footer-right").forEach(function (el) {
+      if (!el.children.length && !el.textContent.replace(/[\s\u00a0]/g, "")) el.style.display = "none";
+    });
+  });
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3sibWV0aG9kTmFtZSI6ImludGVycHJldCIsImNlbGxOYW1lIjoib2pzLWNlbGwtMSIsImlubGluZSI6ZmFsc2UsInNvdXJjZSI6InJhdyA9IEZpbGVBdHRhY2htZW50KFwiZGF0YS9ncmF2ZWxfZ2VvbWV0cnkuY3N2XCIpLmNzdih7dHlwZWQ6IHRydWV9KVxuc291cmNlcyA9IEFycmF5LmZyb20oXG4gIG5ldyBNYXAocmF3Lm1hcChkID0+IFtkLmJpa2VfaWQsIGRdKSkudmFsdWVzKCksXG4gIGQgPT4gKHtcbiAgICBCaWtlOiBgJHtkLmJyYW5kfSAke2QubW9kZWx9YCxcbiAgICBDYXRlZ29yeTogZC5jYXRlZ29yeSxcbiAgICBTaXplczogcmF3LmZpbHRlcihyID0+IHIuYmlrZV9pZCA9PT0gZC5iaWtlX2lkICYmIChyLmlzX2RlZmF1bHRfY29uZmlnID09PSB0cnVlIHx8IHIuaXNfZGVmYXVsdF9jb25maWcgPT09IFwiVFJVRVwiKSkubGVuZ3RoLFxuICAgIFwiVHlyZSBjbGVhcmFuY2VcIjogZC50eXJlX2NsZWFyYW5jZV9tbSxcbiAgICBBY2Nlc3NlZDogZC5hY2Nlc3NlZCxcbiAgICB1cmw6IGQuc291cmNlX3VybCxcbiAgICBOb3RlczogZC5ub3RlcyA/PyBcIlwiXG4gIH0pXG4pLnNvcnQoKGEsIGIpID0+IGEuQmlrZS5sb2NhbGVDb21wYXJlKGIuQmlrZSkpXG4ifSx7Im1ldGhvZE5hbWUiOiJpbnRlcnByZXQiLCJjZWxsTmFtZSI6Im9qcy1jZWxsLTIiLCJpbmxpbmUiOmZhbHNlLCJzb3VyY2UiOiJJbnB1dHMudGFibGUoc291cmNlcywge1xuICByb3dzOiAzMCxcbiAgbWF4SGVpZ2h0OiA0MDAwLFxuICBsYXlvdXQ6IFwiYXV0b1wiLFxuICBjb2x1bW5zOiBbXCJCaWtlXCIsIFwiQ2F0ZWdvcnlcIiwgXCJTaXplc1wiLCBcIlR5cmUgY2xlYXJhbmNlXCIsIFwiQWNjZXNzZWRcIiwgXCJ1cmxcIiwgXCJOb3Rlc1wiXSxcbiAgaGVhZGVyOiB7dXJsOiBcIlNvdXJjZVwifSxcbiAgZm9ybWF0OiB7XG4gICAgdXJsOiB1ID0+IGh0bC5odG1sYDxhIGhyZWY9XCIke3V9XCIgdGFyZ2V0PVwiX2JsYW5rXCIgcmVsPVwibm9vcGVuZXJcIj5jaGFydDwvYT5gLFxuICAgIEFjY2Vzc2VkOiBkID0+IGQgaW5zdGFuY2VvZiBEYXRlID8gZC50b0lTT1N0cmluZygpLnNsaWNlKDAsIDEwKSA6IGQsXG4gICAgTm90ZXM6IG4gPT4gaHRsLmh0bWxgPHNwYW4gc3R5bGU9XCJ3aGl0ZS1zcGFjZTogbm9ybWFsOyBkaXNwbGF5OiBpbmxpbmUtYmxvY2s7IG1heC13aWR0aDogMzRyZW07XCI+JHtufTwvc3Bhbj5gXG4gIH1cbn0pXG4ifV19
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../..";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/emmabranch\.github\.io\/gravel-geometry\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+      window.quartoDecorateExternalLinks = function (root) {
+     var links = (root || window.document).querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+          if (!link.classList.contains('no-external-icon')) {
+          }
+        }
+      }
+      };
+      window.quartoDecorateExternalLinks(window.document);
+    // Esc closes the popup (WCAG 1.4.13) and focus leaving both trigger and
+    // popup closes it (WCAG 2.4.11); tippy handles neither for interactive popups.
+    const hideOnEscAndFocusOut = {
+      name: 'hideOnEscAndFocusOut',
+      defaultValue: true,
+      fn(instance) {
+        const dismiss = () => {
+          // A show scheduled by the trigger delay would otherwise reopen it
+          instance.clearDelayTimeouts();
+          instance.hide();
+        };
+        const onKeyDown = (event) => {
+          if (event.key !== 'Escape') {
+            return;
+          }
+          // Keep Esc from also reaching page handlers (e.g. reveal.js overview),
+          // except an open reveal.js slide menu, which Esc should close too.
+          // The menu handles keys only when its keyboard option is on.
+          const menuHandlesEsc = window.Reveal?.getPlugin?.('menu')?.isOpen() &&
+            window.Reveal.getConfig().menu?.keyboard !== false;
+          if (!menuHandlesEsc) {
+            event.stopPropagation();
+          }
+          if (instance.popper.contains(window.document.activeElement)) {
+            // Disabled while refocusing so the focus trigger does not reopen it
+            instance.disable();
+            instance.reference.focus();
+            instance.enable();
+          }
+          dismiss();
+        };
+        const onFocusOut = (event) => {
+          const target = event.relatedTarget;
+          if (target && !instance.reference.contains(target) &&
+              !instance.popper.contains(target)) {
+            dismiss();
+          }
+        };
+        // On the trigger too: a click trigger (code-annotations: select) has no
+        // blur handling. Attached for the instance's lifetime so leaving the
+        // trigger also cancels a show still pending on the trigger delay.
+        instance.reference.addEventListener('focusout', onFocusOut);
+        return {
+          onShow() {
+            window.document.addEventListener('keydown', onKeyDown, true);
+            instance.popper.addEventListener('focusout', onFocusOut);
+          },
+          onHide() {
+            window.document.removeEventListener('keydown', onKeyDown, true);
+            instance.popper.removeEventListener('focusout', onFocusOut);
+          },
+          onDestroy() {
+            instance.reference.removeEventListener('focusout', onFocusOut);
+          },
+        };
+      },
+    };
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+        plugins: [hideOnEscAndFocusOut],
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          // Each band is positioned against its own containing block, which is
+          // not the offsetParent of the lines, so place it from client rects.
+          const placeBand = (band, firstEl, lastEl, codeBlock) => {
+            const container = band.offsetParent;
+            if (container === null) {
+              return;
+            }
+            const containerRect = container.getBoundingClientRect();
+            // Reveal.js scales slides with a transform, so convert client
+            // pixels back to the CSS pixels of the container.
+            const scale = containerRect.height / container.offsetHeight || 1;
+            const firstRect = firstEl.getBoundingClientRect();
+            const lastRect = lastEl.getBoundingClientRect();
+            const top = (firstRect.top - containerRect.top) / scale - container.clientTop + container.scrollTop;
+            const height = (lastRect.bottom - firstRect.top) / scale;
+            band.style.top = top - 2 + "px";
+            band.style.height = height + 4 + "px";
+            if (codeBlock) {
+              // Without the copy button wrapper, the containing block is wider
+              // than the code block, so span the code block explicitly.
+              const blockRect = codeBlock.getBoundingClientRect();
+              band.style.left = (blockRect.left - containerRect.left) / scale - container.clientLeft + container.scrollLeft + "px";
+              band.style.width = blockRect.width / scale + "px";
+            }
+          };
+          if (lineIds.length > 0) {
+            const el = window.document.getElementById(lineIds[0]);
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const parent = el.parentElement.parentElement;
+            // cook up a div (if necessary) and position it
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            placeBand(div, el, lastEl, parent.closest("div.sourceCode") || parent);
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            placeBand(gutterDiv, el, lastEl);
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+  <script type="application/javascript">
+  window.quartoScrollableRegionsLabels = {"code":"Scrollable code","output":"Scrollable output"};
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Independent project. Geometry figures are typed in from manufacturers’ published charts and may change without notice. Not affiliated with or endorsed by any company named here.</p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
