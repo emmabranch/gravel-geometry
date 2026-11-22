@@ -12,9 +12,9 @@ description: "Compare the published geometry of current gravel bikes, put a ride
 
 # Gravel bike geometry. [Compared, explained, and test-ridden on paper.]{.accent}
 
-Published geometry for current gravel bikes, drawn to scale, with an estimated rider on top. Under construction, one stage at a time.
+Published geometry for current gravel bikes, every size, typed in from the manufacturers' own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.
 
-[Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
+[Explore the bikes](explore.qmd){.btn .btn-accent} [Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
 
 ::::
 
@@ -24,7 +24,33 @@ Published geometry for current gravel bikes, drawn to scale, with an estimated r
 
 :::::
 
-## A first test: trail
+:::: {.stat-row .lift}
+::: {.stat-box}
+[24]{.num}
+
+[current gravel bikes from 19 brands]{.lab}
+:::
+::: {.stat-box}
+[135]{.num}
+
+[frame sizes, plus alternative flip chip and fork settings]{.lab}
+:::
+::: {.stat-box}
+[54 to 90 mm]{.num}
+
+[range of trail, from twitchy race bikes to steady tourers]{.lab}
+:::
+::::
+
+## What this is
+
+A bike's geometry is the set of lengths and angles that decide how it fits and how it handles. Manufacturers publish them in charts that are hard to compare by eye. This site puts them side by side.
+
+- **Every number comes from the manufacturer's own chart**, with the page and the date it was read. Charts change, so check the source before buying anything.
+- **The numbers are checked against each other.** Trail, top tube, and wheelbase can each be recalculated from the other measurements, which catches typing slips.
+- **No rankings.** Different geometry suits different riders and rides. The point is to see the differences, not to pick a winner.
+
+## A quick taste: trail
 
 Trail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.
 

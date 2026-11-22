@@ -1,0 +1,36 @@
+variable,type,units,description,plain_language
+bike_id,text,,Unique ID for a bike model (brand_model),A short code for each bike.
+brand,text,,Manufacturer name as a factual label,Who makes it.
+model,text,,Model or frame platform name,Which bike.
+frame_material,text,,carbon or aluminium,What the frame is made of.
+category,text,,"Editorial grouping: race, all-round, or adventure. Assigned by this project from the manufacturer's own description of the bike's intended use, not published by the manufacturer.",A rough label for what the bike is built for.
+config,text,,"Adjustable geometry setting: standard, flip chip short or long (Giant, Liv), Trail Mixer rwd or fwd (Cervélo)",Some bikes have a part you can flip to change the geometry. Each setting gets its own rows.
+is_default_config,logical,,TRUE for the row to use when only one setting per bike is wanted,Which setting to show by default.
+size_label,text,,Frame size as the manufacturer names it,The size name on the chart.
+size_order,integer,,"Order of sizes from smallest (1) to largest, within a bike",Lets the sizes sort properly.
+wheel_size,text,,700c or 29er (both 622 mm bead seat diameter),The wheel the chart assumes.
+stack,number,mm,Vertical distance from bottom bracket centre to the top centre of the head tube,How high the front of the frame is. Taller stack means a more upright position.
+reach,number,mm,Horizontal distance from bottom bracket centre to the top centre of the head tube,How long the front of the frame is. Longer reach means a more stretched-out position.
+head_tube_angle,number,degrees,Angle of the steering axis from horizontal,"How steep the steering is. Lower (slacker) is calmer and more stable, higher (steeper) is quicker."
+seat_tube_angle,number,degrees,Angle of the seat tube (actual or effective as published) from horizontal,How far forward the saddle sits over the pedals.
+head_tube_length,number,mm,Length of the head tube,"The tube the fork steers through. Longer tubes raise the front end."
+seat_tube_length,number,mm,"Seat tube length, measured as each manufacturer defines it (usually BB centre to top)",Mostly matters for how low the saddle can go. Not comparable across brands.
+top_tube_effective,number,mm,Horizontal (effective) top tube length,"The level distance from the seat post to the head tube."
+chainstay,number,mm,Distance from bottom bracket centre to rear axle,"How far the back wheel is behind the pedals. Shorter is livelier, longer is steadier and fits bigger tyres."
+bb_drop,number,mm,Vertical distance the bottom bracket sits below the wheel axles,"How far the pedals sit below the hubs. More drop feels planted and stable."
+bb_height,number,mm,Height of the bottom bracket above the ground with the manufacturer's reference tyre,"Pedal height from the ground. Depends on the tyre fitted."
+wheelbase,number,mm,Horizontal distance between the front and rear axles,"Overall length between the wheels. Longer feels steadier, shorter turns more easily."
+front_centre,number,mm,Distance from bottom bracket centre to front axle (as published),"How far the front wheel is ahead of the pedals. Matters for toe overlap and stability."
+fork_offset,number,mm,Perpendicular distance from the steering axis to the front axle (also called rake),"How far the fork pushes the front wheel forward. More offset means less trail."
+fork_axle_crown,number,mm,Fork length from axle to crown,"How tall the fork is."
+trail_published,number,mm,Trail as published by the manufacturer (reference tyre varies by brand),"The gap between where the steering axis meets the ground and where the tyre touches down. More trail feels steadier."
+standover,number,mm,Height of the top tube above the ground at a manufacturer-defined point,"How much room there is over the top tube when standing. Measured differently by each brand."
+stock_stem_length,number,mm,Stem length on the stock build (where published on the geometry chart),Length of the part joining the handlebar to the steerer.
+stock_stem_angle,number,degrees,Stem angle on the stock build (where published),Whether the stem points up or down.
+stock_crank_length,number,mm,Crank length on the stock build (where published on the geometry chart),Pedal arm length.
+tyre_clearance_mm,number,mm,"Maximum tyre width claimed by the manufacturer for 700c (or 29er for the Cutthroat), frame limit where frame and fork differ","The widest tyre the bike claims to fit."
+tyre_clearance_note,text,,Short quote or summary of the manufacturer's clearance claim,"Exactly what the manufacturer says, including any conditions (1x vs 2x, measured width)."
+source_url,text,,Manufacturer page the values were typed from,Where the numbers came from.
+source_units,text,,Units on the source chart (cm values were converted to mm),Whether the chart was in mm or cm.
+accessed,date,,Date the chart was read (YYYY-MM-DD),When the numbers were copied. Charts can change.
+notes,text,,"Anything unusual about the chart: missing values, conflicts between chart and page text, adjustable geometry",Quirks worth knowing.

@@ -3,8 +3,12 @@ project:
   output-dir: docs
   render:
     - index.qmd
+    - explore.qmd
   resources:
     - .nojekyll
+    - data/gravel_geometry.csv
+    - data/gravel_geometry_derived.csv
+    - data/data_dictionary.csv
 
 website:
   title: "Gravel geometry explorer"
@@ -15,6 +19,8 @@ website:
     left:
       - href: index.qmd
         text: Overview
+      - href: explore.qmd
+        text: Explore
     right:
       - icon: github
         href: https://github.com/emmabranch/gravel-geometry

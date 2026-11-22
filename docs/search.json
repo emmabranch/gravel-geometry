@@ -1,16 +1,44 @@
 [
   {
+    "objectID": "explore.html",
+    "href": "explore.html",
+    "title": "Explore the bikes",
+    "section": "",
+    "text": "Every dot is one frame size. Lines join the sizes of the same bike, smallest to largest. Up means a taller front end. Right means a longer one.\nraw = FileAttachment(\"data/gravel_geometry_derived.csv\").csv({typed: true})\n\n// R writes TRUE/FALSE; make them true booleans\nbikes = raw.map(d =&gt; ({\n  ...d,\n  is_default_config: d.is_default_config === true || d.is_default_config === \"TRUE\",\n  offset_estimated: d.offset_estimated === true || d.offset_estimated === \"TRUE\",\n  size_label: String(d.size_label),\n  label: `${d.brand} ${d.model}`\n}))\n\ncategories = [\"race\", \"all-round\", \"adventure\"]\ncategoryNames = ({\"race\": \"Race\", \"all-round\": \"All-round\", \"adventure\": \"Adventure\"})\ncategoryColours = [\"#2a6fb0\", \"#e0a030\", \"#a03a6a\"]\ncategoryShapes = [\"circle\", \"square\", \"triangle\"]\n\nbrandList = Array.from(new Set(bikes.map(d =&gt; d.brand))).sort((a, b) =&gt; a.localeCompare(b))\nbikeList = Array.from(new Set(bikes.map(d =&gt; d.label))).sort((a, b) =&gt; a.localeCompare(b))"
+  },
+  {
+    "objectID": "explore.html#the-numbers-behind-the-dots",
+    "href": "explore.html#the-numbers-behind-the-dots",
+    "title": "Explore the bikes",
+    "section": "The numbers behind the dots",
+    "text": "The numbers behind the dots\n\ntableRows = filtered.map(d =&gt; ({\n  Bike: d.label,\n  Size: d.size_label,\n  Setting: d.config,\n  Category: categoryNames[d.category],\n  Stack: d.stack,\n  Reach: d.reach,\n  \"Stack/reach\": d.stack_reach_ratio,\n  \"Head angle\": d.head_tube_angle,\n  \"Seat angle\": d.seat_tube_angle,\n  \"Fork offset\": d.fork_offset_used,\n  \"Offset source\": d.offset_estimated ? \"estimated\" : \"published\",\n  Trail: d.trail_calc,\n  Wheelbase: d.wheelbase,\n  Chainstay: d.chainstay,\n  \"BB drop\": d.bb_drop,\n  \"Toe clearance\": d.toe_clearance,\n  \"Tyre clearance\": d.tyre_clearance_mm\n}))\n\n\n\n\n\n\n\n\nInputs.table(tableRows, {\n  rows: 14,\n  layout: \"auto\",\n  format: {\n    \"Stack/reach\": x =&gt; x?.toFixed(2),\n    Trail: x =&gt; x == null ? \"\" : x.toFixed(0),\n    \"Toe clearance\": x =&gt; x == null ? \"\" : x.toFixed(0)\n  }\n})\n\n\n\n\n\n\n\n\ndownloadButton = {\n  const header = Object.keys(tableRows[0] ?? {Bike: \"\"});\n  const esc = v =&gt; {\n    const s = v == null ? \"\" : String(v);\n    return /[\",\\n]/.test(s) ? `\"${s.replace(/\"/g, '\"\"')}\"` : s;\n  };\n  const csv = [header.join(\",\"), ...tableRows.map(r =&gt; header.map(h =&gt; esc(r[h])).join(\",\"))].join(\"\\n\");\n  const url = URL.createObjectURL(new Blob([csv], {type: \"text/csv\"}));\n  return html`&lt;a class=\"btn btn-sm btn-outline-secondary\" href=\"${url}\" download=\"gravel-geometry-filtered.csv\"&gt;Download these rows as CSV&lt;/a&gt;`;\n}\n\n\n\n\n\n\nAll lengths are in millimetres and angles in degrees. Trail, toe clearance, and estimated fork offsets are calculated by this site, not published by the manufacturers."
+  },
+  {
+    "objectID": "explore.html#what-the-columns-mean",
+    "href": "explore.html#what-the-columns-mean",
+    "title": "Explore the bikes",
+    "section": "What the columns mean",
+    "text": "What the columns mean\n\n\nStack/reach\n\nStack divided by reach. Higher means a more upright riding position.\n\nHead angle\n\nHow steeply the steering axis is tilted. Slacker (lower) angles feel calmer at speed. Steeper (higher) angles feel quicker to turn.\n\nSeat angle\n\nHow far forward the saddle sits over the pedals. Steeper angles put you further forward.\n\nFork offset\n\nHow far the fork pushes the front axle ahead of the steering axis. Three brands don’t publish it, so it’s worked back from the wheelbase. That method lands within about 1.5 mm of the published offset for the other bikes.\n\nTrail\n\nThe gap on the ground between where the steering axis points and where the tyre touches down, calculated for a 700 × 45 mm tyre. More trail means steadier, self-centring steering. Gravel bikes mostly sit between 60 and 80 mm.\n\nWheelbase\n\nThe distance between the axles. Longer is steadier, shorter is nimbler.\n\nChainstay\n\nThe distance from the pedals’ axle to the rear axle. Shorter feels livelier. Longer is steadier and leaves more room for tyres.\n\nBB drop\n\nHow far the pedals’ axle sits below the wheel axles. More drop puts you lower between the wheels, which feels planted.\n\nToe clearance\n\nThe gap between the pedal axle (crank pointing forward, 172.5 mm cranks) and the front tyre. A shoe usually reaches 90 to 110 mm ahead of the pedal axle, so smaller figures suggest your toe could touch the tyre in tight, slow turns.\n\nTyre clearance\n\nThe widest tyre the manufacturer says fits, in their own words in the data file."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
     "section": "",
-    "text": "Portfolio project · Quarto · Observable JS · D3\n\n\nPublished geometry for current gravel bikes, drawn to scale, with an estimated rider on top. Under construction, one stage at a time.\nCode on GitHub"
+    "text": "Portfolio project · Quarto · Observable JS · D3\n\n\nPublished geometry for current gravel bikes, every size, typed in from the manufacturers’ own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.\nExplore the bikes Code on GitHub"
   },
   {
-    "objectID": "index.html#a-first-test-trail",
-    "href": "index.html#a-first-test-trail",
+    "objectID": "index.html#what-this-is",
+    "href": "index.html#what-this-is",
     "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
-    "section": "A first test: trail",
-    "text": "A first test: trail\nTrail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.\n\n\nviewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: \"Head tube angle (°)\"})\nviewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: \"Fork offset (mm)\"})\nviewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: \"Tyre width (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrail = {\n  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width\n  const a = hta * Math.PI / 180;\n  return (radius * Math.cos(a) - offset) / Math.sin(a);\n}\nmd`**Trail: ${trail.toFixed(1)} mm**`"
+    "section": "What this is",
+    "text": "What this is\nA bike’s geometry is the set of lengths and angles that decide how it fits and how it handles. Manufacturers publish them in charts that are hard to compare by eye. This site puts them side by side.\n\nEvery number comes from the manufacturer’s own chart, with the page and the date it was read. Charts change, so check the source before buying anything.\nThe numbers are checked against each other. Trail, top tube, and wheelbase can each be recalculated from the other measurements, which catches typing slips.\nNo rankings. Different geometry suits different riders and rides. The point is to see the differences, not to pick a winner."
+  },
+  {
+    "objectID": "index.html#a-quick-taste-trail",
+    "href": "index.html#a-quick-taste-trail",
+    "title": "Gravel bike geometry. Compared, explained, and test-ridden on paper.",
+    "section": "A quick taste: trail",
+    "text": "A quick taste: trail\nTrail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.\n\n\nviewof hta = Inputs.range([66, 74], {value: 71, step: 0.5, label: \"Head tube angle (°)\"})\nviewof offset = Inputs.range([40, 60], {value: 50, step: 1, label: \"Fork offset (mm)\"})\nviewof tyre = Inputs.range([35, 55], {value: 45, step: 1, label: \"Tyre width (mm)\"})\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\ntrail = {\n  const radius = 622 / 2 + tyre;          // 700c rim plus tyre, assuming tyre height = width\n  const a = hta * Math.PI / 180;\n  return (radius * Math.cos(a) - offset) / Math.sin(a);\n}\nmd`**Trail: ${trail.toFixed(1)} mm**`"
   }
 ]

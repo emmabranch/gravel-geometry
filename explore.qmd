@@ -1,0 +1,276 @@
+---
+title: "Explore the bikes"
+description: "Stack and reach for every size of 24 current gravel bikes, with filters and the key handling numbers."
+---
+
+Every dot is one frame size. Lines join the sizes of the same bike, smallest to largest. Up means a taller front end. Right means a longer one.
+
+- **Stack** is how high the top of the head tube sits above the pedals' axle (the bottom bracket).
+- **Reach** is how far forward it sits.
+- **Stack-to-reach ratio** sums up the posture. Race bikes sit lower and longer (around 1.40), adventure bikes taller and shorter (1.50 and up). The faint diagonal lines mark ratios so you can see the clusters.
+
+```{ojs}
+//| output: false
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+
+// R writes TRUE/FALSE; make them true booleans
+bikes = raw.map(d => ({
+  ...d,
+  is_default_config: d.is_default_config === true || d.is_default_config === "TRUE",
+  offset_estimated: d.offset_estimated === true || d.offset_estimated === "TRUE",
+  size_label: String(d.size_label),
+  label: `${d.brand} ${d.model}`
+}))
+
+categories = ["race", "all-round", "adventure"]
+categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
+categoryColours = ["#2a6fb0", "#e0a030", "#a03a6a"]
+categoryShapes = ["circle", "square", "triangle"]
+
+brandList = Array.from(new Set(bikes.map(d => d.brand))).sort((a, b) => a.localeCompare(b))
+bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+```
+
+::: {.explore-grid .column-page}
+
+::: {.filter-panel}
+[Filters]{.sidebar-heading}
+
+```{ojs}
+viewof cats = Inputs.checkbox(categories, {
+  label: "Category",
+  value: categories,
+  format: c => categoryNames[c]
+})
+```
+
+::: {.brand-list}
+```{ojs}
+viewof brands = Inputs.checkbox(brandList, {label: "Brand", value: brandList})
+```
+:::
+
+```{ojs}
+viewof minClearance = Inputs.range([45, 61], {
+  label: "Fits tyres at least this wide (mm)",
+  value: 45, step: 1
+})
+```
+
+```{ojs}
+viewof reachRange = Inputs.form([
+  Inputs.range([340, 460], {label: "Reach from (mm)", value: 340, step: 5}),
+  Inputs.range([340, 460], {label: "Reach to (mm)", value: 460, step: 5})
+])
+```
+
+```{ojs}
+viewof stackRange = Inputs.form([
+  Inputs.range([500, 670], {label: "Stack from (mm)", value: 500, step: 5}),
+  Inputs.range([500, 670], {label: "Stack to (mm)", value: 670, step: 5})
+])
+```
+
+```{ojs}
+viewof showAlternatives = Inputs.toggle({
+  label: "Include flip chip and fork-insert settings",
+  value: false
+})
+```
+
+```{ojs}
+viewof highlight = Inputs.select(["(none)", ...bikeList], {label: "Highlight a bike", value: "(none)"})
+```
+:::
+
+::: {.chart-panel}
+```{ojs}
+filtered = bikes.filter(d =>
+  cats.includes(d.category) &&
+  brands.includes(d.brand) &&
+  d.tyre_clearance_mm >= minClearance &&
+  d.reach >= Math.min(...reachRange) && d.reach <= Math.max(...reachRange) &&
+  d.stack >= Math.min(...stackRange) && d.stack <= Math.max(...stackRange) &&
+  (showAlternatives || d.is_default_config)
+)
+
+nBikes = new Set(filtered.map(d => d.bike_id)).size
+
+html`<div class="chart-title">Stack and reach, every size</div>
+<div class="chart-sub">Showing ${filtered.length} sizes from ${nBikes} ${nBikes === 1 ? "bike" : "bikes"}. Hover over a dot for details.</div>`
+```
+
+```{ojs}
+legend = {
+  const shapePath = {
+    circle: `<circle cx="7" cy="7" r="5"/>`,
+    square: `<rect x="2.5" y="2.5" width="9" height="9"/>`,
+    triangle: `<path d="M7 1.5 L12.5 12 L1.5 12 Z"/>`
+  };
+  const items = categories.map((c, i) => `<span><svg width="14" height="14" aria-hidden="true"><g fill="${categoryColours[i]}" stroke="#ffffff" stroke-width="1">${shapePath[categoryShapes[i]]}</g></svg>${categoryNames[c]}</span>`);
+  const div = document.createElement("div");
+  div.className = "gg-legend";
+  div.innerHTML = items.join("");
+  return div;
+}
+```
+
+```{ojs}
+ratioLines = [1.35, 1.45, 1.55, 1.65].flatMap(r => [
+  {r, reach: 335, stack: 335 * r},
+  {r, reach: 470, stack: 470 * r}
+])
+
+ratioLabels = [1.35, 1.45, 1.55, 1.65].map(r => {
+  // place each label where its line leaves the top or right edge of the plot
+  const reach = Math.min(468, 672 / r);
+  return {r, reach, stack: reach * r};
+})
+
+highlighted = filtered.filter(d => d.label === highlight)
+
+// Size the chart to its own panel rather than the page, so text stays readable
+chartWidth = Generators.observe(notify => {
+  const el = document.querySelector(".chart-panel");
+  const measure = () => notify(Math.max(300, Math.floor(el.getBoundingClientRect().width - 34)));
+  const ro = new ResizeObserver(measure);
+  ro.observe(el);
+  measure();
+  return () => ro.disconnect();
+})
+
+Plot.plot({
+  width: chartWidth,
+  height: Math.min(600, Math.max(360, chartWidth * 0.72)),
+  marginLeft: 48,
+  marginBottom: 42,
+  style: {fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"},
+  x: {domain: [335, 470], label: "Reach (mm) →", grid: true},
+  y: {domain: [495, 675], label: "↑ Stack (mm)", grid: true},
+  color: {domain: categories, range: categoryColours},
+  symbol: {domain: categories, range: categoryShapes},
+  marks: [
+    // stack-to-reach guide lines
+    Plot.line(ratioLines, {x: "reach", y: "stack", z: "r", stroke: "#c9d6e0", strokeDasharray: "3,4", clip: true}),
+    Plot.text(ratioLabels, {x: "reach", y: "stack", text: d => d.r.toFixed(2), dx: -4, dy: 8, textAnchor: "end", fill: "#5b7083", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: 345, stack: 668}], {x: "reach", y: "stack", text: () => "Taller and shorter: more upright", textAnchor: "start", fill: "#5b7083", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: 466, stack: 502}], {x: "reach", y: "stack", text: () => "Lower and longer: more stretched out", textAnchor: "end", fill: "#5b7083", fontSize: 11}),
+
+    // size runs, one line per bike and setting
+    Plot.line(filtered, {
+      x: "reach", y: "stack", z: d => `${d.bike_id}|${d.config}`,
+      sort: "size_order", stroke: "category", strokeWidth: 1.5,
+      strokeOpacity: highlight === "(none)" ? 0.45 : 0.15
+    }),
+    Plot.dot(filtered, {
+      x: "reach", y: "stack", fill: "category", symbol: "category",
+      r: 4.5, stroke: "#ffffff", strokeWidth: 1.5,
+      fillOpacity: highlight === "(none)" ? 0.95 : 0.25,
+      channels: {
+        Bike: "label", Size: "size_label", Setting: "config",
+        "Stack/reach": "stack_reach_ratio", "Head angle": "head_tube_angle",
+        "Trail (mm)": "trail_calc", "Tyre clearance (mm)": "tyre_clearance_mm"
+      },
+      tip: {format: {x: true, y: true, fill: false, symbol: false}}
+    }),
+
+    // highlighted bike drawn on top, with size labels
+    Plot.line(highlighted, {x: "reach", y: "stack", z: d => `${d.bike_id}|${d.config}`, sort: "size_order", stroke: "#0b2233", strokeWidth: 2.5}),
+    Plot.dot(highlighted, {x: "reach", y: "stack", fill: "category", symbol: "category", r: 6.5, stroke: "#0b2233", strokeWidth: 1.5}),
+    Plot.text(highlighted, {x: "reach", y: "stack", text: "size_label", dx: 10, textAnchor: "start", fill: "#0b2233", fontWeight: 600, stroke: "#ffffff", strokeWidth: 3, paintOrder: "stroke"})
+  ]
+})
+```
+
+[Figures are as published by each manufacturer and may change. Where a brand publishes more than one setting (flip chips on the Giant and Liv, the Trail Mixer insert on the Cervélo), the default view shows one.]{.data-note}
+:::
+
+:::
+
+## The numbers behind the dots
+
+```{ojs}
+//| output: false
+tableRows = filtered.map(d => ({
+  Bike: d.label,
+  Size: d.size_label,
+  Setting: d.config,
+  Category: categoryNames[d.category],
+  Stack: d.stack,
+  Reach: d.reach,
+  "Stack/reach": d.stack_reach_ratio,
+  "Head angle": d.head_tube_angle,
+  "Seat angle": d.seat_tube_angle,
+  "Fork offset": d.fork_offset_used,
+  "Offset source": d.offset_estimated ? "estimated" : "published",
+  Trail: d.trail_calc,
+  Wheelbase: d.wheelbase,
+  Chainstay: d.chainstay,
+  "BB drop": d.bb_drop,
+  "Toe clearance": d.toe_clearance,
+  "Tyre clearance": d.tyre_clearance_mm
+}))
+```
+
+::: {.results-table .column-page}
+```{ojs}
+Inputs.table(tableRows, {
+  rows: 14,
+  layout: "auto",
+  format: {
+    "Stack/reach": x => x?.toFixed(2),
+    Trail: x => x == null ? "" : x.toFixed(0),
+    "Toe clearance": x => x == null ? "" : x.toFixed(0)
+  }
+})
+```
+:::
+
+```{ojs}
+downloadButton = {
+  const header = Object.keys(tableRows[0] ?? {Bike: ""});
+  const esc = v => {
+    const s = v == null ? "" : String(v);
+    return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+  };
+  const csv = [header.join(","), ...tableRows.map(r => header.map(h => esc(r[h])).join(","))].join("\n");
+  const url = URL.createObjectURL(new Blob([csv], {type: "text/csv"}));
+  return html`<a class="btn btn-sm btn-outline-secondary" href="${url}" download="gravel-geometry-filtered.csv">Download these rows as CSV</a>`;
+}
+```
+
+All lengths are in millimetres and angles in degrees. Trail, toe clearance, and estimated fork offsets are calculated by this site, not published by the manufacturers.
+
+## What the columns mean
+
+::: {.glossary}
+Stack/reach
+: Stack divided by reach. Higher means a more upright riding position.
+
+Head angle
+: How steeply the steering axis is tilted. Slacker (lower) angles feel calmer at speed. Steeper (higher) angles feel quicker to turn.
+
+Seat angle
+: How far forward the saddle sits over the pedals. Steeper angles put you further forward.
+
+Fork offset
+: How far the fork pushes the front axle ahead of the steering axis. Three brands don't publish it, so it's worked back from the wheelbase. That method lands within about 1.5 mm of the published offset for the other bikes.
+
+Trail
+: The gap on the ground between where the steering axis points and where the tyre touches down, calculated for a 700 × 45 mm tyre. More trail means steadier, self-centring steering. Gravel bikes mostly sit between 60 and 80 mm.
+
+Wheelbase
+: The distance between the axles. Longer is steadier, shorter is nimbler.
+
+Chainstay
+: The distance from the pedals' axle to the rear axle. Shorter feels livelier. Longer is steadier and leaves more room for tyres.
+
+BB drop
+: How far the pedals' axle sits below the wheel axles. More drop puts you lower between the wheels, which feels planted.
+
+Toe clearance
+: The gap between the pedal axle (crank pointing forward, 172.5 mm cranks) and the front tyre. A shoe usually reaches 90 to 110 mm ahead of the pedal axle, so smaller figures suggest your toe could touch the tyre in tight, slow turns.
+
+Tyre clearance
+: The widest tyre the manufacturer says fits, in their own words in the data file.
+:::
