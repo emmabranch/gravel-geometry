@@ -29,6 +29,7 @@ project:
     - js/rider.js
     - js/draw.js
     - js/share.js
+    - js/export.js
     - figures/hero-bikes.svg
 
 website:

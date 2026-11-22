@@ -12,6 +12,7 @@ description: "An estimated rider, drawn to scale on every size of a gravel bike,
 import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS, INSEAM_RATIO} from "./js/rider.js"
 import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
 import {fromUrl, shareButton} from "./js/share.js"
+import {exportButtons, fileName} from "./js/export.js"
 
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
 bikes = raw.map(d => ({
@@ -221,6 +222,16 @@ sideBySide = {
   }
   return wrap;
 }
+```
+
+```{ojs}
+exportButtons(() => [...sideBySide.querySelectorAll(".pair-tile")].map((f, i) => ({
+  svg: f.querySelector("svg"), captionColour: pair[i].colour,
+  caption: `${pair[i].slot}: ${pair[i].row.label}, size ${pair[i].row.size_label} (${pair[i].fit.verdict})`
+})), {
+  title: `A ${heightCm} cm rider on two bikes`,
+  note: `Stem ${stemMm} mm at ${stemAngle}°, ${spacersMm} mm of spacers, ${crankMm} mm cranks. An estimate from body proportions, not a bike fit.`
+}, fileName(`${heightCm}cm`, `${pair[0]?.row.label} ${pair[0]?.row.size_label}`, `${pair[1]?.row.label} ${pair[1]?.row.size_label}`))
 ```
 :::
 

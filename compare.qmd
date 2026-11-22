@@ -43,6 +43,7 @@ starts = ({
 ```{ojs}
 //| output: false
 import {fromUrl, shareButton} from "./js/share.js"
+import {exportButtons, fileName} from "./js/export.js"
 ```
 
 ::: {.slot-grid}
@@ -260,6 +261,14 @@ drawing = {
 }
 ```
 :::
+
+```{ojs}
+exportButtons(() => drawing.querySelector("svg"), {
+  title: "Gravel bikes compared, drawn to scale",
+  key: picks.map(p => ({colour: slotColours[p.slot], text: `${p.slot}: ${p.row.label}, size ${p.row.size_label}${p.row.config === "standard" ? "" : ` (${p.row.config})`}`})),
+  note: `Lined up at the ${alignAt}.${showDims ? " Dashed lines: stack and reach, from each bike's own bottom bracket." : ""}${showToe ? " Shaded circles: where a shoe can reach." : ""}`
+}, fileName("compare", ...picks.map(p => `${p.row.label} ${p.row.size_label}`)))
+```
 
 [Drawn with 700 × 45 mm tyres (29 × 2.25" on the Salsa Cutthroat). The toe overlap zone is a rough guide: a 172.5 mm crank plus about 100 mm of shoe ahead of the pedal axle. Where the shaded circle crosses a front tyre, toe overlap is possible in tight turns.]{.data-note}
 

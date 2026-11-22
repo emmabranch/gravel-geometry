@@ -11,6 +11,7 @@ import {designRow, designChecks, bikePoints} from "./js/geometry.js"
 import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS} from "./js/rider.js"
 import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
 import {fromUrl, shareButton} from "./js/share.js"
+import {exportButtons, fileName} from "./js/export.js"
 
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
 bikes = raw.map(d => ({
@@ -232,6 +233,15 @@ designDrawing = {
   el.innerHTML = `<div class="gg-legend legend-lines">${legend}</div><svg viewBox="${vb.vb}" role="img" aria-label="Your design drawn to scale with a ${heightCm} cm rider${compareWith ? `, over ${compareWith.label} size ${compareWith.size_label}` : ""}">${svg}</svg>`;
   return el;
 }
+```
+
+```{ojs}
+exportButtons(() => designDrawing.querySelector("svg"), {
+  title: "My gravel bike design",
+  key: [{colour: "#7a5c43", text: "Your design"}, ...(compareWith ? [{colour: "#d2691e", text: `${compareWith.label}, size ${compareWith.size_label}`}] : [])],
+  source: "drawn to scale; production bikes from manufacturers' published geometry",
+  note: `Stack ${stack} mm, reach ${reach} mm, head angle ${hta}°, trail ${custom.trail_calc.toFixed(0)} mm, wheelbase ${custom.wheelbase.toFixed(0)} mm, with a ${heightCm} cm rider.`
+}, fileName("my-design", `stack ${stack} reach ${reach}`))
 ```
 
 ```{ojs}

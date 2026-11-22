@@ -313,3 +313,25 @@ body:has(.hero-full) #title-block-header { display: none; }
 .share-button:hover, .share-button:focus-visible { background: #e2c9a6; }
 .share-msg { font-size: 0.85rem; color: #5b7083; }
 .share-box { font-size: 0.8rem; width: min(100%, 34rem); padding: 0.2rem 0.4rem; border: 1px solid #c9d6e0; border-radius: 6px; }
+
+/* Export buttons */
+.export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.print-source { display: none; }
+
+/* Printing (and Save as PDF): drop the controls and site chrome, keep the results */
+@media print {
+  @page { margin: 14mm; }
+  body { background: #ffffff !important; }
+  #quarto-header, .navbar, .nav-footer, footer, .page-footer, #quarto-margin-sidebar, #quarto-sidebar,
+  .share-row, .export-row, .slot-grid, .draw-controls, .design-controls, .overlay-pick,
+  .preset-buttons, .epi-control, .study-nav, .quarto-title-meta, .anchorjs-link { display: none !important; }
+  .print-source { display: block; font-size: 9pt; color: #5b7083; margin-bottom: 0.6rem; word-break: break-all; }
+  .design-layout { display: block !important; }
+  .design-output { position: static !important; }
+  .draw-panel, .size-tile, .pair-tile, .slot-card, .stat-chip, .ba-panel {
+    box-shadow: none !important; break-inside: avoid; }
+  .design-drawing svg { max-height: none; }
+  .compare-scroll, .table-scroll { max-height: none !important; overflow: visible !important; }
+  a[href]::after { content: none !important; }
+  h2, h3 { break-after: avoid; }
+}
