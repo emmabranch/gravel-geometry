@@ -1,0 +1,18 @@
+url: https://www.devinci.com/en/bikes/gravel-and-road/hatchet-vista-grx-610-12s-deep-olive/
+accessed: 2026-11-21
+units: mm
+clearance: 700c x 45mm (product summary "700c x 45mm")
+note: aluminium frame; fork offset and trail not published
+size | XS | S | M | L | XL
+ST | 400 | 440 | 490 | 530 | 570
+STA | 73.5 all
+HTA | 70.5 all
+TT | 532 | 548 | 562 | 577 | 598
+Reach | 376 | 383 | 390 | 397 | 404
+CS | 428 all
+WB | 1014 | 1031 | 1047 | 1063 | 1078
+BBH | 283 all
+BBD | 70 all
+SOH | 675 | 710 | 751 | 786 | 821
+Stack | 530 | 559 | 582 | 610 | 634
+HT | 110 | 140 | 165 | 195 | 220

@@ -1,0 +1,21 @@
+url: https://www.salsacycles.com/products/flyway-c-grx-610
+accessed: 2026-11-21
+units: mm
+clearance: frame 700c 35-50mm, fork to 57mm; 650b 47-51mm ("Flyway can fit a 700c x 50mm tire in the frame")
+size | XS | S | M | M/L | L | XL
+ETT | 510 | 535 | 555 | 575 | 600 | 620
+Standover | 682 | 715 | 749 | 780 | 814 | 843
+Reach | 375.2 | 387.7 | 391.9 | 405.2 | 420.7 | 435.3
+Stack | 540.5 | 549.9 | 568.8 | 592.3 | 625.3 | 644.2
+Seat tube | 390 | 430 | 470 | 505 | 540 | 575
+Head tube | 90 | 100 | 120 | 145 | 180 | 200
+HTA | 70.5 all
+STA | 76.0 | 75.0 | 74.0 | 74.0 | 74.0 | 74.0
+BB drop | 76 all
+BB height | 283 all
+Chainstay | 425 all
+Fork A-C | 419.9 all
+Fork offset | 51 all
+Wheelbase | 1012.0 | 1027.7 | 1038.7 | 1060.2 | 1087.5 | 1108.7
+Crank | 160 | 165 | 165 | 170 | 170 | 175
+Stem | 60 | 60 | 70 | 80 | 90 | 100

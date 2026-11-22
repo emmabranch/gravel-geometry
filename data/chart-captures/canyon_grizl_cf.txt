@@ -1,0 +1,17 @@
+url: https://www.canyon.com/en-ca/gravel-bikes/adventure/grizl/cf/grizl-cf-7/4553.html
+accessed: 2026-11-21
+units: mm; decimal commas
+clearance: 54mm measured ("54 mm measured tyre clearance")
+note: fork offset, trail not published; 2XS BB drop 66 (likely smaller wheel; wheel size not stated on chart)
+Frame size | 2XS | XS | S | M | L | XL | 2XL
+B Seat Tube Length in mm | 432 | 462 | 492 | 522 | 552 | 582 | 612
+C Top Tube Length in mm | 532 | 545 | 559 | 581 | 603 | 618 | 643
+D Head Tube Length in mm | 120 | 126 | 141 | 158 | 183 | 203 | 226
+E Head Tube Angle | 68,8° | 69,5° | 70,5° | 71° | 71° | 71° | 71°
+F Seat Tube Angle | 73,5° all
+G Chainstay Length in mm | 440 all
+H Wheel Base in mm | 1.047 | 1.054 | 1.059 | 1.076 | 1.100 | 1.115 | 1.142
+I Stack in mm | 550 | 559 | 578 | 596 | 619 | 638 | 660
+J Reach in mm | 369 | 380 | 388 | 404 | 420 | 429 | 448
+K Stand-over Height in mm | 764 | 785 | 810 | 826 | 883 | 883 | 892
+L Bottom Bracket Offset in mm | 66 | 75 | 75 | 75 | 75 | 75 | 75

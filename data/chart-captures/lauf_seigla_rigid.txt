@@ -1,0 +1,21 @@
+url: https://www.laufcycles.com/product/seigla-rigid
+accessed: 2026-11-21
+units: mm
+clearance: 57mm 700c or 2.25" 29er ("Up to 57mm 700c")
+note: STA marked with * on chart (likely effective at a given saddle height)
+size | XS | S | M | L | XL
+Stem | 60 | 70 | 80 | 90 | 100 (all 7 deg)
+Reach | 378 | 383 | 394 | 405 | 416
+Stack | 523 | 537 | 564 | 593 | 623
+HTA | 70.5 all
+STA | 72.9 | 72.7 | 72.5 | 72.4 | 72.3
+Seat tube | 461 | 500 | 528 | 548 | 575
+Chainstay | 425 all
+BB drop | 65 all
+Head tube | 84 | 99 | 129 | 159 | 191
+Top tube | 532 | 544 | 563 | 584 | 607
+Wheelbase | 1009 | 1020 | 1040 | 1061 | 1084
+Front centre | 589 | 600 | 620 | 641 | 664
+Fork A-C | 419 all
+Fork rake | 47 all
+Standover (45mm tyres) | 731 | 763 | 789 | 811 | 840

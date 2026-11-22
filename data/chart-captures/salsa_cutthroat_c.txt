@@ -1,0 +1,23 @@
+url: https://www.salsacycles.com/products/cutthroat-c-grx-610-1x
+accessed: 2026-11-21
+units: mm
+wheel: 29 x 2.25" stock (29 x 2.4" max rear; fork fits 29 x 3.0")
+clearance: 29 x 2.4" (~61mm) rear
+note: drop-bar 29er, suspension-corrected (rigid fork 483 A-C; 100mm suspension fork 506)
+size | 52 | 54 | 56 | 58 | 60
+ETT | 520 | 540 | 560 | 580 | 600
+Standover | 700 | 742 | 811 | 852 | 874
+Reach | 357 | 372 | 385 | 394 | 406
+Stack | 585 | 592 | 620 | 645 | 664
+Seat tube | 356 | 419 | 508 | 559 | 584
+Head tube | 90 | 98 | 127 | 154 | 175
+HTA | 69.0 all
+STA | 74.5 | 74.25 | 74.25 | 74.0 | 73.75
+BB drop | 70 all
+BB height | 300 all
+Chainstay | 445 all
+Fork A-C | 483 all
+Fork offset | 51 all
+Wheelbase | 1050 | 1066 | 1091 | 1110 | 1129
+Crank | 165 | 165 | 170 | 170 | 175
+Stem | 60 | 70 | 80 | 80 | 90

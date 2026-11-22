@@ -1,0 +1,21 @@
+url: https://www.liv-cycling.com/ca/devote-advanced-1
+accessed: 2026-11-21
+units: mm (page concatenates mm and inch values; mm extracted by hand)
+clearance: 53mm ("Max Tire Clearance 53mm")
+note: women's-specific line from Giant's sister brand; Flip Chip SHORT|LONG positions
+size | XS | S | M | L
+Seat tube | 390 | 420 | 465 | 500
+STA short|long | 74.5|74.4 all
+Top tube | 525 | 535 | 545 | 555
+Head tube | 90 | 110 | 140 | 160
+HTA short|long | 70.0|69.9 | 70.5|70.4 | 71.0|70.9 | 71.0|70.9
+Fork rake | 50 all
+Trail short|long | 78.4|82 | 75|78.5 | 71.6|75.1 | 71.6|75
+Wheelbase short|long | 1012|1022 | 1019|1029 | 1026|1036 | 1043|1052
+Chainstay short|long | 425|435 | 425|435 | 425|435 | 430|440
+BB drop short|long | 80|81 all
+Stack short|long | 523|524 | 544|545 | 574|575 | 593|594
+Reach short|long | 380|379 | 384|383 | 386|385 | 391|389
+Standover short|long | 681|688 | 708|715 | 748|755 | 779|786
+Stem | 50 | 60 | 70 | 80
+Crank | 165 | 170 | 172.5 | 172.5

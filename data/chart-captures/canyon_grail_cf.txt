@@ -1,0 +1,17 @@
+url: https://www.canyon.com/en-ca/gravel-bikes/race/grail/cf/grail-cf-7/4508.html
+accessed: 2026-11-21
+units: mm; decimal commas; wheelbase uses thousands separator
+clearance: 57mm ("57 mm tyre clearance")
+note: fork offset, trail, BB height, front centre not published on chart
+Frame size | 2XS | XS | S | M | L | XL | 2XL
+B Seat Tube Length in mm | 432 | 462 | 492 | 522 | 552 | 582 | 612
+C Top Tube Length in mm | 522 | 543 | 556 | 578 | 600 | 614 | 640
+D Head Tube Length in mm | 98 | 103 | 120 | 138 | 162 | 182 | 205
+E Head Tube Angle | 68,5° | 70° | 71,5° | 71,5° | 71,5° | 71,8° | 71,8°
+F Seat Tube Angle | 74,1° | 73,6° | 73,9° | 73,8° | 73,8° | 73,8° | 73,8°
+G Chainstay Length in mm | 435 | 435 | 435 | 435 | 435 | 435 | 435
+H Wheel Base in mm | 1.034 | 1.037 | 1.039 | 1.062 | 1.085 | 1.097 | 1.123
+I Stack in mm | 525 | 537 | 558 | 575 | 598 | 618 | 640
+J Reach in mm | 372 | 385 | 394 | 411 | 427 | 435 | 454
+K Stand-over Height in mm | 763 | 784 | 809 | 832 | 858 | 882 | 907
+L Bottom Bracket Offset in mm | 75 | 75 | 75 | 75 | 75 | 75 | 75

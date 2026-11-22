@@ -1,0 +1,11 @@
+url: https://www.trekbikes.com/ca/en_CA/bikes/bikepacking-touring-bikes/checkpoint/checkpoint-sl/f/F224-1/checkpoint-sl-7-axs-gen-3/55097/5334686/
+accessed: 2026-11-21
+units: cm
+Frame size letter | Wheel size | A — Seat tube | B — Seat tube angle | Effective seat tube angle | C — Head tube length | D — Head angle | E — Effective top tube | G — Bottom bracket drop | H — Chainstay length | I — Offset | J — Trail | K — Wheelbase | L — Standover | M — Frame reach | N — Frame stack | Front center
+XS | 700c | 44.5 | 74.0° | 72.7° | 8.6 | 71.0° | 53.6 | 7.6 | 43.0 | 4.9 | 7.1 | 101.3 | 74.6 | 38.0 | 53.5 | 59.5
+S | 700c | 48.0 | 74.0° | 73.0° | 10.6 | 71.4° | 54.7 | 7.6 | 43.0 | 4.9 | 6.8 | 102.2 | 77.2 | 38.6 | 55.6 | 60.4
+M | 700c | 50.5 | 73.3° | 72.8° | 13.0 | 71.6° | 56.6 | 7.6 | 43.0 | 4.9 | 6.8 | 103.4 | 79.9 | 39.1 | 57.9 | 61.5
+ML | 700c | 53.0 | 73.3° | 72.8° | 15.1 | 72.0° | 57.8 | 7.6 | 43.0 | 4.9 | 6.4 | 104.2 | 81.3 | 39.7 | 60.1 | 62.4
+L | 700c | 55.0 | 73.3° | 72.8° | 17.1 | 72.1° | 58.9 | 7.6 | 43.0 | 4.9 | 6.4 | 105.2 | 83.7 | 40.2 | 62.0 | 63.4
+XL | 700c | 57.5 | 73.3° | 72.8° | 19.1 | 72.4° | 60.1 | 7.6 | 43.0 | 4.9 | 6.2 | 106.2 | 86.1 | 40.8 | 64.0 | 64.3
+clearance: 50mm 700c (product description, 'clearance for up to 50mm tires (as measured)')

@@ -1,0 +1,24 @@
+url: https://bmc-switzerland.com/collections/urs-series/products/urs-one-bikes-bmc-27a-000056
+accessed: 2026-11-21
+units: mm
+clearance: 47mm measured ("Tire Clearance: 47mm measured tire")
+note: XS and S share stack (560) and head tube (133) as published
+size | XS | S | M | L | XL
+Reach | 390 | 400 | 410 | 420 | 430
+Stack | 560 | 560 | 580 | 610 | 640
+BB drop | 76 all
+Crank | 165 | 165 | 170 | 170 | 172.5
+Fork length | 405 | 405 | 415 | 415 | 415
+Fork rake | 50 | 50 | 45 | 45 | 45
+Front centre | 633 | 643 | 651 | 672 | 693
+Head tube | 133 | 133 | 140 | 172 | 204
+HTA | 69 | 69 | 69.5 | 69.5 | 69.5
+Rear centre | 430 all
+STA | 74.5 all
+Seat tube | 430 | 445 | 475 | 505 | 540
+Standover | 727 | 735 | 758 | 778 | 795
+Stem angle | -8 all
+Stem | 70 | 70 | 70 | 80 | 90
+Top tube | 545 | 555 | 571 | 589 | 607
+Trail | 84 | 84 | 86 | 86 | 86
+Wheelbase | 1052 | 1062 | 1070 | 1091 | 1112

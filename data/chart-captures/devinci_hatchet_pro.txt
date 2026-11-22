@@ -1,0 +1,18 @@
+url: https://www.devinci.com/en/bikes/gravel-and-road/hatchet-pro-rival-axs-24s-night-crow/
+accessed: 2026-11-21
+units: mm
+clearance: 700c x 45mm ("For the Hatchet PRO, the official specification is 700c x 45mm"; claimed with at least 6 mm free space)
+note: fork offset and trail not published
+size | S | M | L | XL
+ST | 475 | 520 | 560 | 600
+STA | 74.0 | 73.5 | 73.0 | 73.0
+HTA | 71.5 | 72.0 | 72.5 | 72.5
+TT | 537 | 557 | 578 | 593
+Reach | 383 | 390 | 397 | 404
+CS | 425 all
+WB | 1013 | 1024 | 1036 | 1051
+BBH | 279 all
+BBD | 75 all
+SOH | 759 | 796 | 831 | 865
+Stack | 537 | 563 | 593 | 617
+HT | 110 | 135 | 165 | 190

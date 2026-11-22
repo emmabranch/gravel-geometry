@@ -1,0 +1,21 @@
+url: https://www.orbea.com/en-ca/terra-m30team
+accessed: 2026-11-21
+units: mm; decimal commas
+clearance: 50mm 700c ("tyre clearance for up to 50C or 45C with mudguards", model page https://www.orbea.com/en-ca/m/terra)
+note: carbon Terra (M). BB height 261 with BB drop 80 implies wheel radius ~341mm; reference tyre not stated
+size | XS | S | M | L | XL | XXL
+Seat tube | 410 | 440 | 470 | 505 | 540 | 575
+Top tube eff | 535 | 547 | 561 | 573 | 585 | 596
+Head tube | 110 | 132,5 | 153,5 | 175 | 198 | 218
+Chainstay | 430 all
+BB drop | 80 all
+BB height | 261 all
+Wheelbase | 1031 | 1041 | 1052 | 1061 | 1072 | 1081
+HTA | 69 | 69,5 | 70 | 70,5 | 70,8 | 71
+STA | 74 all
+Rake | 45 all
+Standover | 690 | 717 | 743 | 772 | 801 | 828
+Reach | 386 | 392 | 400 | 406 | 412 | 417
+Stack | 535 | 558 | 580 | 602 | 625 | 645
+Fork length | 395 all
+Trail | 82,7 | 79,5 | 76,2 | 73 | 71,4 | 69,8

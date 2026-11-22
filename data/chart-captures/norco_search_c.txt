@@ -1,0 +1,23 @@
+url: https://www.norco.com/bikes/road/gravel/search/26-search-c-force/
+accessed: 2026-11-21
+model: Search C Gen 3 (carbon)
+units: mm
+clearance: 700x50c ("accommodates up to 700 x 50c"; tire size row 40c to 50c)
+size | 1 | 2 | 3 | 4 | 5
+Reach | 385 | 400 | 415 | 430 | 445
+Stack | 554 | 564 | 587 | 611 | 634
+HTA | 69.5 all
+Fork offset | 51 all
+Seat tube | 440 | 475 | 510 | 545 | 580
+Eff STA | 74.5 | 74.25 | 74 | 73.75 | 73.5
+Rear centre | 425 | 425 | 427.5 | 430 | 430
+BB drop | 75 all
+BB height | 285 all
+HTT | 539 | 559 | 583 | 608 | 633
+Wheelbase | 1037 | 1056 | 1082 | 1108 | 1132
+Standover | 691 | 725 | 758 | 791 | 824
+Head tube | 100 | 110 | 135 | 160 | 185
+Trail | 80 all
+Stem | 70 all
+Crank | 165 | 170 | 170 | 172.5 | 172.5
+note: Search A Gen 3 (aluminium, https://www.norco.com/bikes/road/gravel/search/27-search-a1/) publishes identical geometry except standover 682|715|748|781|814

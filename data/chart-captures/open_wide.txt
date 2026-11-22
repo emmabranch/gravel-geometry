@@ -1,0 +1,19 @@
+url: https://opencycle.com/open-wide
+accessed: 2026-11-21
+units: mm; one decimal comma
+clearance: 700c up to 46mm; 650b up to 2.4" (61mm) ("With 700c gravel tires up to 46mm")
+note: designed around 650b x 2.4" or 700c x 46; reference wheel for BB drop not stated
+size | XS | S | M | L | XL
+Stack | 520 | 545 | 570 | 595 | 620
+Reach | 346 | 358 | 370 | 382 | 394
+Head tube | 99 | 125 | 150 | 170 | 196
+Fork offset | 50 all
+Standover | 707 | 739 | 777 | 794 | 817
+HTA | 68 | 69 | 71 | 71.5 | 71.5
+Seat tube | 464 | 495 | 530 | 550 | 564
+STA | 74,5 | 74.0 | 73.5 | 73.5 | 73.5
+Top tube horizontal | 510 | 530 | 550 | 570 | 590
+BB drop | 80 | 77 | 75 | 75 | 75
+Front centre | 583 | 596 | 599 | 613 | 634
+Rear centre | 420 all
+Wheelbase | 990 | 1004 | 1009 | 1022 | 1042

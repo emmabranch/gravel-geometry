@@ -1,0 +1,15 @@
+url: https://factorbikes.com/bikes/elara
+accessed: 2026-11-21
+units: mm
+clearance: 57mm with 1x ("UP TO 57 MM (2.2-INCH) TYRE CLEARANCE WITH 1x")
+note: page feature text says "71.5 head tube angle (size M)" but the chart gives 72.2-72.3 for 54-56; chart values used
+size | 49 | 52 | 54 | 56 | 58 | 61
+Stack | 515 | 535 | 555 | 580 | 605 | 625
+Reach | 382 | 390 | 399 | 407 | 417 | 427
+HTA | 71.3 | 71.3 | 72.2 | 72.3 | 72.3 | 72.5
+BB drop | 82 | 82 | 80 | 80 | 80 | 80
+Trail | 61.7 | 61.04 | 60.41 | 59.76 | 59.76 | 59.76
+Fork offset | 56 | 56 | 51 | 51 | 51 | 51
+Chainstay | 420 | 420 | 420 | 423 | 425 | 425
+Wheelbase | 1001 | 1015 | 1017 | 1035 | 1055 | 1072
+STA | 75 | 74.5 | 74.5 | 74.5 | 74 | 74

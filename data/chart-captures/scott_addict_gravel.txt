@@ -1,0 +1,20 @@
+url: https://www.scott-sports.com/ca/en/product/scott-addict-gravel-20-bike-427614
+accessed: 2026-11-21
+units: mm (table has a duplicated trailing column equal to XXS; ignored)
+clearance: 57mm ("tire clearance up to 57mm")
+size | XXS 47 | XS 49 | S 52 | M 54 | L 56 | XL 58 | XXL 61
+HTA | 70.0 all
+Head tube | 87 | 99 | 124 | 147 | 169 | 189 | 209
+TT horizontal | 522 | 532 | 547 | 562 | 571 | 583 | 596
+Standover | 743 | 760 | 783 | 813 | 833 | 850 | 874
+BB offset (drop) | 80 | 80 | 79 | 78 | 78 | 78 | 78
+BB height | 282.5 | 282.5 | 283.5 | 284.5 | 284.5 | 284.5 | 284.5
+Wheelbase | 1024 | 1036 | 1048 | 1060 | 1071 | 1084 | 1098
+Seat tube (BB to top) | 415 | 440 | 460 | 495 | 515 | 535 | 565
+STA | 75.0 | 75.0 | 74.5 | 74.0 | 74.0 | 74.0 | 74.0
+Chainstay | 425 all
+Reach | 383 | 390 | 394 | 398 | 401 | 407 | 415
+Stack | 520 | 532 | 555 | 575 | 596 | 614 | 633
+Stem | 70 | 80 | 90 | 100 | 100 | 110 | 110
+Crank | 165 | 165 | 170 | 170 | 172.5 | 172.5 | 172.5
+Fork offset | 60 all

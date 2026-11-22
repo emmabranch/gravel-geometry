@@ -1,0 +1,18 @@
+url: https://3t.bike/collections/racemax-2-italia
+accessed: 2026-11-21
+units: mm
+clearance: 51mm 1x / 48mm 2x ("maximum tire clearance of 51 mm WAM (48 mm for 2x setups)")
+note: fork offset and trail not published; size S front centre (609) longer than M (607) because of slacker HTA
+size | S | M | L | XL
+Stack | 547 | 569 | 589 | 609
+Reach | 367 | 377 | 385 | 393
+HTA | 70.5 | 71.5 | 71.5 | 71.5
+Fork A-C | 383 all
+Head tube | 138 | 152 | 173 | 197
+BB drop | 79 | 79 | 79 | 76
+STA | 74 all
+Seat tube | 463 | 491 | 510 | 537
+Top tube | 522 | 538 | 552 | 566
+Front centre | 609 | 607 | 622 | 636
+Rear centre | 420 all
+Wheelbase | 1017 | 1015 | 1029 | 1045

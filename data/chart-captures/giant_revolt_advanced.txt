@@ -1,0 +1,21 @@
+url: https://www.giant-bicycles.com/ca/revolt-advanced-0
+accessed: 2026-11-21
+units: mm
+clearance: 53mm ("Max Tire Clearance 53mm")
+note: Flip Chip rear axle with SHORT and LONG positions; values given per size as short|long where they differ
+size | XS | S | M | ML | L | XL
+A Seat tube | 430 | 450 | 470 | 490 | 510 | 530
+B STA | 74.0 | 73.5 | 73.5 | 73.0 | 73.0 | 73.0
+C Top tube | 540 | 550 | 560 | 575 | 585 | 600
+D Head tube | 125 | 135 | 150 | 165 | 180 | 195
+E HTA | 70.0 | 71.0 | 71.5 | 72.0 | 72.0 | 72.0
+F Fork rake | 50 all
+G Trail short|long | 78|82 | 72|75 | 68|72 | 65|68 | 65|68 | 65|68
+H Wheelbase short|long | 1024|1034 | 1020|1030 | 1026|1036 | 1031|1041 | 1041|1051 | 1056|1066
+I Chainstay short|long | 425|435 all
+J BB drop short|long | 80|81 all
+K Stack | 556 | 570 | 586 | 602 | 616 | 630
+L Reach | 381 | 381 | 387 | 391 | 397 | 407
+M Standover short|long | 724|731 | 740|747 | 757|764 | 774|780 | 791|797 | 807|814
+O Stem | 50 | 60 | 70 | 80 | 80 | 90
+P Crank | 170 | 170 | 172.5 | 172.5 | 175 | 175

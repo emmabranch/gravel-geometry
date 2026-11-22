@@ -1,0 +1,18 @@
+url: https://www.santacruzbicycles.com/en-ca/collections/stigmata
+accessed: 2026-11-21
+units: mm
+clearance: 700x50mm (FAQ: "frame and fork will accept up to a 700x50mm tire"; 45mm with front derailleur)
+fork: FAQ on same page: "Our fork is 430mm axle-crown with a 45mm offset" (FAQ, not geometry chart; may describe the suspension-fork-compatible spec)
+size | XS | SM | MD | LG | XL | XXL
+Reach | 375 | 390 | 405 | 420 | 435 | 450
+Stack | 550 | 564 | 576 | 600 | 612 | 631
+HTA | 69.5 all
+Head tube | 90 | 105 | 120 | 145 | 160 | 180
+Rear centre | 423 all
+Front centre | 605 | 625 | 645 | 668 | 688 | 710
+BB height | 278 | 278 | 280 | 280 | 282 | 282
+BB drop | 78 | 78 | 76 | 76 | 74 | 74
+Wheelbase | 1023 | 1043 | 1063 | 1087 | 1108 | 1130
+Top tube | 533 | 552 | 570 | 592 | 610 | 631
+Seat tube | 450 | 455 | 485 | 515 | 545 | 575
+STA | 74.0 all

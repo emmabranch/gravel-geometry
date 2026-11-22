@@ -1,0 +1,21 @@
+url: https://marinbikes.com/products/headlands-2
+accessed: 2026-11-21
+units: mm
+clearance: 700c x 50mm (frame spec "700c x 50mm Compatible")
+note: sizes 52 and 54 both publish reach 372
+size | 49 | 52 | 54 | 56 | 58 | 60
+Stack | 541 | 555 | 569 | 588 | 607 | 626
+Reach | 370 | 372 | 372 | 385 | 410 | 425
+HTA | 70.5 all
+Head tube | 110 | 125 | 140 | 160 | 180 | 200
+Seat tube | 440 | 470 | 490 | 510 | 530 | 550
+STA | 74.5 | 74 | 73.5 | 73.5 | 73.5 | 73.5
+ETT | 520 | 531 | 541 | 559 | 590 | 610
+BB height | 289 all
+BB drop | 76 all
+Chainstay | 420 all
+Wheelbase | 1001 | 1008 | 1013 | 1032 | 1064 | 1086
+Standover | 684 | 701 | 705 | 725 | 745 | 765
+Fork offset | 50 all
+Stem | 60 | 60 | 80 | 80 | 80 | 100
+Crank | 170 | 170 | 175 | 175 | 175 | 175

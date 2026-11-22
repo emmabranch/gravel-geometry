@@ -1,0 +1,11 @@
+url: https://www.specialized.com/ca/en/diverge-4-expert-sram-rival-xplr/p/4297823
+accessed: 2026-11-21
+units: mm
+clearance: 50mm 700c ("50mm Tire Clearance")
+note: Future Shock 3.0 suspension in head tube; stack as published
+49: Stack=563mm; Reach=365mm; Head Tube Length=90mm; Head Tube Angle=70°; BB Drop=85mm; Trail=72mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=604mm; Chainstay Length=430mm; Wheelbase=1019mm; Top Tube Length, Horizontal=521mm; Bike Standover Height=700mm; Seat Tube Length=400mm; Seat Tube Angle=74.5°
+52: Stack=578mm; Reach=374mm; Head Tube Length=104mm; Head Tube Angle=70.5°; BB Drop=85mm; Trail=68mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=613mm; Chainstay Length=430mm; Wheelbase=1031mm; Top Tube Length, Horizontal=537mm; Bike Standover Height=725mm; Seat Tube Length=430mm; Seat Tube Angle=74°
+54: Stack=592mm; Reach=387mm; Head Tube Length=116mm; Head Tube Angle=71°; BB Drop=85mm; Trail=65mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=626mm; Chainstay Length=430mm; Wheelbase=1041mm; Top Tube Length, Horizontal=556mm; Bike Standover Height=754mm; Seat Tube Length=470mm; Seat Tube Angle=74°
+56: Stack=610mm; Reach=400mm; Head Tube Length=135mm; Head Tube Angle=71°; BB Drop=85mm; Trail=65mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=645mm; Chainstay Length=430mm; Wheelbase=1060mm; Top Tube Length, Horizontal=575mm; Bike Standover Height=779mm; Seat Tube Length=500mm; Seat Tube Angle=74°
+58: Stack=634mm; Reach=412mm; Head Tube Length=161mm; Head Tube Angle=71°; BB Drop=85mm; Trail=65mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=665mm; Chainstay Length=430mm; Wheelbase=1081mm; Top Tube Length, Horizontal=593mm; Bike Standover Height=805mm; Seat Tube Length=530mm; Seat Tube Angle=74°
+61: Stack=659mm; Reach=425mm; Head Tube Length=187mm; Head Tube Angle=71°; BB Drop=85mm; Trail=65mm; Fork Length, Full=391mm; Fork Rake/Offset=55mm; Front Center=686mm; Chainstay Length=430mm; Wheelbase=1102mm; Top Tube Length, Horizontal=613mm; Bike Standover Height=832mm; Seat Tube Length=560mm; Seat Tube Angle=74°
