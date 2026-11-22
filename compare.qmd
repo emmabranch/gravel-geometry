@@ -144,6 +144,114 @@ population = bikes.filter(d => d.is_default_config)
 legend = html`<div class="gg-legend">${picks.map(p => html`<span><span class="slot-dot" style="background:${slotColours[p.slot]}">${p.slot}</span>${p.row.label}, size ${p.row.size_label}${p.row.config === "standard" ? "" : ` (${p.row.config})`} · ${categoryNames[p.row.category]}</span>`)}</div>`
 ```
 
+## Drawn to scale
+
+The frames below are drawn from each chart's numbers, to the same scale, so differences of a few millimetres are real. Tubes are drawn as straight lines between the published points, so the shapes are simplified: real tubes curve, and real forks bend.
+
+```{ojs}
+import {bikePoints, frameSegments} from "./js/geometry.js"
+```
+
+::: {.draw-controls}
+```{ojs}
+viewof alignAt = Inputs.radio(["bottom bracket", "rear axle", "front axle"], {label: "Line the bikes up at", value: "bottom bracket"})
+```
+
+```{ojs}
+viewof showDims = Inputs.toggle({label: "Show stack and reach guides", value: true})
+```
+
+```{ojs}
+viewof showToe = Inputs.toggle({label: "Show toe overlap zone", value: false})
+```
+:::
+
+::: {.draw-panel .column-page}
+```{ojs}
+drawing = {
+  const W = Math.max(320, Math.min(1100, width));
+  const anchorOf = p => alignAt === "rear axle" ? p.rearAxle : alignAt === "front axle" ? p.frontAxle : p.bb;
+
+  // Points for each picked bike, shifted so the chosen anchor sits at (0, 0)
+  const drawn = picks.map(pk => {
+    const p = bikePoints(pk.row);
+    const a = anchorOf(p);
+    const s = q => ({x: q.x - a.x, y: q.y - a.y});
+    return {
+      slot: pk.slot, row: pk.row, colour: slotColours[pk.slot], filled: p.filled,
+      bb: s(p.bb), rearAxle: s(p.rearAxle), frontAxle: s(p.frontAxle), htTop: s(p.htTop),
+      R: p.wheelRadius, rim: p.rimRadius, groundY: p.groundY - a.y,
+      segs: frameSegments(p).map(sg => ({...sg, a: s(sg.a), b: s(sg.b)}))
+    };
+  });
+
+  // Fit everything (wheels included) with a margin, flipping y so up is up
+  const xs = drawn.flatMap(b => [b.rearAxle.x - b.R, b.frontAxle.x + b.R, b.htTop.x]);
+  const ys = drawn.flatMap(b => [b.groundY, b.rearAxle.y + b.R, b.frontAxle.y + b.R, b.htTop.y]);
+  const pad = 60;
+  const x0 = Math.min(...xs) - pad, x1 = Math.max(...xs) + pad;
+  const y0 = Math.min(...ys) - pad - 40, y1 = Math.max(...ys) + pad;
+  const vb = `${x0} ${-y1} ${x1 - x0} ${y1 - y0}`;
+  const H = Math.round(W * (y1 - y0) / (x1 - x0));
+  const px = (x1 - x0) / W;            // millimetres per screen pixel
+  const fs = 12 * px;                   // 12 px text, in drawing units
+
+  const line = (a, b, c, w, extra = "") =>
+    `<line x1="${a.x}" y1="${-a.y}" x2="${b.x}" y2="${-b.y}" stroke="${c}" stroke-width="${w}" vector-effect="non-scaling-stroke" stroke-linecap="round" ${extra}/>`;
+
+  let svg = "";
+
+  // Ground lines
+  for (const b of drawn) svg += line({x: x0 + 10, y: b.groundY}, {x: x1 - 10, y: b.groundY}, b.colour, 1, `stroke-opacity="0.5"`);
+
+  // Wheels: tyre and rim
+  for (const b of drawn) for (const c of [b.rearAxle, b.frontAxle]) {
+    svg += `<circle cx="${c.x}" cy="${-c.y}" r="${b.R}" fill="none" stroke="${b.colour}" stroke-width="2.5" stroke-opacity="0.55" vector-effect="non-scaling-stroke"/>`;
+    svg += `<circle cx="${c.x}" cy="${-c.y}" r="${b.rim}" fill="none" stroke="${b.colour}" stroke-width="1" stroke-opacity="0.35" vector-effect="non-scaling-stroke"/>`;
+    svg += `<circle cx="${c.x}" cy="${-c.y}" r="${3 * px}" fill="${b.colour}"/>`;
+  }
+
+  // Toe overlap zone: crank (172.5 mm) plus a typical shoe reaching about 100 mm past the pedal axle
+  if (showToe) for (const b of drawn) {
+    svg += `<circle cx="${b.bb.x}" cy="${-b.bb.y}" r="172.5" fill="none" stroke="${b.colour}" stroke-width="1" stroke-dasharray="2,3" vector-effect="non-scaling-stroke"/>`;
+    svg += `<circle cx="${b.bb.x}" cy="${-b.bb.y}" r="272.5" fill="${b.colour}" fill-opacity="0.06" stroke="${b.colour}" stroke-width="1" stroke-dasharray="6,4" vector-effect="non-scaling-stroke"/>`;
+  }
+
+  // Frames, A drawn last so it sits on top
+  for (const b of [...drawn].reverse()) {
+    for (const sg of b.segs) svg += line(sg.a, sg.b, b.colour, 1.2 + sg.weight, `stroke-opacity="0.95"`);
+    svg += `<circle cx="${b.bb.x}" cy="${-b.bb.y}" r="${5 * px}" fill="#ffffff" stroke="${b.colour}" stroke-width="2" vector-effect="non-scaling-stroke"/>`;
+  }
+
+  // Stack and reach guides, measured from each bike's own bottom bracket
+  if (showDims) {
+    drawn.forEach((b, i) => {
+      const t = b.htTop;
+      svg += line({x: b.bb.x, y: t.y}, t, b.colour, 1, `stroke-dasharray="4,4"`);
+      svg += line({x: t.x, y: b.bb.y}, t, b.colour, 1, `stroke-dasharray="4,4"`);
+      svg += `<circle cx="${t.x}" cy="${-t.y}" r="${4 * px}" fill="${b.colour}"/>`;
+    });
+  }
+
+  // Scale bar: 100 mm
+  const sbX = x0 + 20 * px, sbY = y0 + 25;
+  svg += line({x: sbX, y: sbY}, {x: sbX + 100, y: sbY}, "#1f2a33", 2);
+  svg += `<text x="${sbX}" y="${-(sbY) - 6 * px}" text-anchor="start" font-size="${fs * 0.9}" fill="#1f2a33" font-family="Inter, sans-serif">100 mm</text>`;
+
+  const label = drawn.map(b => `${b.slot}: ${b.row.label} size ${b.row.size_label}`).join("; ");
+  const el = document.createElement("div");
+  el.innerHTML = `<svg viewBox="${vb}" width="${W}" height="${H}" role="img" aria-label="Side views drawn to scale. ${label}">${svg}</svg>`;
+  const notes = drawn.filter(b => b.filled.length).map(b => `${b.slot}: ${b.filled.join(" and ")} not published, so drawn from typical proportions`);
+  if (notes.length) el.insertAdjacentHTML("beforeend", `<div class="data-note">${notes.join(". ")}.</div>`);
+  return el;
+}
+```
+:::
+
+[Drawn with 700 × 45 mm tyres (29 × 2.25" on the Salsa Cutthroat). The toe overlap zone is a rough guide: a 172.5 mm crank plus about 100 mm of shoe ahead of the pedal axle. Where the shaded circle crosses a front tyre, toe overlap is possible in tight turns.]{.data-note}
+
+## The numbers
+
 ::: {.compare-wrap .column-page}
 ```{ojs}
 compareTable = {

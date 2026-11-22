@@ -10,6 +10,7 @@ project:
     - data/gravel_geometry.csv
     - data/gravel_geometry_derived.csv
     - data/data_dictionary.csv
+    - js/geometry.js
 
 website:
   title: "Gravel geometry explorer"

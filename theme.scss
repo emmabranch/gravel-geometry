@@ -161,3 +161,10 @@ body:has(.hero-full) #title-block-header { display: none; }
 .strip { display: block; }
 .strip-ends { display: flex; justify-content: space-between; width: 180px; font-size: 0.7rem; color: #5b7083; margin-top: -2px; }
 @media (max-width: 767.98px) { .compare-table .higher { display: none; } }
+
+/* Drawing to scale */
+.draw-controls { display: flex; flex-wrap: wrap; gap: 0.25rem 2rem; align-items: center; margin: 0.5rem 0 0.25rem; }
+.draw-controls form { width: auto !important; margin: 0 !important; }
+.draw-controls form > label { width: auto !important; font-weight: 600; font-size: 0.9rem; margin-right: 0.5rem; }
+.draw-panel { background: #ffffff; border-radius: 12px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); padding: 0.75rem; margin: 0.5rem 0 0.5rem; }
+.draw-panel svg { display: block; width: 100%; height: auto; }
