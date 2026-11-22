@@ -16,7 +16,7 @@ description: "Compare the published geometry of current gravel bikes, put a ride
 
 # Gravel bike geometry. [Compared, explained, and test-ridden on paper.]{.accent}
 
-Published geometry for current gravel bikes, every size, typed in from the manufacturers' own charts and checked against itself. More is on the way: drawings to scale, a rider on each bike, and a custom bike builder.
+Published geometry for 24 current gravel bikes, every size, typed in from the manufacturers' own charts and checked against itself. Compare them drawn to scale, put a rider on every size, or design your own.
 
 [Explore the bikes](explore.qmd){.btn .btn-accent} [Compare two bikes](compare.qmd){.btn .btn-ghost} [Code on GitHub](https://github.com/emmabranch/gravel-geometry){.btn .btn-ghost}
 
@@ -55,6 +55,15 @@ A bike's geometry is the set of lengths and angles that decide how it fits and h
 - **Every number comes from the manufacturer's own chart**, with the page and the date it was read. Charts change, so check the source before buying anything.
 - **The numbers are checked against each other.** Trail, top tube, and wheelbase can each be recalculated from the other measurements, which catches typing slips.
 - **No rankings.** Different geometry suits different riders and rides. The point is to see the differences, not to pick a winner.
+
+## What's here
+
+- **[Explore](explore.qmd):** every size of every bike on one stack and reach chart, with filters, a table, and a plain-language summary of any bike.
+- **[Compare](compare.qmd):** two or three bikes side by side, drawn to scale over each other.
+- **[Rider](rider.qmd):** a stick-figure rider of any height on every size of a bike, with flags for sizes that look too small or too large.
+- **[Design](design.qmd):** set your own geometry and see it drawn, checked, and matched to the closest production bikes.
+- **[Handling](handling.qmd):** what trail, wheelbase, and bottom bracket drop actually do to how a bike rides.
+- **[Epi studies](epi.qmd):** five small studies that borrow epidemiology's methods, from growth charts for bikes to whether smaller riders get the same bike.
 
 ## Try it: how trail changes
 
