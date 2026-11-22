@@ -92,11 +92,42 @@ $$\text{front centre} = \text{reach} + \frac{\text{stack} - \text{BB drop}}{\tan
 
 Bikes are drawn from the same numbers, to the same scale, with the BB at the origin. Tubes are straight lines between published points, so curved tubes and bent forks are simplified. Where a chart leaves out head tube or seat tube length (only the Factor ELARA), the drawing uses the median relationship across the other bikes (head tube about stack minus 434 mm, seat tube about 0.86 × stack), and says so.
 
+## The rider model
+
+The Rider page estimates where a rider's joints sit on each bike. It is an estimate from average body proportions, not a bike fit.
+
+- **Presets** use measured standing height from Statistics Canada's Canadian Health Measures Survey, cycle 2 (2009 to 2011): mean height of women aged 20 to 39 was 163.0 cm and 40 to 59 was 161.9 cm (preset 162 cm); men 177.7 cm and 174.7 cm (preset 176 cm). The shorter and taller presets are the 5th percentile for women aged 20 to 39 (153.3 cm) and the 95th percentile for men aged 20 to 39 (187.7 cm). This is the most recent survey cycle with published height tables by sex and age.
+- **Body segments** are fixed fractions of height from Drillis and Contini (1966), as tabulated by Winter: thigh 0.245, shin 0.246, ankle height 0.039, upper arm 0.186, forearm 0.146, hand 0.108, shoulder height 0.818, and hip (greater trochanter) height 0.530.
+- **Inseam**, when not entered, is 0.475 × height, from measured crotch height and stature in NIOSH's law enforcement anthropometry survey (men 841.0 / 1776.1 mm; women 793.9 / 1651.1 mm).
+- **Saddle height** is 0.883 × inseam from the bottom bracket to the top of the saddle (the LeMond method), along the seat tube's angle. The method does not account for crank length.
+- **Hip joint** sits 0.033 × height above the top of the saddle. This value puts the knee at about 30° at the LeMond height for an average rider, the middle of the usual 25 to 35° target, so the model agrees with the formula it borrows.
+- **Foot:** ball of the foot over the pedal axle, about 13° toes-down at the bottom of the stroke, plus 15 mm for shoe and pedal.
+- **Hands** rest on the hoods, 110 mm ahead of and 30 mm above the bar clamp, with elbows bent 15°. The shoulder is placed where the torso (shoulder height minus hip height) and the arm meet.
+- **Cockpit:** 10 mm headset cover, the chosen spacers, a 40 mm tall stem clamp, a −6° stem, and a stem length of 70, 80, 90, or 100 mm for riders under 160, 170, 180, or 180 cm and over. Cranks are 165, 170, 172.5, or 175 mm for riders under 160, 170, 185, or 185 cm and over.
+
+### Flagging sizes that look too small or too large
+
+The flags were calibrated against the rider height ranges that six manufacturers publish for 48 sizes of 9 bikes, listed in `data/manufacturer_size_ranges.csv` (Trek Checkpoint SL; Canyon Grail CF and Grizl CF; Devinci Hatchet Pro and Hatchet Vista; Salsa Cutthroat C and Flyway C; Lauf Seigla Rigid; BMC URS). For heights from 145 to 205 cm, each size was labelled "recommended" (inside the range), "too small" (at least 6 cm taller than the range), or "too large" (at least 6 cm shorter). The final rule:
+
+- **Too small:** hoods more than 3.8% of height below the saddle.
+- **Too large:** hoods more than 5.5% of height above the saddle, saddle to hoods more than 51% of height, exposed seatpost under 7% of height, or published standover more than 20 mm above inseam plus 25 mm of shoe.
+
+Re-fitting the thresholds with each bike left out and testing on that bike, the rule flagged 7.4% of recommended sizes, caught 86% of too-small and 82% of too-large sizes, and never flagged in the wrong direction. Torso and shoulder angles were tried and dropped: they change little between sizes because the arms and torso adapt.
+
+## References
+
+- Drillis R, Contini R. *Body Segment Parameters.* Technical Report 1166-03. New York University School of Engineering and Science; 1966. Tabulated in Winter DA. *Biomechanics and Motor Control of Human Movement.* Wiley.
+- Holliday W, Swart J. Anthropometrics, flexibility and training history as determinants for bicycle configuration. *Sports Medicine and Health Science.* 2021;3(2):93–100. [doi:10.1016/j.smhs.2021.02.007](https://doi.org/10.1016/j.smhs.2021.02.007)
+- LeMond G, Gordis K. *Greg LeMond's Complete Book of Bicycling.* Putnam; 1987.
+- National Institute for Occupational Safety and Health. *Law Enforcement Anthropometry Measurements.* [Dataset RD-1081-2024-0](https://www.cdc.gov/niosh/data/datasets/rd-1081-2024-0/).
+- Statistics Canada. *Canadian Health Measures Survey: Cycle 2 Data Tables, 2009 to 2011.* Catalogue no. 82-626-X. [Table 22: Measured standing height, by age and sex](https://www150.statcan.gc.ca/n1/pub/82-626-x/2013001/t023-eng.htm).
+
 ## Limitations
 
 - **Manufacturers measure some things differently.** Seat tube length and standover in particular have no single definition, so compare them across brands with care.
 - **Reference tyres differ.** Published trail and BB height depend on the tyre each manufacturer assumed, and few say which.
 - **Charts change.** Values were read on one date and may since have been updated.
+- **The rider is an estimate.** Real bodies vary widely around average proportions, and flexibility matters as much as length.
 - **No fit advice.** Geometry is one part of fit. A bike's stem, spacers, bars, and saddle setup change the rider's position as much as the frame does.
 
 ## Spotted a mistake?

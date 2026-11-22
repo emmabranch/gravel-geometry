@@ -5,6 +5,7 @@ project:
     - index.qmd
     - explore.qmd
     - compare.qmd
+    - rider.qmd
     - methods.qmd
   resources:
     - .nojekyll
@@ -12,6 +13,8 @@ project:
     - data/gravel_geometry_derived.csv
     - data/data_dictionary.csv
     - js/geometry.js
+    - js/rider.js
+    - js/draw.js
     - figures/hero-bikes.svg
 
 website:
@@ -27,6 +30,8 @@ website:
         text: Explore
       - href: compare.qmd
         text: Compare
+      - href: rider.qmd
+        text: Rider
       - href: methods.qmd
         text: Data and methods
     right:
