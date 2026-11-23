@@ -337,6 +337,14 @@ body:has(.hero-full) #title-block-header { display: none; }
 .explain-basis { font-size: 0.82rem; color: #5b7083; margin-bottom: 0.3rem; }
 .explain-cards { display: grid; gap: 0.9rem; }
 
+/* Fit numbers (Rider page) */
+.fit-layout { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1rem; }
+.fit-diagram svg { max-height: 460px; }
+.fit-diagram { margin: 0; background: #ffffff; border-radius: 14px; box-shadow: 0 1px 3px rgba(16, 42, 67, 0.08); padding: 0.6rem 0.8rem; }
+.fit-diagram figcaption { font-size: 0.85rem; color: #5b7083; margin-bottom: 0.3rem; }
+.fit-diagram svg { width: 100%; height: auto; display: block; }
+.fit-table tr.group th { background: #f4efe6; color: #7a5c43; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 0.45rem; }
+
 /* Export buttons */
 .export-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem; margin: 0.5rem 0 1rem; }
 .print-source { display: none; }

@@ -51,7 +51,10 @@ export const DEFAULTS = {
   hoodUp: 30,            // ...and this far above it
   elbowBend: 15,         // degrees of elbow flexion on the hoods
   shoeStack: 15,         // shoe sole and pedal, mm
-  ankleToes: 13          // degrees toes-down at the bottom of the stroke
+  ankleToes: 13,         // degrees toes-down at the bottom of the stroke
+  seatpostOffset: 0,     // mm the seatpost head sits behind the post's centreline (0 = inline, negative = forward)
+  clampBelowSaddle: 40,  // seatpost clamp centre, measured down the seat tube line from the saddle top
+  saddleHeight: null     // mm, BB to saddle top; null means the LeMond estimate from inseam
 };
 
 // Stem length by rider height: riders of different heights usually end up on
@@ -117,10 +120,13 @@ export function riderOnBike(g, rider, settings = {}) {
   const torso = (P.shoulderHeight - P.hipHeight) * H;
   const upperArm = P.upperArm * H, forearmToPalm = (P.forearm + 0.4 * P.hand) * H;
 
-  // Saddle: along the seat tube line, LeMond height from the BB
+  // Saddle: along the seat tube line, LeMond height from the BB (or the
+  // rider's own), then moved back by the seatpost's setback
   const sa = rad(g.seat_tube_angle);
-  const saddleHeight = LEMOND * inseam;
-  const saddle = {x: -saddleHeight * Math.cos(sa), y: saddleHeight * Math.sin(sa)};
+  const saddleHeight = c.saddleHeight ?? LEMOND * inseam;
+  const onSeatTube = d => ({x: -d * Math.cos(sa) - c.seatpostOffset, y: d * Math.sin(sa)});
+  const saddle = onSeatTube(saddleHeight);
+  const clamp = onSeatTube(saddleHeight - c.clampBelowSaddle);
   // Hip joint sits a little above the saddle top. 0.033 x height puts the knee
   // at about 30 degrees at the LeMond saddle height, the middle of the 25 to 35
   // degree target, so the model agrees with the formula it borrows.
@@ -173,11 +179,54 @@ export function riderOnBike(g, rider, settings = {}) {
 
   return {
     inputs: {height: H, inseam, crank, ...c},
-    points: {saddle, hip, kneeBottom, ankleBottom, pedalBottom, kneeTop, ankleTop, pedalTop, shoulder, elbow, hands: cp.hoods, head, ...cp},
+    points: {saddle, seatClamp: clamp, hip, kneeBottom, ankleBottom, pedalBottom, kneeTop, ankleTop, pedalTop, shoulder, elbow, hands: cp.hoods, head, ...cp},
     lengths: {thigh, shank, torso, upperArm, forearmToPalm},
     saddleHeight, kneeAngle, legOverstretched, torsoAngle, hipAngleTop, shoulderAngle,
-    saddleToHoods, hoodDrop, seatpostExposed, standoverMargin, cantReach
+    saddleToHoods, hoodDrop, seatpostExposed, standoverMargin, cantReach,
+    fit: fitNumbers(clamp, cp.bar, saddleHeight, c.clampBelowSaddle)
   };
+}
+
+// The fit coordinates a fitter or engineer quotes, all from the BB centre:
+// the seatpost clamp (the saddle point) and the centre of the stem's bar clamp
+// (bar shape ignored).
+export function fitNumbers(seat, bar, saddleHeight, clampBelowSaddle) {
+  return {
+    bbToSaddleTop: saddleHeight,                       // along the seat tube line
+    bbToClamp: saddleHeight - clampBelowSaddle,        // along the seat tube line
+    clampHeight: seat.y,                               // vertical
+    setback: -seat.x,                                  // horizontal, positive = behind the BB
+    barStack: bar.y,
+    barReach: bar.x,
+    bbToBar: Math.hypot(bar.x, bar.y),
+    saddleToBar: Math.hypot(bar.x - seat.x, bar.y - seat.y),
+    saddleToBarReach: bar.x - seat.x,                  // horizontal
+    barDrop: seat.y - bar.y                            // positive = bar below the saddle clamp
+  };
+}
+
+// Parts for one size: the stock part where the manufacturer states it,
+// otherwise the site's standard choice for the rider's height. `mine` holds
+// any parts the rider has swapped in, which win over stock.
+//   g: a geometry row; heightMm: rider height in mm
+// Returns the settings for riderOnBike, plus which parts were assumed.
+export function partsFor(g, heightMm, mine = {}) {
+  const assumed = [];
+  const pick = (key, stock, fallback, label) => {
+    if (mine[key] != null) return mine[key];
+    if (stock != null && !Number.isNaN(stock)) return stock;
+    assumed.push(label);
+    return fallback;
+  };
+  const settings = {
+    stemLength: pick("stemLength", g.stock_stem_length, defaultStem(heightMm), "stem length"),
+    stemAngle: pick("stemAngle", g.stock_stem_angle, DEFAULTS.stemAngle, "stem angle"),
+    crank: pick("crank", g.stock_crank_length, defaultCrank(heightMm), "crank length"),
+    seatpostOffset: pick("seatpostOffset", g.stock_seatpost_offset, 0, "seatpost setback"),
+    spacers: mine.spacers ?? DEFAULTS.spacers
+  };
+  if (mine.saddleHeight != null) settings.saddleHeight = mine.saddleHeight;
+  return {settings, assumed};
 }
 
 // Rules for flagging sizes that look clearly too small or too large.

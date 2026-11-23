@@ -8,7 +8,7 @@ Start from any bike, then change the numbers. The drawing, the handling numbers,
 ```{ojs}
 //| output: false
 import {designRow, designChecks, bikePoints} from "./js/geometry.js"
-import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS} from "./js/rider.js"
+import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS, INSEAM_RATIO, LEMOND} from "./js/rider.js"
 import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
 import {fromUrl, shareButton} from "./js/share.js"
 import {exportButtons, fileName} from "./js/export.js"
@@ -122,11 +122,11 @@ viewof heightCm = Inputs.range([140, 205], {label: "Rider height (cm)", step: 1,
 ```
 
 ```{ojs}
-viewof stemMm = Inputs.range([40, 130], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", defaultStem(heightCm * 10), {min: 40, max: 130})})
+viewof stemMm = Inputs.range([40, 140], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", base.stock_stem_length ?? defaultStem(heightCm * 10), {min: 40, max: 140})})
 ```
 
 ```{ojs}
-viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", DEFAULTS.stemAngle, {min: -17, max: 17})})
+viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", base.stock_stem_angle ?? DEFAULTS.stemAngle, {min: -17, max: 17})})
 ```
 
 ```{ojs}
@@ -134,8 +134,18 @@ viewof spacersMm = Inputs.range([0, 50], {label: "Spacers (mm)", step: 5, value:
 ```
 
 ```{ojs}
-viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", defaultCrank(heightCm * 10), {options: [160, 165, 170, 172.5, 175]})})
+viewof crankMm = Inputs.select([155, 160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", base.stock_crank_length ?? defaultCrank(heightCm * 10), {options: [155, 160, 165, 170, 172.5, 175]})})
 ```
+
+```{ojs}
+viewof postMm = Inputs.select([-5, 0, 5, 8, 10, 15, 20, 25], {label: "Seatpost setback (mm)", value: fromUrl("post", base.stock_seatpost_offset ?? 0, {options: [-5, 0, 5, 8, 10, 15, 20, 25]}), format: v => v === 0 ? "0 (inline)" : v < 0 ? `${v} (forward)` : `${v}`})
+```
+
+```{ojs}
+viewof saddleMm = Inputs.range([550, 900], {label: "Saddle height (BB to saddle top, mm)", step: 1, value: fromUrl("saddle", Math.round(LEMOND * INSEAM_RATIO * heightCm * 10), {min: 550, max: 900})})
+```
+
+[Stem, cranks, and seatpost start at the starting bike's stock parts where its maker says what they are. Saddle height starts at 0.883 × an estimated inseam.]{.data-note}
 :::
 
 :::
@@ -150,7 +160,7 @@ custom = designRow({
   seat_tube_length: seatTube
 })
 riderIn = ({height: heightCm * 10})
-setup = ({stemLength: stemMm, stemAngle, spacers: spacersMm, crank: crankMm})
+setup = ({stemLength: stemMm, stemAngle, spacers: spacersMm, crank: crankMm, seatpostOffset: postMm, saddleHeight: saddleMm})
 customRider = riderOnBike(custom, riderIn, setup)
 customFit = fitFlags(customRider)
 checks = designChecks(custom, {crank: crankMm})
@@ -199,7 +209,7 @@ statusStrip = {
 ```{ojs}
 shareButton({
   base: baseBike, bsize: baseSize, stack, reach, hta, sta, drop: bbDrop, cs: chainstay, st: seatTube,
-  off: offset, fork: forkAC, wheel: wheelSize, tyre, h: heightCm, stem: stemMm, sa: stemAngle, sp: spacersMm, crank: crankMm,
+  off: offset, fork: forkAC, wheel: wheelSize, tyre, h: heightCm, stem: stemMm, sa: stemAngle, sp: spacersMm, crank: crankMm, post: postMm, saddle: saddleMm,
   vs: compareWith ? `${compareWith.label}|${compareWith.size_label}` : "none"
 }, "Copy a link to this design")
 ```
@@ -285,14 +295,23 @@ numbersTable = {
     ["Rider: size check", r => fitFlags(r).verdict], ["Rider: knee at bottom", r => `${r.kneeAngle.toFixed(0)}°`],
     ["Rider: torso angle", r => `${r.torsoAngle.toFixed(0)}°`], ["Rider: hoods below saddle", r => `${r.hoodDrop.toFixed(0)} mm`]
   ].map(([label, f]) => `<tr><th scope="row">${label}</th><td class="num">${f(customRider)}</td>${cmp ? `<td class="num">${f(cmpRider)}</td><td></td>` : ""}</tr>`).join("");
+  const fitRows = [
+    ["BB to seatpost clamp", r => r.fit.bbToClamp], ["Setback (clamp behind BB)", r => r.fit.setback],
+    ["Bar stack (to the bar clamp)", r => r.fit.barStack], ["Bar reach (to the bar clamp)", r => r.fit.barReach],
+    ["BB to bar", r => r.fit.bbToBar], ["Saddle to bar", r => r.fit.saddleToBar], ["Bar drop (below the clamp)", r => r.fit.barDrop]
+  ].map(([label, f]) => {
+    const a = f(customRider), b = cmp ? f(cmpRider) : null;
+    const diff = cmp ? `${a - b > 0 ? "+" : ""}${(a - b).toFixed(0)}` : "";
+    return `<tr><th scope="row">${label}</th><td class="num">${fmt(a, 0, "mm")}</td>${cmp ? `<td class="num">${fmt(b, 0, "mm")}</td><td class="num diffcol">${diff}</td>` : ""}</tr>`;
+  }).join("");
   const el = document.createElement("div");
   el.className = "compare-scroll";
-  el.innerHTML = `<table class="compare-table">${head}${body}<tr class="group-row"><th colspan="${cmp ? 4 : 2}">With a ${heightCm} cm rider</th></tr>${riderRows}</table>`;
+  el.innerHTML = `<table class="compare-table">${head}${body}<tr class="group-row"><th colspan="${cmp ? 4 : 2}">Fit, with these parts (from the BB to the seatpost clamp and the bar clamp)</th></tr>${fitRows}<tr class="group-row"><th colspan="${cmp ? 4 : 2}">With a ${heightCm} cm rider</th></tr>${riderRows}</table>`;
   return el;
 }
 ```
 
-[The production bike's trail uses a 700 × 45 mm tyre (as on the rest of the site), while your design's uses the tyre you chose. Head tube length is worked out from stack, fork length, and head angle, assuming the head tube wraps 14 mm below the fork crown, the median across bikes that publish both.]{.data-note}
+[Fit numbers for the production bike use the same stem, spacers, cranks, seatpost, and saddle height as your design, so the difference is down to the frames. The production bike's trail uses a 700 × 45 mm tyre (as on the rest of the site), while your design's uses the tyre you chose. Head tube length is worked out from stack, fork length, and head angle, assuming the head tube wraps 14 mm below the fork crown, the median across bikes that publish both.]{.data-note}
 
 ## Closest production bikes
 

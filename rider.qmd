@@ -9,8 +9,8 @@ description: "An estimated rider, drawn to scale on every size of a gravel bike,
 
 ```{ojs}
 //| output: false
-import {riderOnBike, fitFlags, defaultCrank, defaultStem, DEFAULTS, INSEAM_RATIO} from "./js/rider.js"
-import {bikeRiderMarkup, sharedViewBox} from "./js/draw.js"
+import {riderOnBike, fitFlags, partsFor, defaultCrank, defaultStem, DEFAULTS, INSEAM_RATIO, LEMOND} from "./js/rider.js"
+import {bikeRiderMarkup, sharedViewBox, fitDiagramSVG} from "./js/draw.js"
 import {fromUrl, shareButton} from "./js/share.js"
 import {exportButtons, fileName} from "./js/export.js"
 
@@ -80,25 +80,39 @@ viewof inseamCm = useInseam
 :::
 
 ::: {.rider-card}
-[Cockpit and setup]{.card-heading}
+[Parts]{.card-heading}
+
+Each size starts with the parts it's sold with, where the manufacturer says what they are. Tick a part to swap in your own.
 
 ```{ojs}
-viewof stemMm = Inputs.range([50, 130], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", defaultStem(heightCm * 10), {min: 50, max: 130})})
+viewof swap = Inputs.checkbox(["Stem", "Cranks", "Seatpost", "Saddle height"], {label: "Swap in my own", value: (fromUrl("swap", "") || "").split(",").filter(x => ["Stem", "Cranks", "Seatpost", "Saddle height"].includes(x))})
 ```
 
 ```{ojs}
-viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", DEFAULTS.stemAngle, {min: -17, max: 17})})
+viewof stemMm = Inputs.range([40, 140], {label: "Stem length (mm)", step: 10, value: fromUrl("stem", defaultStem(heightCm * 10), {min: 40, max: 140}), disabled: !swap.includes("Stem")})
+```
+
+```{ojs}
+viewof stemAngle = Inputs.range([-17, 17], {label: "Stem angle (°)", step: 1, value: fromUrl("sa", DEFAULTS.stemAngle, {min: -17, max: 17}), disabled: !swap.includes("Stem")})
+```
+
+```{ojs}
+viewof crankMm = Inputs.select([155, 160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", defaultCrank(heightCm * 10), {options: [155, 160, 165, 170, 172.5, 175]}), disabled: !swap.includes("Cranks")})
+```
+
+```{ojs}
+viewof postMm = Inputs.select([-5, 0, 5, 10, 15, 20, 25], {label: "Seatpost setback (mm)", value: fromUrl("post", 0, {options: [-5, 0, 5, 10, 15, 20, 25]}), format: v => v === 0 ? "0 (inline)" : v < 0 ? `${v} (forward)` : `${v}`, disabled: !swap.includes("Seatpost")})
+```
+
+```{ojs}
+viewof saddleMm = Inputs.range([550, 900], {label: "Saddle height (BB to saddle top, mm)", step: 1, value: fromUrl("saddle", Math.round(LEMOND * inseamCm * 10), {min: 550, max: 900}), disabled: !swap.includes("Saddle height")})
 ```
 
 ```{ojs}
 viewof spacersMm = Inputs.range([0, 50], {label: "Spacers under the stem (mm)", step: 5, value: fromUrl("sp", DEFAULTS.spacers, {min: 0, max: 50})})
 ```
 
-```{ojs}
-viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank length (mm)", value: fromUrl("crank", defaultCrank(heightCm * 10), {options: [160, 165, 170, 172.5, 175]})})
-```
-
-[Starting values change with height: a 90 mm stem and 172.5 mm cranks suit a 176 cm rider, for example. Change them to match your own bike.]{.data-note}
+[Where a brand doesn't say which part it fits, the site uses a standard choice for your height (a 90 mm stem and 172.5 mm cranks at 176 cm, for example), an inline seatpost, and a −6° stem, and marks it with * in the tables. Saddle height starts at 0.883 × inseam.]{.data-note}
 :::
 
 :::
@@ -106,7 +120,9 @@ viewof crankMm = Inputs.select([160, 165, 170, 172.5, 175], {label: "Crank lengt
 ```{ojs}
 shareButton({
   h: heightCm, useins: useInseam, in: useInseam ? inseamCm : null,
-  stem: stemMm, sa: stemAngle, sp: spacersMm, crank: crankMm,
+  swap: swap.join(","), stem: swap.includes("Stem") ? stemMm : null, sa: swap.includes("Stem") ? stemAngle : null,
+  crank: swap.includes("Cranks") ? crankMm : null, post: swap.includes("Seatpost") ? postMm : null,
+  saddle: swap.includes("Saddle height") ? saddleMm : null, sp: spacersMm,
   grid: gridBike, a: bikeA, as: sizeA, b: bikeB, bs: sizeB
 }, "Copy a link to this rider and these bikes")
 ```
@@ -114,7 +130,16 @@ shareButton({
 ```{ojs}
 //| output: false
 riderIn = ({height: heightCm * 10, inseam: inseamCm * 10})
-setup = ({stemLength: stemMm, stemAngle, spacers: spacersMm, crank: crankMm})
+mine = ({
+  stemLength: swap.includes("Stem") ? stemMm : null,
+  stemAngle: swap.includes("Stem") ? stemAngle : null,
+  crank: swap.includes("Cranks") ? crankMm : null,
+  seatpostOffset: swap.includes("Seatpost") ? postMm : null,
+  saddleHeight: swap.includes("Saddle height") ? saddleMm : null,
+  spacers: spacersMm
+})
+partsOf = row => partsFor(row, heightCm * 10, mine)
+riderFor = row => riderOnBike(row, riderIn, partsOf(row).settings)
 ```
 
 ## 2. Every size of one bike
@@ -127,7 +152,7 @@ viewof gridBike = Inputs.select(bikeList, {label: "Bike", value: fromUrl("grid",
 //| output: false
 gridRows = bikes.filter(d => d.label === gridBike && d.is_default_config).sort((a, b) => a.size_order - b.size_order)
 gridResults = gridRows.map(row => {
-  const r = riderOnBike(row, riderIn, setup);
+  const r = riderFor(row);
   return {row, r, fit: fitFlags(r)};
 })
 ```
@@ -155,6 +180,60 @@ sizeGrid = {
 
 [All sizes are drawn to the same scale. "Too small" and "too large" are rules of thumb, calibrated against manufacturers' own size charts (see [how the flags work](#how-the-flags-work)).]{.data-note}
 
+### Fit numbers for every size
+
+The positions a fitter or frame engineer quotes, measured from the centre of the bottom bracket to the seatpost clamp (where the saddle sits) and to the centre of the stem's bar clamp. Bar shape isn't included.
+
+::: {.column-page}
+::: {.fit-layout}
+```{ojs}
+fitDiagram = {
+  const mid = gridResults[Math.floor(gridResults.length / 2)];
+  const el = html`<figure class="fit-diagram"><figcaption>How they're measured: size ${mid.row.size_label}</figcaption></figure>`;
+  el.insertAdjacentHTML("beforeend", fitDiagramSVG(mid.row, mid.r, {label: `Fit measurements on ${gridBike} size ${mid.row.size_label}`}));
+  return el;
+}
+```
+
+```{ojs}
+fitTable = {
+  const cols = gridResults.map(d => ({...d, parts: partsOf(d.row)}));
+  const mm = v => `${v.toFixed(0)}`;
+  const star = (d, label) => d.parts.assumed.includes(label) ? "*" : "";
+  const rows = [
+    ["Saddle", null],
+    ["BB to saddle top", d => mm(d.r.fit.bbToSaddleTop)],
+    ["BB to seatpost clamp", d => mm(d.r.fit.bbToClamp)],
+    ["Setback (clamp behind BB)", d => mm(d.r.fit.setback)],
+    ["Handlebar", null],
+    ["Bar stack (BB to bar clamp, vertical)", d => mm(d.r.fit.barStack)],
+    ["Bar reach (BB to bar clamp, horizontal)", d => mm(d.r.fit.barReach)],
+    ["BB to bar (straight line)", d => mm(d.r.fit.bbToBar)],
+    ["Saddle to bar", null],
+    ["Straight line", d => mm(d.r.fit.saddleToBar)],
+    ["Horizontal", d => mm(d.r.fit.saddleToBarReach)],
+    ["Drop (bar below clamp)", d => mm(d.r.fit.barDrop)],
+    ["Parts used", null],
+    ["Stem", d => `${d.parts.settings.stemLength}${star(d, "stem length")} mm at ${d.parts.settings.stemAngle}°${star(d, "stem angle")}`],
+    ["Cranks", d => `${d.parts.settings.crank}${star(d, "crank length")}`],
+    ["Seatpost setback", d => `${d.parts.settings.seatpostOffset}${star(d, "seatpost setback")}`],
+    ["Spacers", d => `${d.parts.settings.spacers}`]
+  ];
+  const head = `<tr><th>All in mm</th>${cols.map(d => `<th class="num">Size ${d.row.size_label}</th>`).join("")}</tr>`;
+  const body = rows.map(([label, f]) => f
+    ? `<tr><th scope="row">${label}</th>${cols.map(d => `<td class="num">${f(d)}</td>`).join("")}</tr>`
+    : `<tr class="group"><th colspan="${cols.length + 1}">${label}</th></tr>`).join("");
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table fit-table">${head}${body}</table>`;
+  return el;
+}
+```
+:::
+:::
+
+[* not stated by the manufacturer, so the site's standard choice is used. Swap in your own parts above to see how the numbers move. The seatpost clamp is taken as 40 mm below the top of the saddle.]{.data-note}
+
 ## 3. Side by side
 
 Compare the same rider on two bikes, or on two sizes of the same bike.
@@ -172,7 +251,7 @@ viewof bikeA = Inputs.select(bikeList, {label: "Bike", value: fromUrl("a", "Spec
 viewof sizeA = {
   const sizes = bikes.filter(d => d.label === bikeA && d.is_default_config).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
   // start on the size the flags like best for this rider
-  const best = sizes.find(s => fitFlags(riderOnBike(bikes.find(d => d.label === bikeA && d.size_label === s && d.is_default_config), riderIn, setup)).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
+  const best = sizes.find(s => fitFlags(riderFor(bikes.find(d => d.label === bikeA && d.size_label === s && d.is_default_config))).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
   return Inputs.select(sizes, {label: "Size", value: fromUrl("as", best, {options: sizes})});
 }
 ```
@@ -188,7 +267,7 @@ viewof bikeB = Inputs.select(bikeList, {label: "Bike", value: fromUrl("b", "Norc
 ```{ojs}
 viewof sizeB = {
   const sizes = bikes.filter(d => d.label === bikeB && d.is_default_config).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
-  const best = sizes.find(s => fitFlags(riderOnBike(bikes.find(d => d.label === bikeB && d.size_label === s && d.is_default_config), riderIn, setup)).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
+  const best = sizes.find(s => fitFlags(riderFor(bikes.find(d => d.label === bikeB && d.size_label === s && d.is_default_config))).verdict === "fits") ?? sizes[Math.floor(sizes.length / 2)];
   return Inputs.select(sizes, {label: "Size", value: fromUrl("bs", best, {options: sizes})});
 }
 ```
@@ -202,7 +281,7 @@ pair = [
   {slot: "A", colour: "#2563a8", row: bikes.find(d => d.label === bikeA && d.size_label === sizeA && d.is_default_config)},
   {slot: "B", colour: "#d2691e", row: bikes.find(d => d.label === bikeB && d.size_label === sizeB && d.is_default_config)}
 ].filter(p => p.row).map(p => {
-  const r = riderOnBike(p.row, riderIn, setup);
+  const r = riderFor(p.row);
   return {...p, r, fit: fitFlags(r)};
 })
 ```
@@ -230,7 +309,7 @@ exportButtons(() => [...sideBySide.querySelectorAll(".pair-tile")].map((f, i) =>
   caption: `${pair[i].slot}: ${pair[i].row.label}, size ${pair[i].row.size_label} (${pair[i].fit.verdict})`
 })), {
   title: `A ${heightCm} cm rider on two bikes`,
-  note: `Stem ${stemMm} mm at ${stemAngle}°, ${spacersMm} mm of spacers, ${crankMm} mm cranks. An estimate from body proportions, not a bike fit.`
+  note: `${swap.length ? `Own parts: ${swap.join(", ").toLowerCase()}; stock parts otherwise` : "Stock parts where stated"}, ${spacersMm} mm of spacers. An estimate from body proportions, not a bike fit.`
 }, fileName(`${heightCm}cm`, `${pair[0]?.row.label} ${pair[0]?.row.size_label}`, `${pair[1]?.row.label} ${pair[1]?.row.size_label}`))
 ```
 :::
@@ -238,7 +317,12 @@ exportButtons(() => [...sideBySide.querySelectorAll(".pair-tile")].map((f, i) =>
 ```{ojs}
 angleTable = {
   const rows = [
-    ["Saddle height (BB to top of saddle)", r => `${r.saddleHeight.toFixed(0)} mm`, "0.883 × inseam (LeMond method)"],
+    ["Saddle height (BB to top of saddle)", r => `${r.saddleHeight.toFixed(0)} mm`, swap.includes("Saddle height") ? "your own" : "0.883 × inseam (LeMond method)"],
+    ["Setback (seatpost clamp behind BB)", r => `${r.fit.setback.toFixed(0)} mm`, "horizontal"],
+    ["Bar stack and reach (to the bar clamp)", r => `${r.fit.barStack.toFixed(0)} / ${r.fit.barReach.toFixed(0)} mm`, "from the BB, with stem and spacers"],
+    ["BB to bar", r => `${r.fit.bbToBar.toFixed(0)} mm`, "straight line to the bar clamp"],
+    ["Saddle to bar", r => `${r.fit.saddleToBar.toFixed(0)} mm`, "seatpost clamp to bar clamp, straight line"],
+    ["Bar drop (below the seatpost clamp)", r => `${r.fit.barDrop.toFixed(0)} mm`, "negative means the bar is higher"],
     ["Knee bend at the bottom of the stroke", r => r.legOverstretched ? "leg can't reach" : `${r.kneeAngle.toFixed(0)}°`, "25 to 35° is the usual target. The LeMond formula ignores crank length, so shorter cranks leave the leg straighter"],
     ["Hip angle at the top of the stroke", r => r.hipAngleTop == null ? "–" : `${r.hipAngleTop.toFixed(0)}°`, "smaller is more closed; very small can feel cramped"],
     ["Torso angle (from horizontal)", r => `${r.torsoAngle.toFixed(0)}°`, "lower is more aero, higher more upright"],
@@ -263,7 +347,9 @@ angleTable = {
 - **Saddle height** is 0.883 × inseam from the centre of the bottom bracket to the top of the saddle (the LeMond method), set along the seat tube's angle.
 - **Pedals.** The knee angle is measured with the crank pointing straight down, the foot tilted about 13° toes-down, and the ball of the foot over the pedal axle.
 - **Hands** rest on the hoods, about 110 mm ahead of and 30 mm above where the bar clamps into the stem, with the elbows bent 15°.
-- **Cockpit.** The stem sits on 10 mm of headset cover plus the spacers you choose. Stem length starts at 70 to 100 mm depending on height. Cranks start at 165 to 175 mm.
+- **Cockpit.** The stem sits on 10 mm of headset cover plus the spacers you choose, with the bar clamped at the middle of a 40 mm tall stem.
+- **Parts.** Each size uses its stock stem, cranks, and seatpost where the manufacturer's spec page says what they are. Otherwise the stem is 70 to 100 mm depending on height at −6°, cranks are 165 to 175 mm, and the seatpost is inline. Any of these can be swapped for your own.
+- **Seatpost setback** moves the saddle and the seatpost clamp straight back (or forward, for a negative setback) from the seat tube line.
 
 ### How the flags work {#how-the-flags-work}
 
@@ -274,5 +360,7 @@ Torso and shoulder angles turn out to change very little between sizes, because 
 - **On the small side** or **on the large side:** the hoods are close to those limits.
 
 These limits were chosen by comparing the model with the rider height ranges that Trek, Canyon, Devinci, Salsa, Lauf, and BMC publish for 48 sizes of 9 bikes. Checked by leaving each bike out in turn, the rules flagged 7% of sizes the manufacturer recommends for that height, caught 86% of sizes at least 6 cm too small and 82% at least 6 cm too large, and never flagged in the wrong direction.
+
+The flags were set with a standard stem and cranks for each height and an inline seatpost. When stock parts were added in November 2026, the same check was run again with each size's own parts: the verdict changed for 3.8% of the size and height combinations, and agreement with the manufacturers' ranges was about the same (the share of recommended sizes flagged rose by 0.9 percentage points, the share of too-small sizes caught rose by 4 points, and too-large sizes caught didn't change).
 
 They are rules of thumb. A size flagged "fits" can still be wrong for you, and one flagged "on the large side" can be right with a shorter stem.

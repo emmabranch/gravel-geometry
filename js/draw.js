@@ -93,3 +93,40 @@ export function sharedViewBox(items) {
   }
   return {x0, x1, y0, y1, vb: `${f(x0)} ${f(-y1)} ${f(x1 - x0)} ${f(y1 - y0)}`};
 }
+
+// The fit measurements, drawn the way a frame engineer would: the bike, its
+// stem and seatpost, and dash-dot lines from the BB to the seatpost clamp
+// (the saddle point) and to the centre of the stem's bar clamp.
+//   rider: a riderOnBike result (its fit numbers and points are used; the
+//          rider isn't drawn)
+export function fitDiagramSVG(row, rider, {colour = "#7a5c43", label = "Fit measurements"} = {}) {
+  const {markup, points: p} = bikeRiderMarkup(row, rider, {colour, showRider: false});
+  const q = rider.points, fit = rider.fit;
+  const seat = q.seatClamp, bar = q.bar, g = p.groundY;
+  const dim = "#5b7083", hi = "#0b2233";
+  const dash = `stroke-dasharray="14,6,3,6"`;
+  const txt = (x, y, s, attrs = "") => `<text x="${f(x)}" y="${f(-y)}" font-size="34" font-family="Inter, sans-serif" fill="${hi}" ${attrs}>${s}</text>`;
+  let s = markup;
+  // the parts the fit depends on: spacers and stem, seatpost and saddle
+  s += line(q.htTop, q.clamp, "#5b7083", 3) + line(q.clamp, bar, "#5b7083", 3);
+  s += line(p.stTop, seat, "#5b7083", 2.5) + line({x: q.saddle.x - 120, y: q.saddle.y}, {x: q.saddle.x + 150, y: q.saddle.y}, "#5b7083", 4);
+  // verticals to the ground, and the horizontal dimension along it
+  for (const pt of [seat, {x: 0, y: 0}, bar]) s += line(pt, {x: pt.x, y: g}, dim, 1.2, dash);
+  s += line({x: seat.x, y: g}, {x: bar.x, y: g}, dim, 1.2, dash);
+  // straight lines: BB to bar, saddle to bar, BB to saddle
+  s += line({x: 0, y: 0}, bar, "#d2691e", 2, dash) + line(seat, bar, "#2a6fb0", 2, dash) + line({x: 0, y: 0}, seat, "#7a5c43", 2, dash);
+  for (const pt of [seat, bar]) s += dot(pt, 11, hi);
+  // labels
+  s += txt(seat.x - 10, seat.y + 40, "seatpost clamp", `text-anchor="end"`);
+  s += txt(bar.x + 18, bar.y + 34, "bar clamp");
+  s += txt((seat.x + bar.x) / 2, (seat.y + bar.y) / 2 + 26, `saddle to bar ${fit.saddleToBar.toFixed(0)}`, `text-anchor="middle" fill="#2a6fb0"`);
+  s += txt(bar.x * 0.42 + 24, bar.y * 0.42, `BB to bar ${fit.bbToBar.toFixed(0)}`, `fill="#d2691e"`);
+  s += txt(seat.x - 16, seat.y * 0.55, `BB to clamp ${fit.bbToClamp.toFixed(0)}`, `text-anchor="end" fill="#7a5c43"`);
+  s += txt(seat.x / 2, g + 16, `setback ${fit.setback.toFixed(0)}`, `text-anchor="middle" fill="${dim}"`);
+  s += txt(bar.x / 2, g + 16, `reach ${fit.barReach.toFixed(0)}`, `text-anchor="middle" fill="${dim}"`);
+  s += txt(bar.x + 18, bar.y / 2, `stack ${fit.barStack.toFixed(0)}`, `fill="${dim}"`);
+  s += line({x: bar.x + 6, y: 0}, {x: bar.x + 6, y: bar.y}, dim, 1, `stroke-dasharray="2,5"`);
+  const x0 = Math.min(p.rearAxle.x - p.wheelRadius, seat.x - 380) - 40, x1 = p.frontAxle.x + p.wheelRadius + 60;
+  const y1 = Math.max(seat.y, q.saddle.y, bar.y) + 80, y0 = g - 60;
+  return `<svg viewBox="${f(x0)} ${f(-y1)} ${f(x1 - x0)} ${f(y1 - y0)}" role="img" aria-label="${label}" preserveAspectRatio="xMidYMid meet">${s}</svg>`;
+}

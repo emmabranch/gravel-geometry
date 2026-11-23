@@ -117,7 +117,21 @@ The Rider page estimates where a rider's joints sit on each bike. It is an estim
 - **Hip joint** sits 0.033 × height above the top of the saddle. This value puts the knee at about 30° at the LeMond height for an average rider, the middle of the usual 25 to 35° target, so the model agrees with the formula it borrows.
 - **Foot:** ball of the foot over the pedal axle, about 13° toes-down at the bottom of the stroke, plus 15 mm for shoe and pedal.
 - **Hands** rest on the hoods, 110 mm ahead of and 30 mm above the bar clamp, with elbows bent 15°. The shoulder is placed where the torso (shoulder height minus hip height) and the arm meet.
-- **Cockpit:** 10 mm headset cover, the chosen spacers, a 40 mm tall stem clamp, a −6° stem, and a stem length of 70, 80, 90, or 100 mm for riders under 160, 170, 180, or 180 cm and over. Cranks are 165, 170, 172.5, or 175 mm for riders under 160, 170, 185, or 185 cm and over.
+- **Cockpit:** 10 mm headset cover, the chosen spacers (20 mm unless changed), and a 40 mm tall stem clamp with the bar at its middle.
+- **Parts:** each size uses its stock stem length and angle, crank length, and seatpost setback where the manufacturer's spec page states them (collected on 23 November 2026; see `data/stock_parts_notes.txt` and the `stock_` columns of the dataset). Where a part isn't stated, the stem is 70, 80, 90, or 100 mm for riders under 160, 170, 180, or 180 cm and over, at −6°; cranks are 165, 170, 172.5, or 175 mm for riders under 160, 170, 185, or 185 cm and over; and the seatpost is inline. A stem angle given without a sign (such as "7 degree") is taken as mounted pointing down. Any part can be swapped for your own.
+- **Seatpost setback** moves the saddle and seatpost clamp straight back from the seat tube line (forward, for a negative setback). The seatpost clamp is taken as 40 mm below the top of the saddle, measured along the seat tube line.
+
+### Fit numbers
+
+The Rider and Design pages give the measurements a fitter or frame engineer uses, all from the centre of the bottom bracket:
+
+- **BB to saddle top** and **BB to seatpost clamp**, along the seat tube line.
+- **Setback:** horizontal distance from the BB back to the seatpost clamp.
+- **Bar stack** and **bar reach:** vertical and horizontal distance to the centre of the stem's bar clamp, with the stem, its angle, and the spacers included. Bar shape isn't included.
+- **BB to bar:** the straight line to the bar clamp.
+- **Saddle to bar:** from the seatpost clamp to the bar clamp, as a straight line, a horizontal distance, and a drop (positive when the bar is lower).
+
+As a check, two brands publish handlebar positions. Lauf gives "reach to handlebar" and "stack to handlebar" (with and without spacers) for the Seigla: with its stock 7° stem mounted pointing down, the site's bar stack is within 2 mm of Lauf's and its bar reach within 6 mm. Canyon gives "effective stack and reach" to the hand position for the Grail CF and Grizl CF. With 15 mm of spacers, the rider model's hands on the hoods are within 10 mm of Canyon's stack and 13 to 16 mm further forward than Canyon's reach, so Canyon places the hands a little further back on the bar than the rider model does. Canyon doesn't publish the bar clamp position itself.
 
 ### Flagging sizes that look too small or too large
 
@@ -127,6 +141,8 @@ The flags were calibrated against the rider height ranges that six manufacturers
 - **Too large:** hoods more than 5.5% of height above the saddle, saddle to hoods more than 51% of height, exposed seatpost under 7% of height, or published standover more than 20 mm above inseam plus 25 mm of shoe.
 
 Re-fitting the thresholds with each bike left out and testing on that bike, the rule flagged 7.4% of recommended sizes, caught 86% of too-small and 82% of too-large sizes, and never flagged in the wrong direction. Torso and shoulder angles were tried and dropped: they change little between sizes because the arms and torso adapt.
+
+The calibration used the standard stem and cranks for each height and an inline seatpost. After stock parts were added, the same check was rerun with each size's own parts: the verdict changed for 3.8% of size and height combinations, the share of recommended sizes flagged rose by 0.9 percentage points, the share of too-small sizes caught rose by 4 points, and too-large sizes caught didn't change. The thresholds were left as they were.
 
 ## The Design page
 
