@@ -12,6 +12,7 @@ Every dot is one frame size. Lines join the sizes of the same bike, smallest to 
 ```{ojs}
 //| output: false
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+import {cockpit, partsFor, DEFAULTS} from "./js/rider.js"
 
 // R writes TRUE/FALSE; make them true booleans
 bikes = raw.map(d => ({
@@ -20,7 +21,15 @@ bikes = raw.map(d => ({
   offset_estimated: d.offset_estimated === true || d.offset_estimated === "TRUE",
   size_label: String(d.size_label),
   label: `${d.brand} ${d.model}`
-}))
+})).map(d => {
+  // Handlebar position as sold: stock stem (or the standard one for a 176 cm
+  // rider where the brand doesn't say) on 20 mm of spacers
+  const parts = partsFor(d, 1760);
+  const bar = cockpit(d, {...DEFAULTS, ...parts.settings}).bar;
+  const stemKnown = !parts.assumed.includes("stem length");
+  return {...d, bar_reach: bar.x, bar_stack: bar.y, stem_known: stemKnown,
+    stem_desc: `${parts.settings.stemLength} mm at ${parts.settings.stemAngle}°${stemKnown ? (parts.assumed.includes("stem angle") ? ", angle not stated" : "") : ", not stated"}`};
+})
 
 categories = ["race", "all-round", "adventure"]
 categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
@@ -99,6 +108,10 @@ viewof highlight = Inputs.select(["(none)", ...bikeList], {label: "Highlight a b
 
 ::: {.chart-panel}
 ```{ojs}
+viewof chartMode = Inputs.radio(new Map([["Frame stack and reach", "frame"], ["Handlebar stack and reach, as sold", "bar"]]), {value: "frame"})
+```
+
+```{ojs}
 filtered = bikes.filter(d =>
   cats.includes(d.category) &&
   brands.includes(d.brand) &&
@@ -110,8 +123,8 @@ filtered = bikes.filter(d =>
 
 nBikes = new Set(filtered.map(d => d.bike_id)).size
 
-html`<div class="chart-title">Stack and reach, every size</div>
-<div class="chart-sub">Showing ${filtered.length} sizes from ${nBikes} ${nBikes === 1 ? "bike" : "bikes"}. Hover over a dot for details.</div>`
+html`<div class="chart-title">${chartMode === "bar" ? "Handlebar stack and reach, every size" : "Stack and reach, every size"}</div>
+<div class="chart-sub">Showing ${filtered.length} sizes from ${nBikes} ${nBikes === 1 ? "bike" : "bikes"}. ${chartMode === "bar" ? "Measured to the centre of the stem's bar clamp, with each size's stock stem on 20 mm of spacers. Open markers: the brand doesn't say which stem it fits, so a standard one is assumed. " : ""}Hover over a dot for details.</div>`
 ```
 
 ```{ojs}
@@ -130,18 +143,28 @@ legend = {
 ```
 
 ```{ojs}
-ratioLines = [1.35, 1.45, 1.55, 1.65].flatMap(r => [
-  {r, reach: 335, stack: 335 * r},
-  {r, reach: 470, stack: 470 * r}
+// What's plotted: frame stack and reach, or the handlebar position as sold
+xKey = chartMode === "bar" ? "bar_reach" : "reach"
+yKey = chartMode === "bar" ? "bar_stack" : "stack"
+barExt = ({x: d3.extent(bikes, d => d.bar_reach), y: d3.extent(bikes, d => d.bar_stack)})
+xDom = chartMode === "bar" ? [Math.floor((barExt.x[0] - 8) / 10) * 10, Math.ceil((barExt.x[1] + 8) / 10) * 10] : [335, 470]
+yDom = chartMode === "bar" ? [Math.floor((barExt.y[0] - 10) / 10) * 10, Math.ceil((barExt.y[1] + 10) / 10) * 10] : [495, 675]
+ratioSet = chartMode === "bar" ? [1.1, 1.2, 1.3, 1.4, 1.5] : [1.35, 1.45, 1.55, 1.65]
+
+ratioLines = ratioSet.flatMap(r => [
+  {r, reach: xDom[0], stack: xDom[0] * r},
+  {r, reach: xDom[1], stack: xDom[1] * r}
 ])
 
-ratioLabels = [1.35, 1.45, 1.55, 1.65].map(r => {
+ratioLabels = ratioSet.map(r => {
   // place each label where its line leaves the top or right edge of the plot
-  const reach = Math.min(468, 672 / r);
+  const reach = Math.min(xDom[1] - 2, (yDom[1] - 3) / r);
   return {r, reach, stack: reach * r};
-})
+}).filter(d => d.stack >= yDom[0])
 
-highlighted = filtered.filter(d => d.label === highlight)
+plotRows = filtered.map(d => ({...d, px: d[xKey], py: d[yKey]}))
+
+highlighted = plotRows.filter(d => d.label === highlight)
 
 // Size the chart to its own panel rather than the page, so text stays readable
 chartWidth = Generators.observe(notify => {
@@ -159,39 +182,52 @@ Plot.plot({
   marginLeft: 48,
   marginBottom: 42,
   style: {fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"},
-  x: {domain: [335, 470], label: "Reach (mm) →", grid: true},
-  y: {domain: [495, 675], label: "↑ Stack (mm)", grid: true},
+  x: {domain: xDom, label: chartMode === "bar" ? "Handlebar reach (mm) →" : "Reach (mm) →", grid: true},
+  y: {domain: yDom, label: chartMode === "bar" ? "↑ Handlebar stack (mm)" : "↑ Stack (mm)", grid: true},
   color: {domain: categories, range: categoryColours},
   symbol: {domain: categories, range: categoryShapes},
   marks: [
     // stack-to-reach guide lines
     Plot.line(ratioLines, {x: "reach", y: "stack", z: "r", stroke: "#c9d6e0", strokeDasharray: "3,4", clip: true}),
     Plot.text(ratioLabels, {x: "reach", y: "stack", text: d => d.r.toFixed(2), dx: -4, dy: 8, textAnchor: "end", fill: "#5b7083", fontSize: 11}),
-    chartWidth < 520 ? null : Plot.text([{reach: 345, stack: 668}], {x: "reach", y: "stack", text: () => "Taller and shorter: more upright", textAnchor: "start", fill: "#5b7083", fontSize: 11}),
-    chartWidth < 520 ? null : Plot.text([{reach: 466, stack: 502}], {x: "reach", y: "stack", text: () => "Lower and longer: more stretched out", textAnchor: "end", fill: "#5b7083", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: xDom[0] + 10, stack: yDom[1] - 7}], {x: "reach", y: "stack", text: () => "Taller and shorter: more upright", textAnchor: "start", fill: "#5b7083", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: xDom[1] - 4, stack: yDom[0] + 7}], {x: "reach", y: "stack", text: () => "Lower and longer: more stretched out", textAnchor: "end", fill: "#5b7083", fontSize: 11}),
 
     // size runs, one line per bike and setting
-    Plot.line(filtered, {
-      x: "reach", y: "stack", z: d => `${d.bike_id}|${d.config}`,
+    Plot.line(plotRows, {
+      x: "px", y: "py", z: d => `${d.bike_id}|${d.config}`,
       sort: "size_order", stroke: "category", strokeWidth: 1.5,
       strokeOpacity: highlight === "(none)" ? 0.45 : 0.15
     }),
-    Plot.dot(filtered, {
-      x: "reach", y: "stack", fill: "category", symbol: "category",
-      r: 4.5, stroke: "#ffffff", strokeWidth: 1.5,
+    // stems the brand doesn't state are drawn as open markers
+    Plot.dot(plotRows.filter(d => chartMode === "bar" && !d.stem_known), {
+      x: "px", y: "py", symbol: "category", stroke: "category", fill: "#ffffff",
+      r: 4.2, strokeWidth: 1.6, strokeOpacity: highlight === "(none)" ? 0.95 : 0.3
+    }),
+    Plot.dot(plotRows, {
+      x: "px", y: "py", symbol: "category",
+      fill: "category", stroke: "#ffffff",
+      filter: d => !(chartMode === "bar" && !d.stem_known),
+      r: 4.5, strokeWidth: 1.5,
       fillOpacity: highlight === "(none)" ? 0.95 : 0.25,
-      channels: {
+      channels: chartMode === "bar" ? {
+        Bike: "label", Size: "size_label", Setting: "config",
+        "Frame stack/reach": d => `${d.stack} / ${d.reach}`, "Stock stem": "stem_desc"
+      } : {
         Bike: "label", Size: "size_label", Setting: "config",
         "Stack/reach": "stack_reach_ratio", "Head angle": "head_tube_angle",
         "Trail (mm)": "trail_calc", "Tyre clearance (mm)": "tyre_clearance_mm"
       },
-      tip: {format: {x: true, y: true, fill: false, symbol: false}}
+      tip: {lineWidth: 34, format: {x: d => d.toFixed(0), y: d => d.toFixed(0), fill: false, symbol: false}}
     }),
+    // tips for the open markers too
+    chartMode === "bar" ? Plot.tip(plotRows.filter(d => !d.stem_known), Plot.pointer({x: "px", y: "py", maxRadius: 10, lineWidth: 34,
+      title: d => `${d.label}, size ${d.size_label}\nBar reach ${d.px.toFixed(0)}, bar stack ${d.py.toFixed(0)}\nFrame stack/reach ${d.stack} / ${d.reach}\nStem ${d.stem_desc}`})) : null,
 
     // highlighted bike drawn on top, with size labels
-    Plot.line(highlighted, {x: "reach", y: "stack", z: d => `${d.bike_id}|${d.config}`, sort: "size_order", stroke: "#0b2233", strokeWidth: 2.5}),
-    Plot.dot(highlighted, {x: "reach", y: "stack", fill: "category", symbol: "category", r: 6.5, stroke: "#0b2233", strokeWidth: 1.5}),
-    Plot.text(highlighted, {x: "reach", y: "stack", text: "size_label", dx: 10, textAnchor: "start", fill: "#0b2233", fontWeight: 600, stroke: "#ffffff", strokeWidth: 3, paintOrder: "stroke"})
+    Plot.line(highlighted, {x: "px", y: "py", z: d => `${d.bike_id}|${d.config}`, sort: "size_order", stroke: "#0b2233", strokeWidth: 2.5}),
+    Plot.dot(highlighted, {x: "px", y: "py", fill: "category", symbol: "category", r: 6.5, stroke: "#0b2233", strokeWidth: 1.5}),
+    Plot.text(highlighted, {x: "px", y: "py", text: "size_label", dx: 10, textAnchor: "start", fill: "#0b2233", fontWeight: 600, stroke: "#ffffff", strokeWidth: 3, paintOrder: "stroke"})
   ]
 })
 ```
@@ -251,7 +287,10 @@ tableRows = filtered.map(d => ({
   Chainstay: d.chainstay,
   "BB drop": d.bb_drop,
   "Toe clearance": d.toe_clearance,
-  "Tyre clearance": d.tyre_clearance_mm
+  "Tyre clearance": d.tyre_clearance_mm,
+  "Stock stem": d.stock_stem_length,
+  "Bar stack": d.bar_stack,
+  "Bar reach": d.bar_reach
 }))
 ```
 
@@ -263,7 +302,10 @@ Inputs.table(tableRows, {
   format: {
     "Stack/reach": x => x?.toFixed(2),
     Trail: x => x == null ? "" : x.toFixed(0),
-    "Toe clearance": x => x == null ? "" : x.toFixed(0)
+    "Toe clearance": x => x == null ? "" : x.toFixed(0),
+    "Stock stem": x => x == null ? "not stated" : x.toFixed(0),
+    "Bar stack": x => x.toFixed(0),
+    "Bar reach": x => x.toFixed(0)
   }
 })
 ```
@@ -289,6 +331,9 @@ All lengths are in millimetres and angles in degrees. Trail, toe clearance, and 
 ::: {.glossary}
 Stack/reach
 : Stack divided by reach. Higher means a more upright riding position.
+
+Bar stack and bar reach
+: Where the handlebar sits as sold: the vertical and horizontal distance from the bottom bracket to the centre of the stem's bar clamp, with each size's stock stem on 20 mm of spacers. Where a brand doesn't say which stem it fits, a standard stem for a 176 cm rider is assumed (90 mm at −6°). Frame stack and reach compare frames; bar stack and reach compare where your hands go out of the box.
 
 Head angle
 : How steeply the steering axis is tilted. Slacker (lower) angles feel calmer at speed. Steeper (higher) angles feel quicker to turn.
