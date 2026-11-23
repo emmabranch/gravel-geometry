@@ -61,6 +61,7 @@ A bike's geometry is the set of lengths and angles that decide how it fits and h
 - **[Explore](explore.qmd):** every size of every bike on one stack and reach chart, with filters, a table, and a plain-language summary of any bike.
 - **[Compare](compare.qmd):** two or three bikes side by side, drawn to scale over each other.
 - **[Rider](rider.qmd):** a stick-figure rider of any height on every size of a bike, with flags for sizes that look too small or too large.
+- **[Fit matcher](fit.qmd):** type in where your saddle and handlebar sit now, and see which size of every bike puts you in the same place, and with what stem, spacers, and seatpost.
 - **[Design](design.qmd):** set your own geometry and see it drawn, checked, and matched to the closest production bikes.
 - **[Handling](handling.qmd):** what trail, wheelbase, and bottom bracket drop actually do to how a bike rides.
 - **[Epi studies](epi.qmd):** five small studies that borrow epidemiology's methods, from growth charts for bikes to whether smaller riders get the same bike.

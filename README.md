@@ -8,12 +8,13 @@ An interactive site for comparing gravel bike geometry. Every size of 24 current
 
 ## What it does
 
-- Collects published geometry for **24 bikes from 19 brands**, every size, typed in by hand from each manufacturer's chart, with the source page and access date for every bike and the chart text kept in `data/chart-captures/`.
+- Collects published geometry for **24 bikes from 19 brands**, every size, typed in by hand from each manufacturer's chart, with the source page and access date for every bike and the chart text kept in `data/chart-captures/`, plus each build's stock stem, cranks, and seatpost from its spec page.
 - **Checks the typing** by recalculating top tube, wheelbase, front centre, and trail from the other numbers on each chart, and flags anything that does not add up.
 - **Calculates** trail, mechanical trail, wheel flop, stack-to-reach ratio, front centre, and toe clearance, and **estimates fork offset** where a brand does not publish it (within 2 mm of the published value for 115 of 118 sizes where it is published).
 - **Explore:** a stack and reach scatter plot of every size, with filters for category, brand, tyre clearance, and size, and a downloadable table.
 - **Compare:** two or three bikes side by side, with each measure placed among all 135 sizes, a plain-language summary of what differs and of each bike on its own, and the frames drawn to scale over each other.
-- **Rider:** a stick-figure rider, built from published body proportions and StatCan height data, drawn on every size of a bike, with flags for sizes that look too small or too large. The flags are calibrated against manufacturers' own size charts (86% of too-small and 82% of too-large sizes caught in a leave-one-bike-out check).
+- **Rider:** a stick-figure rider, built from published body proportions and StatCan height data, drawn on every size of a bike with its stock stem, cranks, and seatpost (or your own), with fit numbers for every size (saddle height and setback, bar stack and reach, BB to bar, and saddle to bar) and flags for sizes that look too small or too large. The flags are calibrated against manufacturers' own size charts (86% of too-small and 82% of too-large sizes caught in a leave-one-bike-out check).
+- **Fit matcher:** type in where your saddle and handlebar sit now, and see which size of every bike puts you in the same place, with the stem, spacers, and seatpost it would take.
 - **Design:** set your own geometry, or start from any bike, and see it drawn with a rider, checked for problems, and matched to the three closest production bikes.
 - **Handling:** interactive diagrams of trail, wheelbase, and bottom bracket drop, and what each does to how a bike rides.
 - **Epi studies:** measurement agreement (Bland–Altman), growth-chart centiles of stack for reach, whether smaller riders get the same bike, labels against geometry clusters (Cohen's kappa), and geometry over time from archived manufacturer charts.

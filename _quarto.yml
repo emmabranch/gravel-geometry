@@ -6,6 +6,7 @@ project:
     - explore.qmd
     - compare.qmd
     - rider.qmd
+    - fit.qmd
     - design.qmd
     - handling.qmd
     - epi.qmd
@@ -32,6 +33,7 @@ project:
     - js/share.js
     - js/export.js
     - js/explain.js
+    - js/fitmatch.js
     - figures/hero-bikes.svg
 
 website:
@@ -49,6 +51,8 @@ website:
         text: Compare
       - href: rider.qmd
         text: Rider
+      - href: fit.qmd
+        text: Fit matcher
       - href: design.qmd
         text: Design
       - href: handling.qmd

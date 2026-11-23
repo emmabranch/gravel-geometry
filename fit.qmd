@@ -1,0 +1,207 @@
+---
+title: "Fit matcher"
+description: "Type in where your saddle and handlebar sit now, and see what every size of every bike would need to put you in the same place."
+---
+
+If you're happy with how your current bike fits, the useful question about a new one is: which size puts my saddle and handlebar in the same place, and what stem, spacers, and seatpost would that take? Type in your numbers, or start from a bike on this site, and the matcher works it out for every size of all 24 bikes.
+
+::: {.estimate-banner}
+It matches positions, not handling. Two bikes that put your hands in the same place can still steer quite differently, so check the [Handling](handling.qmd) and [Compare](compare.qmd) pages too.
+:::
+
+```{ojs}
+//| output: false
+import {riderOnBike, partsFor, DEFAULTS} from "./js/rider.js"
+import {matchAll, matchSize, targetSeat, PART_RANGES} from "./js/fitmatch.js"
+import {fitDiagramSVG} from "./js/draw.js"
+import {fromUrl, shareButton} from "./js/share.js"
+
+raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
+bikes = raw.map(d => ({
+  ...d,
+  is_default_config: d.is_default_config === true || d.is_default_config === "TRUE",
+  size_label: String(d.size_label),
+  label: `${d.brand} ${d.model}`
+})).filter(d => d.is_default_config)
+bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
+categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
+```
+
+## 1. Where you sit now
+
+::: {.rider-grid}
+
+::: {.rider-card}
+[Start from]{.card-heading}
+
+Pick the bike you ride now if it's on this site, or the closest one, then adjust the numbers to match your own.
+
+```{ojs}
+viewof refBike = Inputs.select(bikeList, {label: "Bike", value: fromUrl("ref", "Norco Search C Gen 3", {options: bikeList})})
+```
+
+```{ojs}
+viewof refSize = {
+  const sizes = bikes.filter(d => d.label === refBike).sort((a, b) => a.size_order - b.size_order).map(d => d.size_label);
+  return Inputs.select(sizes, {label: "Size", value: fromUrl("rs", sizes[Math.floor(sizes.length / 2)], {options: sizes})});
+}
+```
+
+```{ojs}
+//| output: false
+refRow = bikes.find(d => d.label === refBike && d.size_label === refSize)
+// the reference bike as sold, with a 738 mm saddle height (a 176 cm rider)
+refRider = riderOnBike(refRow, {height: 1760}, {...partsFor(refRow, 1760).settings, saddleHeight: 738})
+```
+
+[Starting values are that bike as sold: its stock stem on 20 mm of spacers and its stock seatpost, with a 738 mm saddle height (about right for a 176 cm rider).]{.data-note}
+:::
+
+::: {.rider-card}
+[Your numbers]{.card-heading}
+
+```{ojs}
+viewof saddleH = Inputs.range([580, 900], {label: "Saddle height (BB to saddle top, mm)", step: 1, value: fromUrl("sh", 738, {min: 580, max: 900})})
+```
+
+```{ojs}
+viewof setbackMm = Inputs.range([100, 280], {label: "Setback (BB to seatpost clamp, horizontal, mm)", step: 1, value: fromUrl("sb", Math.round(refRider.fit.setback), {min: 100, max: 280})})
+```
+
+```{ojs}
+viewof barMode = Inputs.radio(new Map([["From the saddle", "saddle"], ["From the BB", "bb"]]), {label: "Handlebar measured", value: fromUrl("bm", "saddle", {options: ["saddle", "bb"]})})
+```
+
+```{ojs}
+viewof barA = barMode === "saddle"
+  ? Inputs.range([450, 750], {label: "Saddle to bar, horizontal (mm)", step: 1, value: fromUrl("ba", Math.round(refRider.fit.saddleToBarReach), {min: 450, max: 750})})
+  : Inputs.range([330, 560], {label: "Bar reach (BB to bar clamp, horizontal, mm)", step: 1, value: fromUrl("ba", Math.round(refRider.fit.barReach), {min: 330, max: 560})})
+```
+
+```{ojs}
+viewof barB = barMode === "saddle"
+  ? Inputs.range([-80, 160], {label: "Bar drop (below the seatpost clamp, mm)", step: 1, value: fromUrl("bb", Math.round(refRider.fit.barDrop), {min: -80, max: 160})})
+  : Inputs.range([520, 780], {label: "Bar stack (BB to bar clamp, vertical, mm)", step: 1, value: fromUrl("bb", Math.round(refRider.fit.barStack), {min: 520, max: 780})})
+```
+
+[The saddle point is the seatpost clamp, taken as 40 mm below the top of the saddle. The bar point is the centre of the stem's bar clamp. See [how these are measured](rider.qmd#fit-numbers-for-every-size).]{.data-note}
+:::
+
+:::
+
+```{ojs}
+//| output: false
+seat = targetSeat(saddleH, setbackMm)
+bar = barMode === "saddle" ? {x: seat.x + barA, y: seat.y - barB} : {x: barA, y: barB}
+target = ({seat, bar})
+results = matchAll(bikes, target)
+```
+
+```{ojs}
+targetSummary = html`<div class="status-strip">
+  <span class="stat-chip"><span>Bar stack</span><strong>${bar.y.toFixed(0)} mm</strong></span>
+  <span class="stat-chip"><span>Bar reach</span><strong>${bar.x.toFixed(0)} mm</strong></span>
+  <span class="stat-chip"><span>BB to bar</span><strong>${Math.hypot(bar.x, bar.y).toFixed(0)} mm</strong></span>
+  <span class="stat-chip"><span>Saddle to bar</span><strong>${Math.hypot(bar.x - seat.x, bar.y - seat.y).toFixed(0)} mm</strong></span>
+  <span class="stat-chip"><span>Bar drop</span><strong>${(seat.y - bar.y).toFixed(0)} mm</strong></span>
+</div>`
+```
+
+```{ojs}
+shareButton({ref: refBike, rs: refSize, sh: saddleH, sb: setbackMm, bm: barMode, ba: barA, bb: barB, detail: detailBike}, "Copy a link to these numbers")
+```
+
+## 2. The best size of each bike
+
+```{ojs}
+matchSummary = {
+  const n = l => results.best.filter(m => m.level === l).length;
+  return md`**${n("match")} of 24 bikes** have a size that matches with ordinary parts${n("unusual") ? `, **${n("unusual")}** need something unusual` : ""}${n("no") ? `, and **${n("no")}** can't put you in the same place` : ""}.`;
+}
+```
+
+::: {.column-page}
+```{ojs}
+bestTable = {
+  const groups = [["match", "Matches with ordinary parts"], ["unusual", "Matches, with something unusual"], ["no", "Can't match"]];
+  const fmtPost = p => Math.abs(p) < 2.5 ? "inline" : p > 0 ? `${p.toFixed(0)} mm back` : `${Math.abs(p).toFixed(0)} mm forward`;
+  const row = m => `<tr class="lvl-${m.level}">
+    <th scope="row">${m.row.label}<span class="cat-tag">${categoryNames[m.row.category]}</span></th>
+    <td class="num">${m.row.size_label}</td>
+    <td class="num">${(Math.round(m.stem / 10) * 10).toFixed(0)} mm, ${m.stemAngle > 0 ? "+" : ""}${m.stemAngle}°</td>
+    <td class="num">${Math.max(0, Math.round(m.spacers / 5) * 5)} mm</td>
+    <td class="num">${fmtPost(m.post)}</td>
+    <td class="note">${m.issues.join("; ")}</td>
+  </tr>`;
+  const body = groups.map(([lvl, title]) => {
+    const ms = results.best.filter(m => m.level === lvl).sort((a, b) => a.row.label.localeCompare(b.row.label));
+    return ms.length ? `<tr class="group"><th colspan="6">${title} (${ms.length})</th></tr>${ms.map(row).join("")}` : "";
+  }).join("");
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table match-table"><thead><tr><th>Bike</th><th class="num">Size</th><th class="num">Stem</th><th class="num">Spacers</th><th class="num">Saddle clamp vs seat tube line</th><th>Notes</th></tr></thead><tbody>${body}</tbody></table>`;
+  return el;
+}
+```
+:::
+
+[Stem lengths are rounded to the nearest 10 mm and spacers to 5 mm, as you'd buy them. "Ordinary parts" means a 60 to 120 mm stem, no more than 35 mm of spacers, and a saddle clamp within 10 mm forward or 30 mm back of the seat tube line (a setback seatpost plus sliding the saddle on its rails covers that). Where several sizes match, the one needing the most middling parts is shown.]{.data-note}
+
+## 3. Every size of one bike
+
+```{ojs}
+viewof detailBike = Inputs.select(bikeList, {label: "Bike", value: fromUrl("detail", "Norco Search C Gen 3", {options: bikeList})})
+```
+
+```{ojs}
+//| output: false
+detail = results.all.filter(m => m.row.label === detailBike).sort((a, b) => a.row.size_order - b.row.size_order)
+detailBest = results.best.find(m => m.row.label === detailBike)
+```
+
+::: {.column-page}
+::: {.fit-layout}
+```{ojs}
+detailTable = {
+  const fmtPost = p => Math.abs(p) < 2.5 ? "inline" : p > 0 ? `${p.toFixed(0)} mm back` : `${Math.abs(p).toFixed(0)} mm forward`;
+  const word = {match: "matches", unusual: "unusual parts", no: "can't match"};
+  const rows = detail.map(m => `<tr class="lvl-${m.level}${m === detailBest ? " best" : ""}">
+    <th scope="row">Size ${m.row.size_label}${m === detailBest ? " (best)" : ""}</th>
+    <td class="num">${m.stem.toFixed(0)} mm, ${m.stemAngle > 0 ? "+" : ""}${m.stemAngle}°</td>
+    <td class="num">${m.spacers.toFixed(0)} mm</td>
+    <td class="num">${fmtPost(m.post)}</td>
+    <td class="num">${m.postShowing == null ? "–" : `${Math.max(0, m.postShowing).toFixed(0)} mm`}</td>
+    <td><span class="verdict-pill">${word[m.level]}</span> ${m.issues.join("; ")}</td>
+  </tr>`).join("");
+  const el = document.createElement("div");
+  el.className = "compare-scroll";
+  el.innerHTML = `<table class="compare-table match-table"><thead><tr><th>Size</th><th class="num">Stem needed</th><th class="num">Spacers</th><th class="num">Saddle clamp vs seat tube line</th><th class="num">Seatpost showing</th><th>Verdict</th></tr></thead><tbody>${rows}</tbody></table>`;
+  return el;
+}
+```
+
+```{ojs}
+detailDrawing = {
+  const m = detailBest;
+  // rebuild the bike with the parts the matcher chose, as a check that it lands on target
+  const r = riderOnBike(m.row, {height: 1760}, {
+    stemLength: m.stem, stemAngle: m.stemAngle, spacers: m.spacers,
+    seatpostOffset: m.post, saddleHeight: saddleH, crank: 172.5
+  });
+  const el = html`<figure class="fit-diagram"><figcaption>${detailBike}, size ${m.row.size_label}, with a ${m.stem.toFixed(0)} mm ${m.stemAngle}° stem on ${Math.max(0, m.spacers).toFixed(0)} mm of spacers</figcaption></figure>`;
+  el.insertAdjacentHTML("beforeend", fitDiagramSVG(m.row, r, {label: `${detailBike} size ${m.row.size_label} set up to match`}));
+  return el;
+}
+```
+:::
+:::
+
+[Exact stem lengths are shown here, before rounding. Seatpost showing is the length of post above the top of the seat tube, worked out from the brand's seat tube length, which brands measure in different ways; under about 80 mm can mean the frame is too tall for you.]{.data-note}
+
+## How it works
+
+- **Your saddle point** is placed from your saddle height (a straight line from the centre of the bottom bracket to the top of the saddle, less 40 mm to reach the seatpost clamp) and your setback.
+- **Your bar point** is the centre of the stem's bar clamp, from the saddle (horizontal distance and drop) or from the BB (bar stack and reach).
+- **For each size,** the matcher works out the stem length and spacers that put the bar clamp on your bar point, trying a −6° stem first and then −10°, 0°, −17°, +6°, and +17°. Spacers sit on a 10 mm headset cover, and the bar is clamped at the middle of a 40 mm tall stem.
+- **The seatpost** has to make up the difference between where the seat tube line passes at your saddle height and your saddle point. Positive means a setback post, the saddle slid back on its rails, or both.
+- **The best size** of each bike is the one that matches with the most ordinary parts. Nothing here considers standover, toe overlap, or handling, so check those for the size it suggests.

@@ -2,27 +2,31 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://emmabranch.github.io/gravel-geometry/methods.html</loc>
-    <lastmod>2026-11-23T22:16:06.427Z</lastmod>
+    <lastmod>2026-11-23T22:38:11.358Z</lastmod>
   </url>
   <url>
     <loc>https://emmabranch.github.io/gravel-geometry/handling.html</loc>
     <lastmod>2026-11-22T09:19:55.605Z</lastmod>
   </url>
   <url>
-    <loc>https://emmabranch.github.io/gravel-geometry/rider.html</loc>
-    <lastmod>2026-11-23T22:16:05.882Z</lastmod>
+    <loc>https://emmabranch.github.io/gravel-geometry/fit.html</loc>
+    <lastmod>2026-11-23T22:38:09.933Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/gravel-geometry/compare.html</loc>
+    <lastmod>2026-11-22T09:26:37.361Z</lastmod>
+  </url>
+  <url>
+    <loc>https://emmabranch.github.io/gravel-geometry/index.html</loc>
+    <lastmod>2026-11-23T22:38:11.111Z</lastmod>
   </url>
   <url>
     <loc>https://emmabranch.github.io/gravel-geometry/explore.html</loc>
     <lastmod>2026-11-23T22:23:25.573Z</lastmod>
   </url>
   <url>
-    <loc>https://emmabranch.github.io/gravel-geometry/index.html</loc>
-    <lastmod>2026-11-22T09:42:32.089Z</lastmod>
-  </url>
-  <url>
-    <loc>https://emmabranch.github.io/gravel-geometry/compare.html</loc>
-    <lastmod>2026-11-22T09:26:37.361Z</lastmod>
+    <loc>https://emmabranch.github.io/gravel-geometry/rider.html</loc>
+    <lastmod>2026-11-23T22:16:05.882Z</lastmod>
   </url>
   <url>
     <loc>https://emmabranch.github.io/gravel-geometry/design.html</loc>

@@ -84,9 +84,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-cc5aad92e50a05f16a612886bbba6dd8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-3ba65c0657558a2fee4df947cdd9769f.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-cc5aad92e50a05f16a612886bbba6dd8.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c264d152e7c07e421986c5a5a20b6e09.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-1b7ed1ebbfe5aa4e94c658a9de823f91.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-c264d152e7c07e421986c5a5a20b6e09.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -180,6 +180,10 @@ window.Quarto = {
   <li class="nav-item">
     <a class="nav-link" href="./rider.html"> 
 <span class="menu-text">Rider</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./fit.html"> 
+<span class="menu-text">Fit matcher</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="./design.html"> 
@@ -424,6 +428,10 @@ window.Quarto = {
 <li><strong>Saddle to bar:</strong> from the seatpost clamp to the bar clamp, as a straight line, a horizontal distance, and a drop (positive when the bar is lower).</li>
 </ul>
 <p>As a check, two brands publish handlebar positions. Lauf gives “reach to handlebar” and “stack to handlebar” (with and without spacers) for the Seigla: with its stock 7° stem mounted pointing down, the site’s bar stack is within 2 mm of Lauf’s and its bar reach within 6 mm. Canyon gives “effective stack and reach” to the hand position for the Grail CF and Grizl CF. With 15 mm of spacers, the rider model’s hands on the hoods are within 10 mm of Canyon’s stack and 13 to 16 mm further forward than Canyon’s reach, so Canyon places the hands a little further back on the bar than the rider model does. Canyon doesn’t publish the bar clamp position itself.</p>
+</section>
+<section id="fit-matcher" class="level3">
+<h3 class="anchored" data-anchor-id="fit-matcher">Fit matcher</h3>
+<p>The <a href="./fit.html">Fit matcher</a> works backwards from the fit numbers. Given a saddle point (from saddle height and setback) and a bar point, it solves, for each size, the stem length and spacers that put the bar clamp on the bar point, trying stem angles of −6°, −10°, 0°, −17°, +6°, and +17° in turn, and the seatpost setback that puts the seatpost clamp on the saddle point. A size “matches with ordinary parts” when it needs a 60 to 120 mm stem, no more than 35 mm of spacers, and a saddle clamp between 10 mm forward of and 30 mm behind the seat tube line. Among the sizes that match, the one needing the most middling parts (closest to a 90 mm, −6° stem on 15 mm of spacers) is shown as the best. The code is in <code>js/fitmatch.js</code>.</p>
 </section>
 <section id="flagging-sizes-that-look-too-small-or-too-large" class="level3">
 <h3 class="anchored" data-anchor-id="flagging-sizes-that-look-too-small-or-too-large">Flagging sizes that look too small or too large</h3>

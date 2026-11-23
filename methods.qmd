@@ -133,6 +133,10 @@ The Rider and Design pages give the measurements a fitter or frame engineer uses
 
 As a check, two brands publish handlebar positions. Lauf gives "reach to handlebar" and "stack to handlebar" (with and without spacers) for the Seigla: with its stock 7° stem mounted pointing down, the site's bar stack is within 2 mm of Lauf's and its bar reach within 6 mm. Canyon gives "effective stack and reach" to the hand position for the Grail CF and Grizl CF. With 15 mm of spacers, the rider model's hands on the hoods are within 10 mm of Canyon's stack and 13 to 16 mm further forward than Canyon's reach, so Canyon places the hands a little further back on the bar than the rider model does. Canyon doesn't publish the bar clamp position itself.
 
+### Fit matcher
+
+The [Fit matcher](fit.qmd) works backwards from the fit numbers. Given a saddle point (from saddle height and setback) and a bar point, it solves, for each size, the stem length and spacers that put the bar clamp on the bar point, trying stem angles of −6°, −10°, 0°, −17°, +6°, and +17° in turn, and the seatpost setback that puts the seatpost clamp on the saddle point. A size "matches with ordinary parts" when it needs a 60 to 120 mm stem, no more than 35 mm of spacers, and a saddle clamp between 10 mm forward of and 30 mm behind the seat tube line. Among the sizes that match, the one needing the most middling parts (closest to a 90 mm, −6° stem on 15 mm of spacers) is shown as the best. The code is in `js/fitmatch.js`.
+
 ### Flagging sizes that look too small or too large
 
 The flags were calibrated against the rider height ranges that six manufacturers publish for 48 sizes of 9 bikes, listed in `data/manufacturer_size_ranges.csv` (Trek Checkpoint SL; Canyon Grail CF and Grizl CF; Devinci Hatchet Pro and Hatchet Vista; Salsa Cutthroat C and Flyway C; Lauf Seigla Rigid; BMC URS). For heights from 145 to 205 cm, each size was labelled "recommended" (inside the range), "too small" (at least 6 cm taller than the range), or "too large" (at least 6 cm shorter). The final rule:
