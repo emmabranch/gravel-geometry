@@ -25,9 +25,12 @@ fork_offset,number,mm,Perpendicular distance from the steering axis to the front
 fork_axle_crown,number,mm,Fork length from axle to crown,"How tall the fork is."
 trail_published,number,mm,Trail as published by the manufacturer (reference tyre varies by brand),"The gap between where the steering axis meets the ground and where the tyre touches down. More trail feels steadier."
 standover,number,mm,Height of the top tube above the ground at a manufacturer-defined point,"How much room there is over the top tube when standing. Measured differently by each brand."
-stock_stem_length,number,mm,Stem length on the stock build (where published on the geometry chart),Length of the part joining the handlebar to the steerer.
-stock_stem_angle,number,degrees,Stem angle on the stock build (where published),Whether the stem points up or down.
-stock_crank_length,number,mm,Crank length on the stock build (where published on the geometry chart),Pedal arm length.
+stock_stem_length,number,mm,"Stem length on the stock build, from the geometry chart or the build's spec page (see stock_parts_source)",Length of the part joining the handlebar to the steerer.
+stock_stem_angle,number,degrees,"Stem angle on the stock build, where the chart or spec page states it (negative points down)",Whether the stem points up or down.
+stock_crank_length,number,mm,"Crank length on the stock build, from the geometry chart or the build's spec page",Pedal arm length.
+stock_seatpost_offset,number,mm,"Setback of the stock seatpost head behind the post's centreline, where stated (0 = inline; negative = forward). Blank where not stated.",How far a kinked or layback seatpost moves the saddle clamp backwards.
+stock_parts_note,text,,"Stock seatpost and stem as described on the spec page, and anything the page does not state",What the spec page says about the seatpost and stem.
+stock_parts_source,text,,"Build spec page used for stock stem, crank, and seatpost values, and the date it was read",Where the stock parts came from.
 tyre_clearance_mm,number,mm,"Maximum tyre width claimed by the manufacturer for 700c (or 29er for the Cutthroat), frame limit where frame and fork differ","The widest tyre the bike claims to fit."
 tyre_clearance_note,text,,Short quote or summary of the manufacturer's clearance claim,"Exactly what the manufacturer says, including any conditions (1x vs 2x, measured width)."
 source_url,text,,Manufacturer page the values were typed from,Where the numbers came from.
