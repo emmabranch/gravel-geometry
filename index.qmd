@@ -8,6 +8,7 @@ description: "Compare the published geometry of current gravel bikes, put a ride
 
 ```{=html}
 <div class="hero-bg" aria-hidden="true"><img src="figures/hero-bikes.svg" alt=""></div>
+<img class="hero-motif" src="images/motif.svg" alt="">
 ```
 
 :::: {.hero-inner}
@@ -23,10 +24,6 @@ Published geometry for 24 current gravel bikes, every size, typed in from the ma
 [Background: all 24 bikes in their middle size, drawn to scale over each other at the bottom bracket, lit up one at a time.]{.hero-note}
 
 ::::
-
-```{=html}
-<svg class="hero-wave" viewBox="0 0 1440 80" preserveAspectRatio="none" aria-hidden="true"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z"></path></svg>
-```
 
 :::::
 

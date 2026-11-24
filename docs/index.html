@@ -73,6 +73,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/scrollable-regions/scrollable-regions.js" type="module"></script>
@@ -80,14 +81,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-447e42e69aaa9833c0ba1b986f430b20.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-63b5708e65d6cd79cd7618c58d0c21e7.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-06df27c8158acedd5d263560cd4ba62e.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark-07e23dae4c3757ea2bcd5d8a79ca1ee5.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-06df27c8158acedd5d263560cd4ba62e.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-c264d152e7c07e421986c5a5a20b6e09.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-1b7ed1ebbfe5aa4e94c658a9de823f91.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-c264d152e7c07e421986c5a5a20b6e09.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fe510eb83b90fabb1a41e2a38d9b0dac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-a5fc0e8813dbdf74ff615447d985dd69.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-fe510eb83b90fabb1a41e2a38d9b0dac.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -125,9 +126,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div id="quarto-search-results"></div>
   <header id="quarto-header" class="headroom fixed-top">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark" aria-label="Site">
+    <nav class="navbar navbar-expand-xl " data-bs-theme="dark" aria-label="Site">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
+    <a href="./index.html" class="navbar-brand navbar-brand-logo">
+    <img src="./images/motif.svg" alt="" class="navbar-logo light-content">
+    <img src="./images/motif.svg" alt="" class="navbar-logo dark-content">
+    </a>
     <a class="navbar-brand" href="./index.html">
     <span class="navbar-title">Gravel geometry explorer</span>
     </a>
@@ -227,6 +232,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="hero-full column-screen">
 <div class="hero-bg" aria-hidden="true"><img src="figures/hero-bikes.svg" alt=""></div>
+<img class="hero-motif" src="images/motif.svg" alt="">
 <div class="hero-inner">
 <p><span class="eyebrow">Portfolio project · Quarto · Observable JS · D3</span></p>
 <section id="gravel-bike-geometry.-compared-explained-and-test-ridden-on-paper." class="level1">
@@ -236,7 +242,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><span class="hero-note">Background: all 24 bikes in their middle size, drawn to scale over each other at the bottom bracket, lit up one at a time.</span></p>
 </section>
 </div>
-<svg class="hero-wave" viewbox="0 0 1440 80" preserveaspectratio="none" aria-hidden="true"><path d="M0,40 C240,80 480,0 720,30 C960,60 1200,10 1440,40 L1440,80 L0,80 Z"></path></svg>
 </div>
 <div class="stat-row lift">
 <div class="stat-box">
@@ -278,9 +283,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Trail is the distance on the ground between where the steering axis points and where the front tyre actually touches down. More trail feels steadier. Less trail feels quicker. Move the sliders and watch it change.</p>
 <div class="calc-card">
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="76" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 75;"><span id="cb1-76"><a href="#cb1-76" aria-hidden="true" tabindex="-1"></a>viewof hta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">66</span><span class="op">,</span> <span class="dv">74</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">71</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Head tube angle (°)"</span>})</span>
-<span id="cb1-77"><a href="#cb1-77" aria-hidden="true" tabindex="-1"></a>viewof offset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">40</span><span class="op">,</span> <span class="dv">60</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Fork offset (mm)"</span>})</span>
-<span id="cb1-78"><a href="#cb1-78" aria-hidden="true" tabindex="-1"></a>viewof tyre <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">35</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Tyre width (mm)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb1" data-startfrom="73" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 72;"><span id="cb1-73"><a href="#cb1-73" aria-hidden="true" tabindex="-1"></a>viewof hta <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">66</span><span class="op">,</span> <span class="dv">74</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">71</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="fl">0.5</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Head tube angle (°)"</span>})</span>
+<span id="cb1-74"><a href="#cb1-74" aria-hidden="true" tabindex="-1"></a>viewof offset <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">40</span><span class="op">,</span> <span class="dv">60</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">50</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Fork offset (mm)"</span>})</span>
+<span id="cb1-75"><a href="#cb1-75" aria-hidden="true" tabindex="-1"></a>viewof tyre <span class="op">=</span> Inputs<span class="op">.</span><span class="fu">range</span>([<span class="dv">35</span><span class="op">,</span> <span class="dv">55</span>]<span class="op">,</span> {<span class="dt">value</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span> <span class="dt">step</span><span class="op">:</span> <span class="dv">1</span><span class="op">,</span> <span class="dt">label</span><span class="op">:</span> <span class="st">"Tyre width (mm)"</span>})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-1-1" data-nodetype="declaration">
@@ -304,12 +309,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="82" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 81;"><span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>trail <span class="op">=</span> {</span>
-<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> radius <span class="op">=</span> <span class="dv">622</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">+</span> tyre<span class="op">;</span>          <span class="co">// 700c rim plus tyre, assuming tyre height = width</span></span>
-<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> hta <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">/</span> <span class="dv">180</span><span class="op">;</span></span>
-<span id="cb2-85"><a href="#cb2-85" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (radius <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(a) <span class="op">-</span> offset) <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(a)<span class="op">;</span></span>
-<span id="cb2-86"><a href="#cb2-86" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb2-87"><a href="#cb2-87" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Trail: </span><span class="sc">${</span>trail<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs"> mm**`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code hidden" id="cb2" data-startfrom="79" data-source-offset="-0"><pre class="sourceCode js code-with-copy"><code class="sourceCode javascript" style="counter-reset: source-line 78;"><span id="cb2-79"><a href="#cb2-79" aria-hidden="true" tabindex="-1"></a>trail <span class="op">=</span> {</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> radius <span class="op">=</span> <span class="dv">622</span> <span class="op">/</span> <span class="dv">2</span> <span class="op">+</span> tyre<span class="op">;</span>          <span class="co">// 700c rim plus tyre, assuming tyre height = width</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true" tabindex="-1"></a>  <span class="kw">const</span> a <span class="op">=</span> hta <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="cn">PI</span> <span class="op">/</span> <span class="dv">180</span><span class="op">;</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (radius <span class="op">*</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">cos</span>(a) <span class="op">-</span> offset) <span class="op">/</span> <span class="bu">Math</span><span class="op">.</span><span class="fu">sin</span>(a)<span class="op">;</span></span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true" tabindex="-1"></a><span class="fu">md</span><span class="vs">`**Trail: </span><span class="sc">${</span>trail<span class="op">.</span><span class="fu">toFixed</span>(<span class="dv">1</span>)<span class="sc">}</span><span class="vs"> mm**`</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display">
 <div>
 <div id="ojs-cell-2-1" data-nodetype="declaration">

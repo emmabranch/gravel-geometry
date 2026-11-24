@@ -35,13 +35,18 @@ project:
     - js/explain.js
     - js/fitmatch.js
     - figures/hero-bikes.svg
+    - images/motif.svg
 
 website:
   title: "Gravel geometry explorer"
   site-url: https://emmabranch.github.io/gravel-geometry/
   repo-url: https://github.com/emmabranch/gravel-geometry
+  favicon: images/favicon.png
   description: "An interactive explorer of published gravel bike geometry: compare bikes, put a rider on them, and design your own."
   navbar:
+    collapse-below: xl
+    logo: images/motif.svg
+    logo-alt: ""
     left:
       - href: index.qmd
         text: Overview
