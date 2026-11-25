@@ -11,6 +11,12 @@ Every dot is one frame size. Lines join the sizes of the same bike, smallest to 
 
 ```{ojs}
 //| output: false
+// Shared chart settings from the brand kit (Space Mono axes and defaults)
+import {ebPlot} from "./js/eb_charts.js"
+```
+
+```{ojs}
+//| output: false
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
 import {cockpit, partsFor, DEFAULTS} from "./js/rider.js"
 
@@ -33,7 +39,7 @@ bikes = raw.map(d => ({
 
 categories = ["race", "all-round", "adventure"]
 categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
-categoryColours = ["#2a6fb0", "#e0a030", "#a03a6a"]
+categoryColours = ["#2340FF", "#E0431B", "#00664B"]
 categoryShapes = ["circle", "square", "triangle"]
 
 brandList = Array.from(new Set(bikes.map(d => d.brand))).sort((a, b) => a.localeCompare(b))
@@ -176,22 +182,22 @@ chartWidth = Generators.observe(notify => {
   return () => ro.disconnect();
 })
 
-Plot.plot({
+ebPlot(Plot, {
   width: chartWidth,
   height: Math.min(600, Math.max(360, chartWidth * 0.72)),
   marginLeft: 48,
   marginBottom: 42,
-  style: {fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"},
+  style: {fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "#111111"},
   x: {domain: xDom, label: chartMode === "bar" ? "Handlebar reach (mm) →" : "Reach (mm) →", grid: true},
   y: {domain: yDom, label: chartMode === "bar" ? "↑ Handlebar stack (mm)" : "↑ Stack (mm)", grid: true},
   color: {domain: categories, range: categoryColours},
   symbol: {domain: categories, range: categoryShapes},
   marks: [
     // stack-to-reach guide lines
-    Plot.line(ratioLines, {x: "reach", y: "stack", z: "r", stroke: "#c9d6e0", strokeDasharray: "3,4", clip: true}),
-    Plot.text(ratioLabels, {x: "reach", y: "stack", text: d => d.r.toFixed(2), dx: -4, dy: 8, textAnchor: "end", fill: "#5b7083", fontSize: 11}),
-    chartWidth < 520 ? null : Plot.text([{reach: xDom[0] + 10, stack: yDom[1] - 7}], {x: "reach", y: "stack", text: () => "Taller and shorter: more upright", textAnchor: "start", fill: "#5b7083", fontSize: 11}),
-    chartWidth < 520 ? null : Plot.text([{reach: xDom[1] - 4, stack: yDom[0] + 7}], {x: "reach", y: "stack", text: () => "Lower and longer: more stretched out", textAnchor: "end", fill: "#5b7083", fontSize: 11}),
+    Plot.line(ratioLines, {x: "reach", y: "stack", z: "r", stroke: "#DCD4C4", strokeDasharray: "3,4", clip: true}),
+    Plot.text(ratioLabels, {x: "reach", y: "stack", text: d => d.r.toFixed(2), dx: -4, dy: 8, textAnchor: "end", fill: "#5A544A", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: xDom[0] + 10, stack: yDom[1] - 7}], {x: "reach", y: "stack", text: () => "Taller and shorter: more upright", textAnchor: "start", fill: "#5A544A", fontSize: 11}),
+    chartWidth < 520 ? null : Plot.text([{reach: xDom[1] - 4, stack: yDom[0] + 7}], {x: "reach", y: "stack", text: () => "Lower and longer: more stretched out", textAnchor: "end", fill: "#5A544A", fontSize: 11}),
 
     // size runs, one line per bike and setting
     Plot.line(plotRows, {
@@ -225,9 +231,9 @@ Plot.plot({
       title: d => `${d.label}, size ${d.size_label}\nBar reach ${d.px.toFixed(0)}, bar stack ${d.py.toFixed(0)}\nFrame stack/reach ${d.stack} / ${d.reach}\nStem ${d.stem_desc}`})) : null,
 
     // highlighted bike drawn on top, with size labels
-    Plot.line(highlighted, {x: "px", y: "py", z: d => `${d.bike_id}|${d.config}`, sort: "size_order", stroke: "#0b2233", strokeWidth: 2.5}),
-    Plot.dot(highlighted, {x: "px", y: "py", fill: "category", symbol: "category", r: 6.5, stroke: "#0b2233", strokeWidth: 1.5}),
-    Plot.text(highlighted, {x: "px", y: "py", text: "size_label", dx: 10, textAnchor: "start", fill: "#0b2233", fontWeight: 600, stroke: "#ffffff", strokeWidth: 3, paintOrder: "stroke"})
+    Plot.line(highlighted, {x: "px", y: "py", z: d => `${d.bike_id}|${d.config}`, sort: "size_order", stroke: "#111111", strokeWidth: 2.5}),
+    Plot.dot(highlighted, {x: "px", y: "py", fill: "category", symbol: "category", r: 6.5, stroke: "#111111", strokeWidth: 1.5}),
+    Plot.text(highlighted, {x: "px", y: "py", text: "size_label", dx: 10, textAnchor: "start", fill: "#111111", fontWeight: 600, stroke: "#ffffff", strokeWidth: 3, paintOrder: "stroke"})
   ]
 })
 ```

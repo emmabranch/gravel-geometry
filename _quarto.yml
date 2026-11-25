@@ -34,6 +34,7 @@ project:
     - js/export.js
     - js/explain.js
     - js/fitmatch.js
+    - js/eb_charts.js
     - figures/hero-bikes.svg
     - images/motif.svg
 

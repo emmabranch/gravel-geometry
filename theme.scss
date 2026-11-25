@@ -9,9 +9,9 @@
   --eb-hero-glow: rgba(193, 154, 107, 0.22);
 
   /* Bike categories (validated for colour-vision differences; each also has its own marker shape) */
-  --gg-race: #2a6fb0;
-  --gg-allround: #e0a030;
-  --gg-adventure: #a03a6a;
+  --gg-race: #2340FF;
+  --gg-allround: #E0431B;
+  --gg-adventure: #00664B;
 }
 
 /* Pages without a hero: a little more space under the navbar */
@@ -141,9 +141,9 @@ body:has(.hero-full) #title-block-header { display: none; }
   --input-width: 100%;
   --label-width: 100%;
 }
-.slot-a { --slot: #2563a8; }
-.slot-b { --slot: #d2691e; }
-.slot-c { --slot: #2a9d8f; }
+.slot-a { --slot: #2340FF; }
+.slot-b { --slot: #E0431B; }
+.slot-c { --slot: #00664B; }
 .slot-head {
   display: flex; align-items: center; gap: 0.55rem;
   padding-bottom: 0.65rem; margin-bottom: 0.25rem;
@@ -229,12 +229,12 @@ body:has(.hero-full) #title-block-header { display: none; }
 }
 .size-tile svg, .pair-tile svg { display: block; width: 100%; height: auto; }
 .size-tile figcaption, .pair-tile figcaption { display: flex; align-items: center; gap: 0.4rem; flex-wrap: wrap; font-size: 0.92rem; margin-bottom: 0.2rem; }
-.verdict { margin-left: auto; font-size: 0.78rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 0; background: #eef2f5; color: #111111; }
+.verdict { margin-left: auto; font-size: 0.78rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 0; background: #F3EEE3; color: #111111; }
 .v-fits { border-top-color: #3f7d2c; }
 .v-fits .verdict { background: #e3f0dc; color: #24521a; }
 .v-lean { border-top-color: #d9a441; }
 .v-lean .verdict { background: #fbefd5; color: #6b4a0a; }
-.v-bad { border-top-color: #b33a0e; }
+.v-bad { border-top-color: #A3241A; }
 .v-bad .verdict { background: #f8e0d6; color: #7a2508; }
 .tile-facts { font-size: 0.78rem; color: #5A544A; }
 .tile-why { font-size: 0.78rem; color: #111111; margin-top: 0.15rem; }
@@ -271,19 +271,19 @@ body:has(.hero-full) #title-block-header { display: none; }
 .stat-chip span { display: block; font-size: 0.75rem; color: #5A544A; }
 .stat-chip strong { font-size: 1.05rem; color: #111111; font-variant-numeric: tabular-nums; }
 .stat-chip .verdict { font-size: 0.82rem; margin-left: 0; display: inline-block; }
-.stat-chip.v-fits { border-top-color: #3f7d2c; } .stat-chip.v-lean { border-top-color: #d9a441; } .stat-chip.v-bad { border-top-color: #b33a0e; }
-.chip-ok { border-top-color: #3f7d2c; } .chip-warn { border-top-color: #d9a441; } .chip-error { border-top-color: #b33a0e; }
+.stat-chip.v-fits { border-top-color: #3f7d2c; } .stat-chip.v-lean { border-top-color: #d9a441; } .stat-chip.v-bad { border-top-color: #A3241A; }
+.chip-ok { border-top-color: #3f7d2c; } .chip-warn { border-top-color: #d9a441; } .chip-error { border-top-color: #A3241A; }
 .chip-error strong { color: #7a2508; }
 .design-drawing { margin-top: 0.4rem; }
 .legend-lines i { display: inline-block; width: 18px; height: 4px; border-radius: 0; margin-right: 0.35rem; vertical-align: middle; }
 .check-list { display: grid; gap: 0.4rem; margin: 0.6rem 0; }
 .check { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.9rem; background: #ffffff; border-radius: 0; padding: 0.5rem 0.7rem; border-left: 4px solid #c19a6b; }
 .check.ok { border-left-color: #3f7d2c; margin: 0.6rem 0; }
-.check.error { border-left-color: #b33a0e; background: #fdf1ec; }
+.check.error { border-left-color: #A3241A; background: #fdf1ec; }
 .check.warn { border-left-color: #d9a441; background: #fdf8ec; }
 .check.note { border-left-color: #1f6fb2; }
 .check-icon { flex: none; width: 1.3rem; height: 1.3rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 0.75rem; color: #fff; background: #5A544A; }
-.check.error .check-icon { background: #b33a0e; } .check.warn .check-icon { background: #8a6a12; } .check.note .check-icon { background: #1f6fb2; }
+.check.error .check-icon { background: #A3241A; } .check.warn .check-icon { background: #8a6a12; } .check.note .check-icon { background: #1f6fb2; }
 .compare-table .diffcol { color: #5A544A; }
 .nearest { padding-left: 1.2rem; }
 .nearest li { margin-bottom: 0.6rem; }
@@ -357,14 +357,14 @@ body:has(.hero-full) #title-block-header { display: none; }
 .fit-table tr.group th { background: #f4efe6; color: #7a5c43; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; padding-top: 0.45rem; }
 
 /* Fit matcher */
-.match-table .cat-tag { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 500; color: #5A544A; background: #eef2f5; border-radius: 0; padding: 0.05rem 0.5rem; vertical-align: middle; }
+.match-table .cat-tag { display: inline-block; margin-left: 0.5rem; font-size: 0.72rem; font-weight: 500; color: #5A544A; background: #F3EEE3; border-radius: 0; padding: 0.05rem 0.5rem; vertical-align: middle; }
 .match-table tr.group th { background: #f4efe6; color: #7a5c43; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.04em; }
-.match-table tr.lvl-match > th:first-child { border-left: 4px solid #2a9d8f; }
-.match-table tr.lvl-unusual > th:first-child { border-left: 4px solid #e0a030; }
-.match-table tr.lvl-no > th:first-child { border-left: 4px solid #b33a0e; }
+.match-table tr.lvl-match > th:first-child { border-left: 4px solid #00664B; }
+.match-table tr.lvl-unusual > th:first-child { border-left: 4px solid #E0431B; }
+.match-table tr.lvl-no > th:first-child { border-left: 4px solid #A3241A; }
 .match-table tr.lvl-no td { color: #5A544A; }
 .match-table tr.best { background: #fbf6ee; }
-.match-table .verdict-pill { display: inline-block; font-size: 0.75rem; font-weight: 600; border-radius: 0; padding: 0.05rem 0.55rem; margin-right: 0.3rem; background: #eef2f5; color: #111111; }
+.match-table .verdict-pill { display: inline-block; font-size: 0.75rem; font-weight: 600; border-radius: 0; padding: 0.05rem 0.55rem; margin-right: 0.3rem; background: #F3EEE3; color: #111111; }
 .match-table tr.lvl-match .verdict-pill { background: #dcefeb; color: #1d6b62; }
 .match-table tr.lvl-unusual .verdict-pill { background: #f8ead0; color: #7a5208; }
 .match-table tr.lvl-no .verdict-pill { background: #f6dcd3; color: #8a2c0a; }

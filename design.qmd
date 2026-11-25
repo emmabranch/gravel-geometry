@@ -229,12 +229,12 @@ viewof compareWith = {
 ```{ojs}
 designDrawing = {
   const items = [{row: custom, rider: customRider, colour: "#7a5c43", name: "Your design"}];
-  if (compareWith) items.push({row: compareWith, rider: riderOnBike(compareWith, riderIn, setup), colour: "#d2691e", name: `${compareWith.label}, size ${compareWith.size_label}`});
+  if (compareWith) items.push({row: compareWith, rider: riderOnBike(compareWith, riderIn, setup), colour: "#E0431B", name: `${compareWith.label}, size ${compareWith.size_label}`});
   const vb = sharedViewBox(items.map(i => ({row: i.row, rider: i.rider})));
   // production bike first, faint, so the design sits on top
   let svg = "";
   for (const it of [...items].reverse()) {
-    const {markup} = bikeRiderMarkup(it.row, it.rider, {colour: it.colour, riderColour: it === items[0] ? "#0b2233" : "#d2691e"});
+    const {markup} = bikeRiderMarkup(it.row, it.rider, {colour: it.colour, riderColour: it === items[0] ? "#111111" : "#E0431B"});
     svg += `<g opacity="${it === items[0] ? 1 : 0.45}">${markup}</g>`;
   }
   const legend = items.map(i => `<span><i style="background:${i.colour}"></i>${i.name}</span>`).join("");
@@ -248,7 +248,7 @@ designDrawing = {
 ```{ojs}
 exportButtons(() => designDrawing.querySelector("svg"), {
   title: "My gravel bike design",
-  key: [{colour: "#7a5c43", text: "Your design"}, ...(compareWith ? [{colour: "#d2691e", text: `${compareWith.label}, size ${compareWith.size_label}`}] : [])],
+  key: [{colour: "#7a5c43", text: "Your design"}, ...(compareWith ? [{colour: "#E0431B", text: `${compareWith.label}, size ${compareWith.size_label}`}] : [])],
   source: "drawn to scale; production bikes from manufacturers' published geometry",
   note: `Stack ${stack} mm, reach ${reach} mm, head angle ${hta}°, trail ${custom.trail_calc.toFixed(0)} mm, wheelbase ${custom.wheelbase.toFixed(0)} mm, with a ${heightCm} cm rider.`
 }, fileName("my-design", `stack ${stack} reach ${reach}`))

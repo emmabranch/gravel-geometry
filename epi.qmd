@@ -11,9 +11,15 @@ Epidemiologists spend a lot of time asking whether two measurements agree, where
 
 ```{ojs}
 //| output: false
-categoryColours = new Map([["race", "#2a6fb0"], ["all-round", "#e0a030"], ["adventure", "#a03a6a"]])
+// Shared chart settings from the brand kit (Space Mono axes and defaults)
+import {ebPlot} from "./js/eb_charts.js"
+```
+
+```{ojs}
+//| output: false
+categoryColours = new Map([["race", "#2340FF"], ["all-round", "#E0431B"], ["adventure", "#00664B"]])
 categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
-plotStyle = ({fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"})
+plotStyle = ({fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "#111111"})
 
 // Nudge labels so they don't overlap: place them one by one, and move a label
 // down (in 13 px steps) while it overlaps a label already placed. Needs the
@@ -53,14 +59,14 @@ measureOrder = ["Wheelbase", "Fork offset", "Trail", "Top tube"]
     const d = agreement.filter(r => r.measure === m);
     const s = agreementSummary.find(r => r.measure === m);
     const lim = Math.max(8, ...d.map(r => Math.abs(r.diff))) * 1.1;
-    const plot = Plot.plot({
+    const plot = ebPlot(Plot, {
       width: 480, height: 260, marginLeft: 40, marginBottom: 36, style: plotStyle,
       x: {label: `Average of the two (mm) →`, nice: true, grid: true},
       y: {label: "↑ Calculated − published (mm)", domain: [-lim, lim], grid: true},
       marks: [
-        Plot.ruleY([0], {stroke: "#c9d6e0"}),
-        Plot.ruleY([s.bias], {stroke: "#0b2233", strokeWidth: 1.5}),
-        Plot.ruleY([s.loa_low, s.loa_high], {stroke: "#0b2233", strokeDasharray: "4,3"}),
+        Plot.ruleY([0], {stroke: "#DCD4C4"}),
+        Plot.ruleY([s.bias], {stroke: "#111111", strokeWidth: 1.5}),
+        Plot.ruleY([s.loa_low, s.loa_high], {stroke: "#111111", strokeDasharray: "4,3"}),
         Plot.dot(d, {x: "mean", y: "diff", r: 3.5, fill: "#7a5c43", fillOpacity: 0.7, stroke: "#fff", strokeWidth: 0.8,
           channels: {Bike: d => `${d.brand} ${d.model}`, Size: "size_label", Published: "published", Calculated: "calculated"},
           tip: true})
@@ -106,7 +112,7 @@ viewof zBike = Inputs.select(["(none)", ...zBikes], {label: "Highlight a bike", 
   const W = Math.min(width, 1000), Hh = 440, yDom = [460, 690];
   const outliers = nudge(zscores.filter(d => d.band !== "within 5th to 95th").map(d => ({...d, lab: `${d.model} ${d.size_label}`})),
     {x: "reach", y: "stack", text: "lab", xDomain: [340, 460], yDomain: yDom, width: W, height: Hh});
-  return Plot.plot({
+  return ebPlot(Plot, {
     width: W, height: Hh, marginLeft: 50, style: plotStyle,
     x: {label: "Reach (mm) →", domain: [340, 460], grid: true},
     y: {label: "↑ Stack (mm)", domain: yDom, grid: true},
@@ -114,14 +120,14 @@ viewof zBike = Inputs.select(["(none)", ...zBikes], {label: "Highlight a bike", 
       Plot.areaY(centiles, {x: "reach", y1: "p5", y2: "p95", fill: "#7a5c43", fillOpacity: 0.10}),
       Plot.areaY(centiles, {x: "reach", y1: "p25", y2: "p75", fill: "#7a5c43", fillOpacity: 0.18}),
       Plot.line(centiles, {x: "reach", y: "p50", stroke: "#7a5c43", strokeWidth: 2}),
-      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p95", text: () => "95th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
-      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p50", text: () => "50th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
-      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p5", text: () => "5th", dx: -2, dy: -6, textAnchor: "end", fill: "#5b7083"}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p95", text: () => "95th", dx: -2, dy: -6, textAnchor: "end", fill: "#5A544A"}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p50", text: () => "50th", dx: -2, dy: -6, textAnchor: "end", fill: "#5A544A"}),
+      Plot.text(centiles.filter(d => d.reach === 458), {x: "reach", y: "p5", text: () => "5th", dx: -2, dy: -6, textAnchor: "end", fill: "#5A544A"}),
       Plot.dot(zscores, {x: "reach", y: "stack", r: 3.5, fill: d => categoryColours.get(d.category), fillOpacity: zBike === "(none)" ? 0.85 : 0.3, stroke: "#fff", strokeWidth: 0.8}),
-      Plot.text(outliers, {x: "reach", y: "_yl", text: "lab", dx: 8, textAnchor: "start", fontSize: 11, fill: "#1f2a33", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
-      Plot.line(hi, {x: "reach", y: "stack", sort: "size_order", stroke: "#0b2233", strokeWidth: 2}),
-      Plot.dot(hi, {x: "reach", y: "stack", r: 5.5, fill: "#0b2233", stroke: "#fff", strokeWidth: 1.5}),
-      Plot.text(hi, {x: "reach", y: "stack", text: d => `${d.size_label}: z ${d.z > 0 ? "+" : ""}${d.z.toFixed(1)}`, dx: 9, textAnchor: "start", fontSize: 11, fontWeight: 600, fill: "#0b2233", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      Plot.text(outliers, {x: "reach", y: "_yl", text: "lab", dx: 8, textAnchor: "start", fontSize: 11, fill: "#111111", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      Plot.line(hi, {x: "reach", y: "stack", sort: "size_order", stroke: "#111111", strokeWidth: 2}),
+      Plot.dot(hi, {x: "reach", y: "stack", r: 5.5, fill: "#111111", stroke: "#fff", strokeWidth: 1.5}),
+      Plot.text(hi, {x: "reach", y: "stack", text: d => `${d.size_label}: z ${d.z > 0 ? "+" : ""}${d.z.toFixed(1)}`, dx: 9, textAnchor: "start", fontSize: 11, fontWeight: 600, fill: "#111111", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
       Plot.tip(zscores, Plot.pointer({x: "reach", y: "stack", maxRadius: 10, lineWidth: 40,
         title: d => `${d.label}, size ${d.size_label}\nStack ${d.stack} mm, reach ${d.reach} mm\nz-score ${d.z > 0 ? "+" : ""}${d.z.toFixed(2)} (${d.band})`}))
     ]
@@ -176,15 +182,15 @@ median = a => d3.median(a)
 ### How many bikes come in a size that fits?
 
 ```{ojs}
-Plot.plot({
+ebPlot(Plot, {
   width: Math.min(width, 900), height: 300, marginLeft: 44, style: plotStyle,
   x: {label: "Rider height (cm) →", domain: [145, 205], grid: true},
   y: {label: "↑ Bikes (of 24) with a size that fits", domain: [0, 24], grid: true},
   marks: [
     Plot.areaY(access, {x: "height", y: "fitsOrNear", fill: "#7a5c43", fillOpacity: 0.15, curve: "step"}),
     Plot.lineY(access, {x: "height", y: "fits", stroke: "#7a5c43", strokeWidth: 2.5, curve: "step"}),
-    Plot.ruleX([153, 162, 176, 188], {stroke: "#5b7083", strokeDasharray: "3,3"}),
-    Plot.text([[153, "5th pct woman"], [162, "average woman"], [176, "average man"], [188, "95th pct man"]], {x: d => d[0], y: 0.6, text: d => d[1], rotate: -90, textAnchor: "start", dx: -5, fontSize: 10.5, fill: "#5b7083", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+    Plot.ruleX([153, 162, 176, 188], {stroke: "#5A544A", strokeDasharray: "3,3"}),
+    Plot.text([[153, "5th pct woman"], [162, "average woman"], [176, "average man"], [188, "95th pct man"]], {x: d => d[0], y: 0.6, text: d => d[1], rotate: -90, textAnchor: "start", dx: -5, fontSize: 10.5, fill: "#5A544A", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
     Plot.tip(access, Plot.pointerX({x: "height", y: "fits", title: d => `${d.height} cm: ${d.fits} bikes have a size that fits; ${d.fitsOrNear} have one that fits or is close`}))
   ]
 })
@@ -217,15 +223,15 @@ viewof endMeasure = Inputs.radio(new Map([["Toe clearance", "toe"], ["Trail", "t
   const unit = endMeasure === "hta" || endMeasure === "sta" ? "°" : " mm";
   const sKey = endMeasure + "S", lKey = endMeasure + "L";
   const data = [...ends].sort((a, b) => (a[sKey] - a[lKey]) - (b[sKey] - b[lKey]));
-  const ref = endMeasure === "toe" ? [Plot.ruleX([90], {stroke: "#b33a0e", strokeDasharray: "4,3"}), Plot.text([90], {x: d => d, frameAnchor: "top", text: () => "90 mm: about where a shoe reaches", dy: -10, textAnchor: "middle", fontSize: 10.5, fill: "#7a2508"})] : [];
-  return Plot.plot({
+  const ref = endMeasure === "toe" ? [Plot.ruleX([90], {stroke: "#A3241A", strokeDasharray: "4,3"}), Plot.text([90], {x: d => d, frameAnchor: "top", text: () => "90 mm: about where a shoe reaches", dy: -10, textAnchor: "middle", fontSize: 10.5, fill: "#7a2508"})] : [];
+  return ebPlot(Plot, {
     width: Math.min(width, 1000), height: 24 * data.length + 70, marginTop: 30, marginLeft: 200, style: plotStyle,
     x: {label: `${{toe: "Toe clearance", trail: "Trail (700 × 45)", hta: "Head angle", sta: "Seat angle"}[endMeasure]} (${unit.trim()}) →`, grid: true, nice: true},
     y: {label: null, domain: data.map(d => d.label)},
     marks: [
       ...ref,
-      Plot.link(data, {x1: sKey, x2: lKey, y1: "label", y2: "label", stroke: "#c9d6e0", strokeWidth: 2}),
-      Plot.dot(data, {x: lKey, y: "label", r: 5, fill: "#ffffff", stroke: "#0b2233", strokeWidth: 1.5, title: d => `Largest (${d.largeSize}): ${d[lKey]?.toFixed(1)}${unit}`, tip: true}),
+      Plot.link(data, {x1: sKey, x2: lKey, y1: "label", y2: "label", stroke: "#DCD4C4", strokeWidth: 2}),
+      Plot.dot(data, {x: lKey, y: "label", r: 5, fill: "#ffffff", stroke: "#111111", strokeWidth: 1.5, title: d => `Largest (${d.largeSize}): ${d[lKey]?.toFixed(1)}${unit}`, tip: true}),
       Plot.dot(data, {x: sKey, y: "label", r: 5, fill: "#7a5c43", title: d => `Smallest (${d.smallSize}): ${d[sKey]?.toFixed(1)}${unit}`, tip: true})
     ]
   });
@@ -270,15 +276,15 @@ cs = Object.fromEntries(clusterSummary.map(d => [d.item, d.value]))
 {
   const W = Math.min(width, 1000), Hh = 480, xDom = [-6, 3.5], yDom = [-2.6, 2.3];
   const labelled = nudge(clusters.map(d => ({...d, lab: d.model})), {x: "pc1", y: "pc2", text: "lab", xDomain: xDom, yDomain: yDom, width: W, height: Hh, marginBottom: 46, dx: 10});
-  return Plot.plot({
+  return ebPlot(Plot, {
     width: W, height: Hh, marginLeft: 50, marginBottom: 46, style: plotStyle,
     x: {label: `First component (${cs.pc1_var}% of variation) →`, domain: xDom, grid: true},
     y: {label: `↑ Second component (${cs.pc2_var}%)`, domain: yDom, grid: true},
     symbol: {domain: ["race", "all-round", "adventure"], range: ["circle", "square", "triangle"]},
     marks: [
-      Plot.link(labelled.filter(d => d._dy > 0), {x1: "pc1", y1: "pc2", x2: "pc1", y2: "_yl", stroke: "#c9d6e0"}),
-      Plot.dot(clusters, {x: "pc1", y: "pc2", r: 7, fill: d => categoryColours.get(d.category), symbol: "data_label", stroke: d => d.agrees ? "#ffffff" : "#0b2233", strokeWidth: d => d.agrees ? 1 : 2.5}),
-      Plot.text(labelled, {x: "pc1", y: "_yl", text: "lab", dx: 10, textAnchor: "start", fontSize: 10.5, fill: "#1f2a33", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
+      Plot.link(labelled.filter(d => d._dy > 0), {x1: "pc1", y1: "pc2", x2: "pc1", y2: "_yl", stroke: "#DCD4C4"}),
+      Plot.dot(clusters, {x: "pc1", y: "pc2", r: 7, fill: d => categoryColours.get(d.category), symbol: "data_label", stroke: d => d.agrees ? "#ffffff" : "#111111", strokeWidth: d => d.agrees ? 1 : 2.5}),
+      Plot.text(labelled, {x: "pc1", y: "_yl", text: "lab", dx: 10, textAnchor: "start", fontSize: 10.5, fill: "#111111", stroke: "#fff", strokeWidth: 3, paintOrder: "stroke"}),
       // Tooltip only when the pointer is on or right next to a dot, so it never shows a neighbouring bike
       Plot.tip(clusters, Plot.pointer({x: "pc1", y: "pc2", maxRadius: 12, lineWidth: 40,
         title: d => `${d.brand} ${d.model}\nSite label: ${categoryNames[d.category]}\nGeometry group: ${categoryNames[d.data_label]}-like\n${d.agrees ? "The two agree" : "The two disagree"}`}))
@@ -341,7 +347,7 @@ overTimeSizes = FileAttachment("data/epi_over_time_sizes.csv").csv({typed: true}
 lineages = Array.from(new Set(overTime.map(d => d.lineage))).sort((a, b) => a.localeCompare(b))
 genLabel = d => d.is_current ? `Current (${d.model})` : `${d.chart_year} chart: ${d.generation}`
 genColour = (d, all) => {
-  if (d.is_current) return "#0b2233";
+  if (d.is_current) return "#111111";
   const older = all.filter(g => !g.is_current).sort((a, b) => a.chart_year - b.chart_year);
   return older.length > 1 && older.indexOf(older.find(g => g.chart_year === d.chart_year)) === older.length - 1 ? "#7a5c43" : "#c19a6b";
 }
@@ -371,13 +377,13 @@ viewof lineagePick = Inputs.select(lineages, {label: "Bike", value: "Norco Searc
   const legend = gens.map(g => `<span class="gen-key"><i style="background:${colourOf.get(key(g))}"></i>${labelOf.get(key(g))}</span>`).join("");
   const el = document.createElement("div");
   el.innerHTML = `<div class="gen-legend">${legend}</div>`;
-  el.append(Plot.plot({
+  el.append(ebPlot(Plot, {
     width: W, height: 420, marginLeft: 50, marginRight: 20, style: plotStyle,
     x: {label: "Reach (mm) →", grid: true, nice: true},
     y: {label: "↑ Stack (mm)", grid: true, nice: true},
     marks: [
-      Plot.ruleY([580], {stroke: "#5b7083", strokeDasharray: "4,3"}),
-      Plot.text([580], {y: d => d, frameAnchor: "left", text: () => "580 mm stack: the same rider", dx: 6, dy: -8, textAnchor: "start", fontSize: 10.5, fill: "#5b7083"}),
+      Plot.ruleY([580], {stroke: "#5A544A", strokeDasharray: "4,3"}),
+      Plot.text([580], {y: d => d, frameAnchor: "left", text: () => "580 mm stack: the same rider", dx: 6, dy: -8, textAnchor: "start", fontSize: 10.5, fill: "#5A544A"}),
       Plot.line(sizes, {x: "reach", y: "stack", z: key, sort: "stack", stroke: d => colourOf.get(key(d)), strokeWidth: 2.5}),
       Plot.dot(sizes, {x: "reach", y: "stack", fill: d => colourOf.get(key(d)), r: 4.5, stroke: "#fff", strokeWidth: 1}),
       Plot.dot(gens, {x: "reach", y: () => 580, r: 6, fill: "#fff", stroke: d => colourOf.get(key(d)), strokeWidth: 2.5}),
@@ -425,15 +431,15 @@ viewof trendMeasure = Inputs.radio(new Map([["Head angle", "head_tube_angle"], [
   }).sort((a, b) => (a.last[trendMeasure] - a.first[trendMeasure]) - (b.last[trendMeasure] - b.first[trendMeasure]));
   const middles = byLine.flatMap(b => b.middle.map(m => ({...m})));
   const fmt = v => `${v.toFixed(dp)}${unit}`;
-  return Plot.plot({
+  return ebPlot(Plot, {
     width: Math.min(width, 1000), height: 34 * byLine.length + 60, marginLeft: width < 520 ? 118 : 200, style: plotStyle,
     x: {label: `${{head_tube_angle: "Head angle", wheelbase: "Wheelbase", reach: "Reach", bb_drop: "BB drop", chainstay: "Chainstay", trail: "Trail (700 × 45)"}[trendMeasure]} at 580 mm stack (${unit.trim()}) →`, grid: true, nice: true},
     y: {label: null, domain: byLine.map(d => d.lineage), tickFormat: l => width < 520 ? l.replace(/^(Norco|Trek|Specialized|Canyon|Cannondale|Giant) /, "") : l},
     marks: [
-      Plot.link(byLine, {x1: d => d.first[trendMeasure], x2: d => d.last[trendMeasure], y1: "lineage", y2: "lineage", stroke: "#c9d6e0", strokeWidth: 2, markerEnd: "arrow"}),
+      Plot.link(byLine, {x1: d => d.first[trendMeasure], x2: d => d.last[trendMeasure], y1: "lineage", y2: "lineage", stroke: "#DCD4C4", strokeWidth: 2, markerEnd: "arrow"}),
       Plot.dot(middles, {x: trendMeasure, y: "lineage", r: 4, fill: "#7a5c43"}),
       Plot.dot(byLine, {x: d => d.first[trendMeasure], y: "lineage", r: 5.5, fill: "#c19a6b"}),
-      Plot.dot(byLine, {x: d => d.last[trendMeasure], y: "lineage", r: 5.5, fill: "#0b2233"}),
+      Plot.dot(byLine, {x: d => d.last[trendMeasure], y: "lineage", r: 5.5, fill: "#111111"}),
       Plot.tip(byLine.flatMap(b => [b.first, ...b.middle, b.last]), Plot.pointer({x: trendMeasure, y: "lineage", maxRadius: 12, lineWidth: 40,
         title: d => `${genLabel(d)}\n${fmt(d[trendMeasure])}`}))
     ]

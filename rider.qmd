@@ -278,8 +278,8 @@ viewof sizeB = {
 ```{ojs}
 //| output: false
 pair = [
-  {slot: "A", colour: "#2563a8", row: bikes.find(d => d.label === bikeA && d.size_label === sizeA && d.is_default_config)},
-  {slot: "B", colour: "#d2691e", row: bikes.find(d => d.label === bikeB && d.size_label === sizeB && d.is_default_config)}
+  {slot: "A", colour: "#2340FF", row: bikes.find(d => d.label === bikeA && d.size_label === sizeA && d.is_default_config)},
+  {slot: "B", colour: "#E0431B", row: bikes.find(d => d.label === bikeB && d.size_label === sizeB && d.is_default_config)}
 ].filter(p => p.row).map(p => {
   const r = riderFor(p.row);
   return {...p, r, fit: fitFlags(r)};

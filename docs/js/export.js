@@ -5,7 +5,7 @@
 // a footer saying where it came from. It's built as one SVG, drawn onto a
 // canvas, and downloaded as a PNG.
 
-const FONT = "Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif";
+const FONT = "'Bricolage Grotesque', 'Helvetica Neue', Helvetica, Arial, sans-serif";
 const esc = s => String(s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
 
 // Build the card as SVG markup.
@@ -47,24 +47,24 @@ function cardMarkup(drawing, {title, key = [], note = "", source = "drawn to sca
   keyRows.forEach((row, i) => row.forEach(k => {
     const y = keyY0 + i * 36;
     keyMarkup += `<rect x="${pad + k.x}" y="${y - 6}" width="22" height="6" rx="3" fill="${k.colour}"/>`;
-    keyMarkup += `<text x="${pad + k.x + 32}" y="${y}" font-size="20" fill="#1f2a33">${esc(k.text)}</text>`;
+    keyMarkup += `<text x="${pad + k.x + 32}" y="${y}" font-size="20" fill="#111111">${esc(k.text)}</text>`;
   }));
 
   const panelMarkup = panels.map((p, i) => {
     const px = pad + i * (panelW + gap);
-    const cap = p.caption ? `<text x="${px}" y="${drawY + 22}" font-size="20" font-weight="600" fill="${p.captionColour ?? "#1f2a33"}">${esc(p.caption)}</text>` : "";
+    const cap = p.caption ? `<text x="${px}" y="${drawY + 22}" font-size="20" font-weight="600" fill="${p.captionColour ?? "#111111"}">${esc(p.caption)}</text>` : "";
     return `${cap}<svg x="${px}" y="${drawY + capH}" width="${panelW}" height="${drawH}" viewBox="${p.vb.join(" ")}" preserveAspectRatio="xMidYMax meet">${p.svg.innerHTML}</svg>`;
   }).join("");
 
   return {W, H, markup: `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${FONT}">
   <rect width="${W}" height="${H}" fill="#ffffff"/>
-  <rect width="${W}" height="8" fill="#0b2233"/>
-  <text x="${pad}" y="${titleY}" font-size="32" font-weight="700" fill="#0b2233">${esc(title)}</text>
+  <rect width="${W}" height="8" fill="#111111"/>
+  <text x="${pad}" y="${titleY}" font-size="32" font-weight="700" fill="#111111">${esc(title)}</text>
   ${keyMarkup}
   ${panelMarkup}
-  ${note ? `<text x="${pad}" y="${noteY}" font-size="18" fill="#5b7083">${esc(note)}</text>` : ""}
+  ${note ? `<text x="${pad}" y="${noteY}" font-size="18" fill="#5A544A">${esc(note)}</text>` : ""}
   <line x1="${pad}" x2="${W - pad}" y1="${footY - 30}" y2="${footY - 30}" stroke="#e2c9a6"/>
-  <text x="${pad}" y="${footY}" font-size="18" fill="#5b7083">Gravel geometry explorer · emmabranch.github.io/gravel-geometry · ${esc(source)} · ${today}</text>
+  <text x="${pad}" y="${footY}" font-size="18" fill="#5A544A">Gravel geometry explorer · emmabranch.github.io/gravel-geometry · ${esc(source)} · ${today}</text>
 </svg>`};
 }
 

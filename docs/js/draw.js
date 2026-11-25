@@ -15,12 +15,12 @@ function dot(p, r, fill, extra = "") {
 }
 
 // The parts of the picture, in drawing order, for one bike and its rider
-export function bikeRiderMarkup(row, rider, {colour = "#2563a8", riderColour = "#0b2233", showRider = true} = {}) {
+export function bikeRiderMarkup(row, rider, {colour = "#2340FF", riderColour = "#111111", showRider = true} = {}) {
   const p = bikePoints(row);
   let s = "";
 
   // ground
-  s += line({x: p.rearAxle.x - p.wheelRadius - 40, y: p.groundY}, {x: p.frontAxle.x + p.wheelRadius + 40, y: p.groundY}, "#c9d6e0", 1.5);
+  s += line({x: p.rearAxle.x - p.wheelRadius - 40, y: p.groundY}, {x: p.frontAxle.x + p.wheelRadius + 40, y: p.groundY}, "#DCD4C4", 1.5);
 
   // wheels
   for (const c of [p.rearAxle, p.frontAxle]) {
@@ -34,12 +34,12 @@ export function bikeRiderMarkup(row, rider, {colour = "#2563a8", riderColour = "
   if (rider && showRider) {
     const q = rider.points;
     // cockpit: steerer spacers, stem, bar, hoods; saddle; cranks
-    s += line(q.htTop, q.clamp, "#5b7083", 3);
-    s += line(q.clamp, q.bar, "#5b7083", 3);
-    s += line(q.bar, q.hands, "#5b7083", 2);
-    s += line({x: q.saddle.x - 120, y: q.saddle.y}, {x: q.saddle.x + 150, y: q.saddle.y}, "#5b7083", 4);
-    s += line(p.stTop, q.saddle, "#5b7083", 2);
-    s += line(q.pedalTop, q.pedalBottom, "#5b7083", 2.5);
+    s += line(q.htTop, q.clamp, "#5A544A", 3);
+    s += line(q.clamp, q.bar, "#5A544A", 3);
+    s += line(q.bar, q.hands, "#5A544A", 2);
+    s += line({x: q.saddle.x - 120, y: q.saddle.y}, {x: q.saddle.x + 150, y: q.saddle.y}, "#5A544A", 4);
+    s += line(p.stTop, q.saddle, "#5A544A", 2);
+    s += line(q.pedalTop, q.pedalBottom, "#5A544A", 2.5);
 
     // far leg (pedal at the top), drawn faint behind the frame
     if (q.kneeTop) {
@@ -52,7 +52,7 @@ export function bikeRiderMarkup(row, rider, {colour = "#2563a8", riderColour = "
       s += line(q.hip, q.kneeBottom, riderColour, 5);
       s += line(q.kneeBottom, q.ankleBottom, riderColour, 5);
     } else {
-      s += line(q.hip, q.ankleBottom, "#c0392b", 5, `stroke-dasharray="6,5"`);
+      s += line(q.hip, q.ankleBottom, "#A3241A", 5, `stroke-dasharray="6,5"`);
     }
     s += line(q.ankleBottom, q.pedalBottom, riderColour, 3.5);
 
@@ -103,24 +103,24 @@ export function fitDiagramSVG(row, rider, {colour = "#7a5c43", label = "Fit meas
   const {markup, points: p} = bikeRiderMarkup(row, rider, {colour, showRider: false});
   const q = rider.points, fit = rider.fit;
   const seat = q.seatClamp, bar = q.bar, g = p.groundY;
-  const dim = "#5b7083", hi = "#0b2233";
+  const dim = "#5A544A", hi = "#111111";
   const dash = `stroke-dasharray="14,6,3,6"`;
-  const txt = (x, y, s, attrs = "") => `<text x="${f(x)}" y="${f(-y)}" font-size="34" font-family="Inter, sans-serif" fill="${hi}" ${attrs}>${s}</text>`;
+  const txt = (x, y, s, attrs = "") => `<text x="${f(x)}" y="${f(-y)}" font-size="34" font-family="Bricolage Grotesque, sans-serif" fill="${hi}" ${attrs}>${s}</text>`;
   let s = markup;
   // the parts the fit depends on: spacers and stem, seatpost and saddle
-  s += line(q.htTop, q.clamp, "#5b7083", 3) + line(q.clamp, bar, "#5b7083", 3);
-  s += line(p.stTop, seat, "#5b7083", 2.5) + line({x: q.saddle.x - 120, y: q.saddle.y}, {x: q.saddle.x + 150, y: q.saddle.y}, "#5b7083", 4);
+  s += line(q.htTop, q.clamp, "#5A544A", 3) + line(q.clamp, bar, "#5A544A", 3);
+  s += line(p.stTop, seat, "#5A544A", 2.5) + line({x: q.saddle.x - 120, y: q.saddle.y}, {x: q.saddle.x + 150, y: q.saddle.y}, "#5A544A", 4);
   // verticals to the ground, and the horizontal dimension along it
   for (const pt of [seat, {x: 0, y: 0}, bar]) s += line(pt, {x: pt.x, y: g}, dim, 1.2, dash);
   s += line({x: seat.x, y: g}, {x: bar.x, y: g}, dim, 1.2, dash);
   // straight lines: BB to bar, saddle to bar, BB to saddle
-  s += line({x: 0, y: 0}, bar, "#d2691e", 2, dash) + line(seat, bar, "#2a6fb0", 2, dash) + line({x: 0, y: 0}, seat, "#7a5c43", 2, dash);
+  s += line({x: 0, y: 0}, bar, "#E0431B", 2, dash) + line(seat, bar, "#2340FF", 2, dash) + line({x: 0, y: 0}, seat, "#7a5c43", 2, dash);
   for (const pt of [seat, bar]) s += dot(pt, 11, hi);
   // labels
   s += txt(seat.x - 10, seat.y + 40, "seatpost clamp", `text-anchor="end"`);
   s += txt(bar.x + 18, bar.y + 34, "bar clamp");
-  s += txt((seat.x + bar.x) / 2, (seat.y + bar.y) / 2 + 26, `saddle to bar ${fit.saddleToBar.toFixed(0)}`, `text-anchor="middle" fill="#2a6fb0"`);
-  s += txt(bar.x * 0.42 + 24, bar.y * 0.42, `BB to bar ${fit.bbToBar.toFixed(0)}`, `fill="#d2691e"`);
+  s += txt((seat.x + bar.x) / 2, (seat.y + bar.y) / 2 + 26, `saddle to bar ${fit.saddleToBar.toFixed(0)}`, `text-anchor="middle" fill="#2340FF"`);
+  s += txt(bar.x * 0.42 + 24, bar.y * 0.42, `BB to bar ${fit.bbToBar.toFixed(0)}`, `fill="#E0431B"`);
   s += txt(seat.x - 16, seat.y * 0.55, `BB to clamp ${fit.bbToClamp.toFixed(0)}`, `text-anchor="end" fill="#7a5c43"`);
   s += txt(seat.x / 2, g + 16, `setback ${fit.setback.toFixed(0)}`, `text-anchor="middle" fill="${dim}"`);
   s += txt(bar.x / 2, g + 16, `reach ${fit.barReach.toFixed(0)}`, `text-anchor="middle" fill="${dim}"`);

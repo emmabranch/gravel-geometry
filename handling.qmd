@@ -7,6 +7,12 @@ A geometry chart is a list of numbers, but a few of them decide most of how a bi
 
 ```{ojs}
 //| output: false
+// Shared chart settings from the brand kit (Space Mono axes and defaults)
+import {ebPlot} from "./js/eb_charts.js"
+```
+
+```{ojs}
+//| output: false
 import {wheelRadius, trail} from "./js/geometry.js"
 
 raw = FileAttachment("data/gravel_geometry_derived.csv").csv({typed: true})
@@ -19,7 +25,7 @@ bikes = raw.map(d => ({
 bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
 rad = d => d * Math.PI / 180
 fmt = (v, dp = 0) => v.toFixed(dp)
-plotStyle = ({fontFamily: "Inter, sans-serif", fontSize: "12px", color: "#1f2a33"})
+plotStyle = ({fontFamily: "'Bricolage Grotesque', sans-serif", fontSize: "12px", color: "#111111"})
 
 // Where a value sits among all sizes, as a percentile
 pctOf = (vals, v) => Math.round(100 * vals.filter(x => x < v).length / vals.length)
@@ -29,13 +35,13 @@ pctOf = (vals, v) => Math.round(100 * vals.filter(x => x < v).length / vals.leng
 strip = ({key, value, unit, label, picked}) => {
   const vals = bikes.map(d => d[key]).filter(v => v != null);
   const marks = [
-    Plot.tickX(bikes, {x: key, stroke: "#9fb0bf", strokeOpacity: 0.6}),
+    Plot.tickX(bikes, {x: key, stroke: "#C9C1B3", strokeOpacity: 0.6}),
     Plot.ruleX([value], {stroke: "#7a5c43", strokeWidth: 3}),
     Plot.text([value], {x: d => d, frameAnchor: "top", dy: -8, text: () => `this setting`, fill: "#7a5c43", fontSize: 11, fontWeight: 600})
   ];
-  if (picked.length) marks.push(Plot.dot(picked, {x: key, y: () => 0.5, r: 4.5, fill: "#0b2233", stroke: "#fff", strokeWidth: 1,
+  if (picked.length) marks.push(Plot.dot(picked, {x: key, y: () => 0.5, r: 4.5, fill: "#111111", stroke: "#fff", strokeWidth: 1,
     title: d => `${d.label}, size ${d.size_label}: ${fmt(d[key])}${unit}`, tip: true}));
-  return Plot.plot({
+  return ebPlot(Plot, {
     height: 78, marginTop: 22, marginBottom: 30, marginLeft: 12, marginRight: 12, style: plotStyle,
     x: {label: `${label} (${unit.trim()}) →`, domain: [Math.min(...vals, value) - 3, Math.max(...vals, value) + 3]},
     y: {axis: null, domain: [0, 1]},
@@ -99,24 +105,24 @@ steerDiagram = {
   const X = x => x, Y = y => -y;
   const ln = (a, b, attrs) => `<line x1="${X(a[0])}" y1="${Y(a[1])}" x2="${X(b[0])}" y2="${Y(b[1])}" ${attrs}/>`;
   let s = "";
-  s += ln([-520, 0], [520, 0], `stroke="#9fb0bf" stroke-width="2"`);
+  s += ln([-520, 0], [520, 0], `stroke="#C9C1B3" stroke-width="2"`);
   s += `<circle cx="0" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/>`;
   s += `<circle cx="0" cy="${Y(R)}" r="${311}" fill="none" stroke="#c19a6b" stroke-width="2" stroke-opacity="0.4"/>`;
-  s += ln(axisTop, G, `stroke="#5b7083" stroke-width="2" stroke-dasharray="10,8"`);
-  s += ln(crown, htTop, `stroke="#0b2233" stroke-width="16" stroke-linecap="round"`);
+  s += ln(axisTop, G, `stroke="#5A544A" stroke-width="2" stroke-dasharray="10,8"`);
+  s += ln(crown, htTop, `stroke="#111111" stroke-width="16" stroke-linecap="round"`);
   s += ln([0, R], crown, `stroke="#7a5c43" stroke-width="9" stroke-linecap="round"`);
   // offset: from the axle at right angles to the axis
-  s += ln([0, R], Q, `stroke="#d2691e" stroke-width="4"`);
-  s += `<circle cx="0" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
+  s += ln([0, R], Q, `stroke="#E0431B" stroke-width="4"`);
+  s += `<circle cx="0" cy="${Y(R)}" r="9" fill="#111111"/>`;
   // trail: along the ground from the contact patch to where the axis lands
-  s += ln([0, -28], [t, -28], `stroke="#2a6fb0" stroke-width="5"`);
-  s += ln([0, -14], [0, -42], `stroke="#2a6fb0" stroke-width="3"`) + ln([t, -14], [t, -42], `stroke="#2a6fb0" stroke-width="3"`);
-  s += `<circle cx="0" cy="0" r="7" fill="#2a6fb0"/><circle cx="${G[0]}" cy="0" r="7" fill="#5b7083"/>`;
-  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="40" font-family="Inter, sans-serif" ${attrs}>${str}</text>`;
-  s += txt(Math.min(t, 0) - 10, -88, `trail ${fmt(t)} mm`, `fill="#2a6fb0" font-weight="700" text-anchor="${t >= 0 ? "start" : "end"}"`);
-  s += txt(Q[0] - 20, Q[1] + 30, `offset ${off} mm`, `fill="#d2691e" font-weight="600" text-anchor="end"`);
-  s += txt(htTop[0] - 30, htTop[1] + 10, `head angle ${hta}°`, `fill="#0b2233" font-weight="600" text-anchor="end"`);
-  s += txt(G[0] + 18, 34, "steering axis", `fill="#5b7083" font-size="32"`);
+  s += ln([0, -28], [t, -28], `stroke="#2340FF" stroke-width="5"`);
+  s += ln([0, -14], [0, -42], `stroke="#2340FF" stroke-width="3"`) + ln([t, -14], [t, -42], `stroke="#2340FF" stroke-width="3"`);
+  s += `<circle cx="0" cy="0" r="7" fill="#2340FF"/><circle cx="${G[0]}" cy="0" r="7" fill="#5A544A"/>`;
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="40" font-family="Bricolage Grotesque, sans-serif" ${attrs}>${str}</text>`;
+  s += txt(Math.min(t, 0) - 10, -88, `trail ${fmt(t)} mm`, `fill="#2340FF" font-weight="700" text-anchor="${t >= 0 ? "start" : "end"}"`);
+  s += txt(Q[0] - 20, Q[1] + 30, `offset ${off} mm`, `fill="#E0431B" font-weight="600" text-anchor="end"`);
+  s += txt(htTop[0] - 30, htTop[1] + 10, `head angle ${hta}°`, `fill="#111111" font-weight="600" text-anchor="end"`);
+  s += txt(G[0] + 18, 34, "steering axis", `fill="#5A544A" font-size="32"`);
   const el = document.createElement("div");
   el.className = "handling-svg";
   const top = axisTop[1] + 30;
@@ -179,19 +185,19 @@ lenDiagram = {
   const rear = -csH, front = fcH, bbY = R - lenDrop;
   const Y = y => -y;
   let s = "";
-  s += `<line x1="${rear - R - 40}" y1="0" x2="${front + R + 40}" y2="0" stroke="#9fb0bf" stroke-width="2"/>`;
-  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
+  s += `<line x1="${rear - R - 40}" y1="0" x2="${front + R + 40}" y2="0" stroke="#C9C1B3" stroke-width="2"/>`;
+  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#111111"/>`;
   s += `<line x1="${rear}" y1="${Y(R)}" x2="0" y2="${Y(bbY)}" stroke="#7a5c43" stroke-width="10" stroke-linecap="round"/>`;
-  s += `<line x1="0" y1="${Y(bbY)}" x2="${front}" y2="${Y(R)}" stroke="#d2691e" stroke-width="4" stroke-dasharray="14,10"/>`;
-  s += `<circle cx="0" cy="${Y(bbY)}" r="20" fill="#fff" stroke="#0b2233" stroke-width="6"/>`;
+  s += `<line x1="0" y1="${Y(bbY)}" x2="${front}" y2="${Y(R)}" stroke="#E0431B" stroke-width="4" stroke-dasharray="14,10"/>`;
+  s += `<circle cx="0" cy="${Y(bbY)}" r="20" fill="#fff" stroke="#111111" stroke-width="6"/>`;
   // wheelbase bracket
   const yb = -60;
-  s += `<line x1="${rear}" y1="${-yb}" x2="${front}" y2="${-yb}" stroke="#2a6fb0" stroke-width="5"/>`;
-  for (const x of [rear, front]) s += `<line x1="${x}" y1="${-yb - 16}" x2="${x}" y2="${-yb + 16}" stroke="#2a6fb0" stroke-width="3"/>`;
-  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="62" font-family="Inter, sans-serif" text-anchor="middle" ${attrs}>${str}</text>`;
-  s += txt((rear + front) / 2, yb - 78, `wheelbase ${fmt(wb)} mm`, `fill="#2a6fb0" font-weight="700"`);
+  s += `<line x1="${rear}" y1="${-yb}" x2="${front}" y2="${-yb}" stroke="#2340FF" stroke-width="5"/>`;
+  for (const x of [rear, front]) s += `<line x1="${x}" y1="${-yb - 16}" x2="${x}" y2="${-yb + 16}" stroke="#2340FF" stroke-width="3"/>`;
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="62" font-family="Bricolage Grotesque, sans-serif" text-anchor="middle" ${attrs}>${str}</text>`;
+  s += txt((rear + front) / 2, yb - 78, `wheelbase ${fmt(wb)} mm`, `fill="#2340FF" font-weight="700"`);
   s += txt(rear - 40, 2 * R + 50, `chainstay ${cs}`, `fill="#7a5c43" font-weight="600"`);
-  s += txt(front + 40, 2 * R + 50, `front centre ${fc}`, `fill="#d2691e" font-weight="600"`);
+  s += txt(front + 40, 2 * R + 50, `front centre ${fc}`, `fill="#E0431B" font-weight="600"`);
   const x0 = -460 - R - 60, w = 460 + 720 + 2 * R + 120;
   const el = document.createElement("div");
   el.className = "handling-svg";
@@ -254,19 +260,19 @@ htDiagram = {
   const R = Rh, Y = y => -y;
   const rear = -470, front = 800;   // spaced out so the labels fit; not to scale along the ground
   let s = "";
-  s += `<line x1="${rear - R - 30}" y1="0" x2="${front + R + 30}" y2="0" stroke="#9fb0bf" stroke-width="2"/>`;
-  s += `<line x1="${rear - R}" y1="${Y(R)}" x2="${front + R}" y2="${Y(R)}" stroke="#5b7083" stroke-width="2" stroke-dasharray="10,8"/>`;
-  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#0b2233"/>`;
-  s += `<line x1="0" y1="${Y(bbHeight)}" x2="0" y2="${Y(pedalClear)}" stroke="#0b2233" stroke-width="12" stroke-linecap="round"/>`;
-  s += `<rect x="-55" y="${Y(pedalClear) - 9}" width="110" height="18" rx="6" fill="#0b2233"/>`;
-  s += `<circle cx="0" cy="${Y(bbHeight)}" r="20" fill="#fff" stroke="#0b2233" stroke-width="6"/>`;
+  s += `<line x1="${rear - R - 30}" y1="0" x2="${front + R + 30}" y2="0" stroke="#C9C1B3" stroke-width="2"/>`;
+  s += `<line x1="${rear - R}" y1="${Y(R)}" x2="${front + R}" y2="${Y(R)}" stroke="#5A544A" stroke-width="2" stroke-dasharray="10,8"/>`;
+  for (const x of [rear, front]) s += `<circle cx="${x}" cy="${Y(R)}" r="${R}" fill="none" stroke="#c19a6b" stroke-width="6" stroke-opacity="0.7"/><circle cx="${x}" cy="${Y(R)}" r="9" fill="#111111"/>`;
+  s += `<line x1="0" y1="${Y(bbHeight)}" x2="0" y2="${Y(pedalClear)}" stroke="#111111" stroke-width="12" stroke-linecap="round"/>`;
+  s += `<rect x="-55" y="${Y(pedalClear) - 9}" width="110" height="18" rx="6" fill="#111111"/>`;
+  s += `<circle cx="0" cy="${Y(bbHeight)}" r="20" fill="#fff" stroke="#111111" stroke-width="6"/>`;
   // brackets
   const br = (x, y1, y2, c) => `<line x1="${x}" y1="${Y(y1)}" x2="${x}" y2="${Y(y2)}" stroke="${c}" stroke-width="5"/><line x1="${x - 14}" y1="${Y(y1)}" x2="${x + 14}" y2="${Y(y1)}" stroke="${c}" stroke-width="3"/><line x1="${x - 14}" y1="${Y(y2)}" x2="${x + 14}" y2="${Y(y2)}" stroke="${c}" stroke-width="3"/>`;
-  s += br(110, R, bbHeight, "#d2691e") + br(110, pedalClear, 0, "#2a6fb0");
-  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="50" font-family="Inter, sans-serif" ${attrs}>${str}</text>`;
-  s += txt(140, (R + bbHeight) / 2 - 20, `drop ${drop} mm`, `fill="#d2691e" font-weight="700"`);
-  s += txt(140, pedalClear / 2 - 20, `${fmt(pedalClear)} mm`, `fill="#2a6fb0" font-weight="700"`);
-  s += txt(rear - R + 10, R + 24, "axle line", `fill="#5b7083" font-size="46"`);
+  s += br(110, R, bbHeight, "#E0431B") + br(110, pedalClear, 0, "#2340FF");
+  const txt = (x, y, str, attrs = "") => `<text x="${x}" y="${Y(y)}" font-size="50" font-family="Bricolage Grotesque, sans-serif" ${attrs}>${str}</text>`;
+  s += txt(140, (R + bbHeight) / 2 - 20, `drop ${drop} mm`, `fill="#E0431B" font-weight="700"`);
+  s += txt(140, pedalClear / 2 - 20, `${fmt(pedalClear)} mm`, `fill="#2340FF" font-weight="700"`);
+  s += txt(rear - R + 10, R + 24, "axle line", `fill="#5A544A" font-size="46"`);
   const el = document.createElement("div");
   el.className = "handling-svg";
   el.innerHTML = `<svg viewBox="${rear - R - 40} ${Y(2 * R + 30)} ${front - rear + 2 * R + 80} ${2 * R + 60}" role="img" aria-label="Bottom bracket ${drop} mm below the axles, leaving the pedal ${fmt(pedalClear)} mm above the ground">${s}</svg>`;

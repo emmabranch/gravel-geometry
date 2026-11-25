@@ -19,7 +19,7 @@ bikes = raw.map(d => ({
 
 bikeList = Array.from(new Set(bikes.map(d => d.label))).sort((a, b) => a.localeCompare(b))
 
-slotColours = ({A: "#2563a8", B: "#d2691e", C: "#2a9d8f"})
+slotColours = ({A: "#2340FF", B: "#E0431B", C: "#00664B"})
 categoryNames = ({"race": "Race", "all-round": "All-round", "adventure": "Adventure"})
 
 configsFor = bike => Array.from(new Set(bikes.filter(d => d.label === bike).map(d => d.config)))
@@ -249,8 +249,8 @@ drawing = {
 
   // Scale bar: 100 mm
   const sbX = x0 + 20 * px, sbY = y0 + 25;
-  svg += line({x: sbX, y: sbY}, {x: sbX + 100, y: sbY}, "#1f2a33", 2);
-  svg += `<text x="${sbX}" y="${-(sbY) - 6 * px}" text-anchor="start" font-size="${fs * 0.9}" fill="#1f2a33" font-family="Inter, sans-serif">100 mm</text>`;
+  svg += line({x: sbX, y: sbY}, {x: sbX + 100, y: sbY}, "#111111", 2);
+  svg += `<text x="${sbX}" y="${-(sbY) - 6 * px}" text-anchor="start" font-size="${fs * 0.9}" fill="#111111" font-family="Bricolage Grotesque, sans-serif">100 mm</text>`;
 
   const label = drawn.map(b => `${b.slot}: ${b.row.label} size ${b.row.size_label}`).join("; ");
   const el = document.createElement("div");
@@ -287,7 +287,7 @@ compareTable = {
     const lo = Math.min(...vals), hi = Math.max(...vals);
     const W = 180, H = 34, pad = 9;
     const x = v => pad + (hi === lo ? 0.5 : (v - lo) / (hi - lo)) * (W - 2 * pad);
-    const ticks = vals.map(v => `<line x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 4}" stroke="#9fb0bf" stroke-opacity="0.35"/>`).join("");
+    const ticks = vals.map(v => `<line x1="${x(v)}" x2="${x(v)}" y1="4" y2="${H - 4}" stroke="#C9C1B3" stroke-opacity="0.35"/>`).join("");
     const marks = picks.map((p, i) => {
       const v = p.row[m.key];
       if (v == null) return "";
